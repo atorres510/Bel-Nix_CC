@@ -10,6 +10,8 @@ public class CharacterCreator : MonoBehaviour {
     public Renderer activeRenderer;
     public GameObject gridObject;
     public Sprite blankUISprite;
+
+    //Button grid variables
     Button[] buttonGrid;
     int currentbuttonGridLength = 0;
     
@@ -20,9 +22,18 @@ public class CharacterCreator : MonoBehaviour {
     public GameObject paperDoll;
     Image[] paperDollLayers;
 
-    public int activeFeature; // 0 body, 1 long shirt, 2 shirt, 3 vest, 4 hand, 5 back, 6 shoulder, 7 hair, 8 head, 9 general clothing, 10 sex/empty
+    public int activeFeature;
+    // 1: Sex, 2: Hair, 3: Clothes
+    // 4: Hand, 5: Back, 6: Shoulder
+    // 7: Head, 
 
-
+    // informs the current race of the token.  this value is changed by the buttons in the RaceButtonList UI
+    public int activeRace = 2; //default race is human.
+    // 1: Dwarf, 2: Human, 3: Clothes
+    // 4: Elf, 5: Dragonborn, 6: Half-Orc
+    // 7: Halfling, 8: Gnome, 9: tiefling
+    //add more races here!!
+    
 
     bool isBoy = true;
     int bodyType = 0; // 0 fit, 1 chubby, 2 fat
@@ -39,6 +50,12 @@ public class CharacterCreator : MonoBehaviour {
     public void SetSex() {
 
         isBoy = !isBoy;
+
+    }
+
+    public void SetActiveRace(int i) {
+
+        activeRace = i; 
 
     }
 
@@ -231,6 +248,7 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
+    //used by the UI buttons on the button grid.  passes themselves in 
     public void SetFeaturetoPaperDoll(Button button)
     {
 
@@ -490,7 +508,8 @@ public class CharacterCreator : MonoBehaviour {
 
     void UpdatePaperDoll() {
 
-
+        #region Update Based on Sex
+ 
         if (isBoy)
         {
 
@@ -547,10 +566,43 @@ public class CharacterCreator : MonoBehaviour {
 
         }
 
+        #endregion
+
+        #region Update Based on Race   
+        switch (activeRace) {
+
+            case 1: //dwarf
+
+                break;
+
+            case 2: //human
+                break;
+
+            case 3: //half-elf
+                break;
+
+            case 4: //elf
+                break;
+
+            case 5: //dragonborn
+                break;
+
+            case 6: //half-orc
+                break;
+
+            case 7: //halfling
+                break;
+
+            case 8: //gnome
+                break;
+
+            case 9: //tiefling
+                break;
 
 
+        }
 
-
+        #endregion
 
     }
 
@@ -570,6 +622,7 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
+    //activates the appropriate number of buttons needed, applying the appropriate sprite dictated by the sprite library
     void FillButtons(string filePath) {
         
         Sprite[] sprites = spriteLibrary.GetSprites(filePath);
@@ -594,7 +647,7 @@ public class CharacterCreator : MonoBehaviour {
 
         }
 
-        for (int i = sprites.Length; i < 15; i++)
+        for (int i = sprites.Length; i < buttonGrid.Length; i++)
         {
 
             buttonGrid[i].gameObject.SetActive(false);
