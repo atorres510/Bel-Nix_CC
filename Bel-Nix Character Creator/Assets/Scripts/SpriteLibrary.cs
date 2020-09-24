@@ -5,7 +5,11 @@ using System.IO;
 
 public class SpriteLibrary : MonoBehaviour {
 
+    public string rootPath;
+
 	public string[] folderPaths;
+    
+    List<string> keys = new List<string>();
 
 	//used to take place of null reference exceptions
 	Sprite errorSprite;
@@ -73,6 +77,7 @@ public class SpriteLibrary : MonoBehaviour {
 		
 	}
 
+    //returns a full sprite array when given the appropriate key
     public Sprite[] GetSprites(string key) {
 
         Sprite[] sprites = RetrieveArray(key);
@@ -82,13 +87,25 @@ public class SpriteLibrary : MonoBehaviour {
 
     }
 
+    //returns a string array of all keys instatiated in CreateSprite Dictionary
+    public string[] GetKeys() {
+
+        string[] temp = keys.ToArray();
+
+        return temp;
+
+    }
 
 	//creates dictionary by reading the folder paths and their contents
 	void CreateSpriteDictionary(string[] folderPaths){
 
-		foreach (string path in folderPaths) {
-				
-			string[] filePaths = Directory.GetFiles (path);
+		for(int i = 0; i < folderPaths.Length; i++) {
+
+            folderPaths[i] = rootPath + folderPaths[i];
+
+            //Debug.Log(folderPaths[i]);
+
+			string[] filePaths = Directory.GetFiles (folderPaths[i]);
 			
 			foreach (string filePath in filePaths) {
 				
@@ -98,22 +115,18 @@ public class SpriteLibrary : MonoBehaviour {
 				
 				//cuts the cleaned path into the key and puts it in all caps to be comparable to enums
 				string key = MakeKey(cleanedPath);
-				
+
+                keys.Add(key); // add to the keys list for export in GetKeys() by other scripts.
+            
 				spriteLibrary.Add(key, sprites);
-                
-                
+
+                //Debug.Log(key);
 				
 			}
 		
 		}
 
-
-
-	
-
 	}
-
-
 
 	//cleans filepath, removing "Assets/Resources/", "\", and ".meta" from the string. also trims whitespace
 	string CleanFilePath(string path){
@@ -144,10 +157,7 @@ public class SpriteLibrary : MonoBehaviour {
 		newKey = newKey.ToUpper();
 
 		return newKey;
-
-
-	
-	
+        
 	}
 	
 	//reads path and creates a sprite array of the assets found
