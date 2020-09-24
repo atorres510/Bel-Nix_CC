@@ -20,7 +20,7 @@ public class CharacterCreator : MonoBehaviour {
     Button[] buttonGrid;
     int currentbuttonGridLength = 0;
     
-    public Image canvasBackground;
+    public GameObject canvasBackgroundObject;
 
     public string exportName = "CharacterExport";
 
@@ -50,22 +50,24 @@ public class CharacterCreator : MonoBehaviour {
     int size = 0; //0 medium, 1 small
     int raceType = 0;   //0 Base, 1 Dragonborn
     int bodyType = 0; // 0 chub, 1 fat, 2 fit
-    int accessoryType = 0; // 0 backitem, 1, handitem, 2, helmetitem, 3 shoulderitems
+    int accessoryType = 0; // 0 backitem, 1, handitem, 2, helmetitem, 3 shoulderitems, 4 capeitems
 
     //the rest of these types simply correspond to the sprite in order of where they are in the grid (or list)
     int hairSprite = 1;
+    int capeSprite = 0;
     int backSprite = 0;
     int shoulderSprite = 0;
     int handSprite = 0;
     int headSprite = 0;
+    int helmetSprite = 0;
 
     //arrays of strings that are used to construct the keys needed to GetSprites or FillButtons.  Used by ConstructKey
-    //will need to be in alphabetical order because that is how the folders are ordered.
+    //these will need to be in alphabetical order because that is how the folders are ordered.
     string[] sexStrings = { "F", "M" };
     string[] sizeStrings = { "Med", "Sm" };
     string[] bodyStrings = { "Chub", "Fat", "Fit" };
     string[] raceStrings = { "Base", "Dragonborn" };
-    string[] accessoryStrings = { "BackItems", "HandItems", "HelmetItems", "ShoulderItems" };
+    string[] accessoryStrings = { "BackItems", "HandItems", "HelmetItems", "ShoulderItems", "CapeItems" };
 
     //Stores Keys
     string bodyTypeKey;
@@ -119,7 +121,7 @@ public class CharacterCreator : MonoBehaviour {
                 break;
                 
             default:
-                Debug.Log("Defaulting");
+                Debug.Log("Defaulting ConstructKey()");
                 break;
 
         }
@@ -272,6 +274,12 @@ public class CharacterCreator : MonoBehaviour {
                 SetActiveButtons(backSprite);
                 break;
 
+            case "Cape":
+                accessoryType = 0;
+                FillButtons(ConstructKey("AccessoryType"));
+                SetActiveButtons(backSprite);
+                break;
+
             case "Shoulder":
                 break;
 
@@ -294,11 +302,7 @@ public class CharacterCreator : MonoBehaviour {
     }
 
     #endregion
-
-
-
-
-
+    
     /*
     public void SetActiveLayer(int layer) {
 
@@ -413,8 +417,8 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
-   //overloaded for use of an image and its gameobject.  Used by paperdollLayers[i] that are parents of sublayers (such as clothing)
-   Image[] ReturnImages(string layerTag, Image parentImage)
+    //overloaded for use of an image and its gameobject.  Used by paperdollLayers[i] that are parents of sublayers (such as clothing)
+    Image[] ReturnImages(string layerTag, Image parentImage)
    {
 
         List<Image> tempList = new List<Image>();
@@ -447,7 +451,7 @@ public class CharacterCreator : MonoBehaviour {
 
 
     //used by the UI buttons on the button grid.  passes themselves in 
-    public void SetFeaturetoPaperDoll(Button button)
+    /*public void SetSpriteToPaperdoll(Button button)
     {
         //checks if the active feature is a clothing item, and then allows for stacking of clothes and makes sure the button stays pressed 
         //signaling that the item of clothing is applied
@@ -691,7 +695,7 @@ public class CharacterCreator : MonoBehaviour {
 
         }
  
-    }
+    }*/
 
     public void UpdateActiveLayerColor() {
 
@@ -918,13 +922,12 @@ public class CharacterCreator : MonoBehaviour {
 
       StartCoroutine("UploadPNG");
       
-      
     }
 
     public void SetExportName(string name) {
 
         exportName = name;
-        Debug.Log(exportName);
+        //Debug.Log(exportName);
         
     }
 
@@ -933,6 +936,7 @@ public class CharacterCreator : MonoBehaviour {
         //from unity documentation
 
         RectTransform paperDollRectTransform = paperDoll.GetComponent<RectTransform>();
+
         //stores old settings and changes them for the screenshot
         Vector3 paperDollOldPos = paperDollRectTransform.position;
         Vector3 paperDollOldScale = paperDollRectTransform.localScale;
@@ -941,7 +945,7 @@ public class CharacterCreator : MonoBehaviour {
         paperDollRectTransform.localScale = new Vector3(1, 1, 1);
 
         //get rid of background temporarily to preserve alpha
-        canvasBackground.enabled = false;
+        canvasBackgroundObject.SetActive(false);
 
         // We should only read the screen buffer after rendering is complete
         yield return new WaitForEndOfFrame();
@@ -952,7 +956,7 @@ public class CharacterCreator : MonoBehaviour {
 
       
         Texture2D tex = new Texture2D(70, 70, TextureFormat.ARGB32, false);
-
+        
         // Read screen contents into the texture
         tex.ReadPixels(new Rect(5, 5, 75, 75), 0, 0);
         tex.Apply();
@@ -968,10 +972,10 @@ public class CharacterCreator : MonoBehaviour {
 
         paperDollRectTransform.position = paperDollOldPos;
         paperDollRectTransform.localScale = paperDollOldScale;
+
+        canvasBackgroundObject.SetActive(true);
         
-        canvasBackground.enabled = true;
-        
-        Debug.Log("screenshot taken");
+        Debug.Log("Screenshot Taken");
 
         yield return 0;
 
@@ -1003,7 +1007,7 @@ public class CharacterCreator : MonoBehaviour {
                     counter++;
                     lessRedundantName = name + counter;
                     isThereStillARedundancy = true;
-                    Debug.Log(counter);
+                    //Debug.Log(counter);
                     
 
                 }
@@ -1039,7 +1043,7 @@ public class CharacterCreator : MonoBehaviour {
 	void Update () {
 
         UpdateButtonColor();
-        UpdateActiveLayerColor();
+        //UpdateActiveLayerColor();
         //UpdatePaperDoll();
 	
 	}
