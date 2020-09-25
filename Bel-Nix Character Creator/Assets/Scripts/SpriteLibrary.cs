@@ -135,13 +135,13 @@ public class SpriteLibrary : MonoBehaviour {
        string clean  = path.Substring(17);
         //removes ".meta"
 		clean = clean.Remove(clean.Length - 5);
-		//removes "\"
+        //removes "\"
 		string [] cleanedStrings = clean.Split ('\\');
-		//addes all the cleaned strings and connects the path
-		clean = cleanedStrings[0] + "/" + cleanedStrings[1];
-		//trims whitespace on ends
-		clean = clean.Trim ();
-
+        //addes all the cleaned strings and connects the path
+        clean = cleanedStrings[0] + "/" + cleanedStrings[1];
+         //trims whitespace on ends
+        clean = clean.Trim();
+        
 		return clean;
 	
 	}

@@ -49,7 +49,7 @@ public class CharacterCreator : MonoBehaviour {
     int sex = 1; //0 female, 1 male
     int size = 0; //0 medium, 1 small
     int raceType = 0;   //0 Base, 1 Dragonborn
-    int bodyType = 0; // 0 chub, 1 fat, 2 fit
+    int bodyType = 2; // 0 Bony, 1 Buff, 2 Fit, 3 Stout, 4 Thick
     int accessoryType = 0; // 0 backitem, 1, handitem, 2, helmetitem, 3 shoulderitems, 4 capeitems
 
     //the rest of these types simply correspond to the sprite in order of where they are in the grid (or list)
@@ -65,7 +65,7 @@ public class CharacterCreator : MonoBehaviour {
     //these will need to be in alphabetical order because that is how the folders are ordered.
     string[] sexStrings = { "F", "M" };
     string[] sizeStrings = { "Med", "Sm" };
-    string[] bodyStrings = { "Chub", "Fat", "Fit" };
+    string[] bodyStrings = { "Bony", "Buff", "Fit", "Stout", "Thick" };
     string[] raceStrings = { "Base", "Dragonborn" };
     string[] accessoryStrings = { "BackItems", "HandItems", "HelmetItems", "ShoulderItems", "CapeItems" };
 
@@ -92,7 +92,7 @@ public class CharacterCreator : MonoBehaviour {
 
             case "BODYTYPEKEY":
 
-                key = sexStrings[sex] + "_" + sizeStrings[size] + "_" + raceStrings[raceType] + "_bodyType";
+                key = sizeStrings[size] + "_bodyType";
 
                 break;
 
@@ -240,56 +240,57 @@ public class CharacterCreator : MonoBehaviour {
 
         }
 
+        layer = layer.ToUpper();
+
         switch (layer)
         {
 
-            case "Body":
+            case "BODY":
 
                 FillButtons(ConstructKey("bodytypekey"));
                 SetActiveButtons(bodyType);
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
 
                 break;
-
-            case "Clothing":
+            case "CLOTHING":
 
                 FillButtons(ConstructKey("clothingtypekey"));
                 SetActiveButtons(ReturnEnabledLayers(paperDollClothingLayers));
 
                 break;
 
-            case "Accessories":
+            case "ACCESSORIES":
 
                 break;
 
-            case "Hand":
+            case "HAND":
                 accessoryType = 1;
                 FillButtons(ConstructKey("AccessoryType"));
                 SetActiveButtons(handSprite);//using int means that only one accessory can be applied at a time.
                 break;
 
-            case "Back":
+            case "BACK":
                 accessoryType = 0;
                 FillButtons(ConstructKey("AccessoryType"));
                 SetActiveButtons(backSprite);
                 break;
 
-            case "Cape":
-                accessoryType = 0;
+            case "CAPE":
+                accessoryType = 4;
                 FillButtons(ConstructKey("AccessoryType"));
                 SetActiveButtons(backSprite);
                 break;
 
-            case "Shoulder":
+            case "SHOULDER":
                 break;
 
-            case "Head":
+            case "HEAD":
                 break;
 
-            case "Hair":
+            case "HAIR":
                 break;
 
-            case "Helmet":
+            case "HELMET":
                 break;
 
             default:
@@ -451,6 +452,42 @@ public class CharacterCreator : MonoBehaviour {
 
 
     //used by the UI buttons on the button grid.  passes themselves in 
+    public void SetSpriteToPaperdoll(Button button) {
+
+        Image buttonSprite = button.image;
+        int buttonInt;
+
+        for (int i = 0; i < buttonGrid.Length; i++) {
+
+            if (buttonGrid[i] == button) {
+
+                buttonInt = i;
+
+            }
+            
+        }
+
+        
+
+        switch (activeLayer) {
+
+            case 0: //body
+                
+                break;
+
+
+            default:
+                break;
+                
+
+
+        }
+
+
+
+
+
+    }
     /*public void SetSpriteToPaperdoll(Button button)
     {
         //checks if the active feature is a clothing item, and then allows for stacking of clothes and makes sure the button stays pressed 
@@ -776,7 +813,7 @@ public class CharacterCreator : MonoBehaviour {
         
     }
 
-    void UpdateButtonColor() {
+    void UpdateButtonSpriteColor() {
 
         if (activeLayer == 0 || activeLayer == 7)
         { //body and hair colors
@@ -1042,7 +1079,7 @@ public class CharacterCreator : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        UpdateButtonColor();
+        UpdateButtonSpriteColor();
         //UpdateActiveLayerColor();
         //UpdatePaperDoll();
 	
