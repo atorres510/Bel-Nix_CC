@@ -14,6 +14,8 @@ public class CharacterCreator : MonoBehaviour {
     public GameObject presetsObject;
     public Sprite blankUISprite;
 
+    public Sprite blankSprite;
+
     public ColorPicker picker;
 
     //Button grid variables
@@ -250,6 +252,7 @@ public class CharacterCreator : MonoBehaviour {
                 FillButtons(ConstructKey("bodytypekey"));
                 SetActiveButtons(bodyType);
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
+    
 
                 break;
             case "CLOTHING":
@@ -454,25 +457,41 @@ public class CharacterCreator : MonoBehaviour {
     //used by the UI buttons on the button grid.  passes themselves in 
     public void SetSpriteToPaperdoll(Button button) {
 
-        Image buttonSprite = button.image;
-        int buttonInt;
+        //get the button sprite
+        Sprite buttonSprite = button.transform.GetChild(0).GetComponent<Image>().sprite; // gets the sprite from the child object's image that actually holds the sprite we want.
 
+        //holds index for the button on the grid
+        int buttonIndex = 0;
         for (int i = 0; i < buttonGrid.Length; i++) {
 
             if (buttonGrid[i] == button) {
 
-                buttonInt = i;
+                buttonIndex = i;
 
             }
             
         }
-
         
+        //holds the image and name of the active layer
+        //Sprite paperdollLayerSprite = paperDollLayers[activeLayer].sprite;
+        string layerName = paperDollLayers[activeLayer].name.ToUpper(); //used in switch case so that we don't have to hard code in the numbers like we used to.  don't do that again.
+        
+        switch (layerName) {
 
-        switch (activeLayer) {
+            case "BODY": //body
 
-            case 0: //body
-                
+                paperDollLayers[activeLayer].sprite = buttonSprite;
+                ToggleButtonColorsForGrid(button);
+                bodyType = buttonIndex;
+                Debug.Log("BodyType = " + bodyType);
+
+                break;
+
+            case "CLOTHING":
+
+                paperDollClothingLayers[buttonIndex].gameObject.SetActive(!paperDollClothingLayers[buttonIndex].gameObject.activeSelf);
+                //add fxn to toggle button color here
+
                 break;
 
 
@@ -488,6 +507,7 @@ public class CharacterCreator : MonoBehaviour {
 
 
     }
+
     /*public void SetSpriteToPaperdoll(Button button)
     {
         //checks if the active feature is a clothing item, and then allows for stacking of clothes and makes sure the button stays pressed 
@@ -925,7 +945,54 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
-    void ResetButtonColors() {
+    Sprite ReturnButtonSpriteAsToggle(Button button) {
+
+        Sprite buttonSprite = button.transform.GetChild(0).GetComponent<Image>().sprite; // gets the sprite from the child object's image that actually holds the sprite we want.
+
+        //checks to see if the button is not yet pressed.  if the button is normal color (not pressed) apply the button's sprite and change it to pressed color;
+        if (button.image.color == button.colors.normalColor)
+        {
+
+            button.image.color = button.colors.pressedColor;
+            return buttonSprite;
+
+        }
+        //if button was already pressed and active, toggle it back to the normal color and return a blank sprite.
+        else
+        {
+
+            button.image.color = button.colors.normalColor;
+            return blankSprite;
+
+        }
+
+    }
+
+    void ToggleButtonColorsForGrid(Button button)
+    {
+        
+        for (int i = 0; i < buttonGrid.Length; i++){
+
+            if (buttonGrid[i] == button) {
+                
+                buttonGrid[i].image.color = buttonGrid[i].colors.pressedColor;
+                
+            }
+
+            else
+            {
+
+                buttonGrid[i].image.color = buttonGrid[i].colors.normalColor;
+                
+            }
+
+
+        }
+
+    }
+
+
+    void ResetColorsOnSpriteGrid() {
 
 
         for (int i = 0; i < buttonGrid.Length; i++)
