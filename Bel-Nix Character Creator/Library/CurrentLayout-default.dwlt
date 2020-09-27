@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 997
   m_ShowMode: 4
-  m_Title: Inspector
+  m_Title: Hierarchy
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 542}
   m_MaxSize: {x: 10000, y: 10000}
@@ -123,7 +123,7 @@ MonoBehaviour:
   m_MinSize: {x: 811, y: 492}
   m_MaxSize: {x: 22006, y: 14042}
   vertical: 0
-  controlID: 165
+  controlID: 172
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -148,7 +148,7 @@ MonoBehaviour:
   m_MinSize: {x: 333, y: 492}
   m_MaxSize: {x: 14003, y: 14042}
   vertical: 1
-  controlID: 166
+  controlID: 36
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -201,7 +201,7 @@ MonoBehaviour:
   m_MinSize: {x: 333, y: 271}
   m_MaxSize: {x: 14003, y: 10021}
   vertical: 0
-  controlID: 66
+  controlID: 98
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -433,9 +433,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 560.5807, y: 289.8769, z: -41.290707}
+    m_Target: {x: 578.43463, y: 310.0823, z: -164.62772}
     speed: 2
-    m_Value: {x: 560.5807, y: 289.8769, z: -41.290707}
+    m_Value: {x: 578.43463, y: 310.0823, z: -164.62772}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -486,9 +486,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 365.54385
+    m_Target: 339.97314
     speed: 2
-    m_Value: 365.54385
+    m_Value: 339.97314
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -604,35 +604,35 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Resources/Sprites/CharacterFeatures/BodyTypes/Med_BodyType
+    - Assets/Resources/Sprites/CharacterFeatures/HeadTypes
     m_Globs: []
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Resources/Sprites/CharacterFeatures/BodyTypes/Med_BodyType
+  - Assets/Resources/Sprites/CharacterFeatures/HeadTypes
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\Andrew\Desktop\Bel-Nix_CC\Bel-Nix Character Creator
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 118}
-    m_SelectedIDs: b8450000
-    m_LastClickedID: 17848
-    m_ExpandedIDs: 000000008c4500008e45000090450000924500009445000096450000984500009a4500009c4500009e450000a0450000a2450000a4450000a6450000a8450000aa450000ac45000000ca9a3b
+    scrollPos: {x: 0, y: 503.00543}
+    m_SelectedIDs: a0450000
+    m_LastClickedID: 17824
+    m_ExpandedIDs: 000000008c4500008e45000090450000924500009445000096450000984500009a4500009c4500009e450000a0450000a2450000a4450000a6450000a8450000aa450000ac450000ba450000c0450000c245000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: M_Med_Fat_ClothingType
+      m_OriginalName: M_Med_Fat_ClothingType
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: 17956
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 10}
     m_SearchString: 
@@ -730,10 +730,10 @@ MonoBehaviour:
   m_ViewDataDictionary: {fileID: 0}
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 55}
-      m_SelectedIDs: 90390000
-      m_LastClickedID: 14736
-      m_ExpandedIDs: 56dfffff26e0ffff2ee0ffff40fbffffda380000e0380000323900009a3a0000c23b0000123c0000c63e0000
+      scrollPos: {x: 0, y: 7}
+      m_SelectedIDs: 923e0000
+      m_LastClickedID: 16018
+      m_ExpandedIDs: 60fbffffb6370000b83800000e390000103a0000f43a00006e3b0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
