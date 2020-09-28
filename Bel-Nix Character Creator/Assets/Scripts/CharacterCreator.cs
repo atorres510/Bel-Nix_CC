@@ -49,9 +49,10 @@ public class CharacterCreator : MonoBehaviour {
 
     bool isBoy = true;
     int sex = 1; //0 female, 1 male
+    int chestType = 0; //0 none, 1 Acup, 2 Bcup
     int size = 0; //0 medium, 1 small
     int raceType = 0;   //0 Base, 1 Dragonborn
-    int bodyType = 2; // 0 Bony, 1 Buff, 2 Fit, 3 Stout, 4 Thick
+    int bodyType = 1; // 0 Bony, 1 Fit
     int accessoryType = 0; // 0 backitem, 1, handitem, 2, helmetitem, 3 shoulderitems, 4 capeitems
 
     //the rest of these types simply correspond to the sprite in order of where they are in the grid (or list)
@@ -67,7 +68,7 @@ public class CharacterCreator : MonoBehaviour {
     //these will need to be in alphabetical order because that is how the folders are ordered.
     string[] sexStrings = { "F", "M" };
     string[] sizeStrings = { "Med", "Sm" };
-    string[] bodyStrings = { "Bony", "Buff", "Fit", "Stout", "Thick" };
+    string[] bodyStrings = { "Bony", "Fit", "Stout", "Thick", "Buff"};
     string[] raceStrings = { "Base", "Dragonborn" };
     string[] accessoryStrings = { "BackItems", "HandItems", "HelmetItems", "ShoulderItems", "CapeItems" };
 
@@ -98,15 +99,15 @@ public class CharacterCreator : MonoBehaviour {
 
                 break;
 
-            case "BREASTTYPEKEY":
+            case "CHESTTYPEKEY":
 
-                key = sizeStrings[size] + "_" + bodyStrings[bodyType] + "_breastType";
+                key = sizeStrings[size] + "_" + bodyStrings[bodyType] + "_chestType";
 
                 break;
 
             case "CLOTHINGTYPEKEY":
 
-                key = sexStrings[sex] + "_" + sizeStrings[size] + "_" + bodyStrings[bodyType] + "_clothingType";
+                key = sizeStrings[size] + "_" + bodyStrings[bodyType] + /*chesttype*/ "_clothingType";
 
                 break;
 
@@ -118,7 +119,7 @@ public class CharacterCreator : MonoBehaviour {
 
             case "HAIRTYPEKEY":
 
-                key = raceStrings[raceType] + "_hairType";
+                key = sizeStrings[size] + "_" + raceStrings[raceType] + "_hairType";
 
                 break;
                 
@@ -130,6 +131,8 @@ public class CharacterCreator : MonoBehaviour {
 
         key = key.ToUpper();
 
+        Debug.Log(key);
+
         return key;
 
     }
@@ -139,74 +142,14 @@ public class CharacterCreator : MonoBehaviour {
     #region Layer Methods
     //the layer methods are for UI use to set active layers and to fill the grid buttons with the appropriate sprites for use.  
 
-    //for use of the body button on UI.
-   public void BodyToActiveLayer() {
-
-        activeLayer = 0;
-        FillButtons(ConstructKey("bodytypekey"));
-        SetActiveButtons(bodyType);
-        picker.CurrentColor = paperDollLayers[activeLayer].color;
-        
-    }
-
-    //for use of the "clothing" button on UI
-    public void ClothingToActiveLayer() {
-
-        activeLayer = 2;
-        FillButtons(ConstructKey("clothingtypekey"));
-        SetActiveButtons(ReturnEnabledLayers(paperDollClothingLayers)); //using length here is 
-
-    }
-
-    //for use of the individual buttons on UI for accessory items such as hands, shoulder, back, etc.
-    public void AccessoryToActiveLayer(int layer)
-    {
-
-        activeLayer = layer; //sets active layer
-
-        switch (layer)
-        {
-
-            case 0 - 1: //null
-                break;
-
-            case 2: //hand
-                accessoryType = 1;
-                FillButtons(ConstructKey("AccessoryType"));
-                SetActiveButtons(handSprite);//using int means that only one accessory can be applied at a time.
-                break;
-
-            case 3: //back
-                accessoryType = 0;
-                FillButtons(ConstructKey("AccessoryType"));
-                SetActiveButtons(backSprite);
-                break;
-
-            case 4: //shoulder
-                accessoryType = 3;
-                FillButtons(ConstructKey("AccessoryType"));
-                SetActiveButtons(shoulderSprite);
-                break;
-
-            case 6: //helmet
-                accessoryType = 2;
-                FillButtons(ConstructKey("AccessoryType"));
-                SetActiveButtons(headSprite);
-                break;
-
-        }
-
-
-    }
-
     //takes a paperdoll layer or sub layer and returns values that represent the layers that are enabled as gameobjects (this is mostly for clothing) 
-    int[] ReturnEnabledLayers(Image[] layers) {
+    int[] ReturnFilledLayers(Image[] layers) {
 
         List<int> activeLayers = new List<int>(); //holds the list of active layers 
 
         for(int i = 0; i < layers.Length; i++) {
 
-            if (layers[i].gameObject.activeSelf) //checks if the layer is active
+            if (layers[i].sprite != blankSprite) //checks if the layer is active
             {
 
                 activeLayers.Add(i);
@@ -226,6 +169,7 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
+    //For use of the UI to determine what layer of the paperdoll is currently being edited, and to fill the buttons with the appropriate sprites for player's selection
     public void SetActiveLayer(string layer)
     {
 
@@ -258,8 +202,14 @@ public class CharacterCreator : MonoBehaviour {
             case "CLOTHING":
 
                 FillButtons(ConstructKey("clothingtypekey"));
-                SetActiveButtons(ReturnEnabledLayers(paperDollClothingLayers));
+                SetActiveButtons(ReturnFilledLayers(paperDollClothingLayers));
 
+                break;
+
+            case "CHEST":
+
+                FillButtons(ConstructKey("chesttypekey"));
+                SetActiveButtons(chestType);
                 break;
 
             case "ACCESSORIES":
@@ -268,19 +218,19 @@ public class CharacterCreator : MonoBehaviour {
 
             case "HAND":
                 accessoryType = 1;
-                FillButtons(ConstructKey("AccessoryType"));
+                FillButtons(ConstructKey("AccessoryTypeKey"));
                 SetActiveButtons(handSprite);//using int means that only one accessory can be applied at a time.
                 break;
 
             case "BACK":
                 accessoryType = 0;
-                FillButtons(ConstructKey("AccessoryType"));
+                FillButtons(ConstructKey("AccessoryTypeKey"));
                 SetActiveButtons(backSprite);
                 break;
 
             case "CAPE":
                 accessoryType = 4;
-                FillButtons(ConstructKey("AccessoryType"));
+                FillButtons(ConstructKey("AccessoryTypeKey"));
                 SetActiveButtons(backSprite);
                 break;
 
@@ -291,6 +241,8 @@ public class CharacterCreator : MonoBehaviour {
                 break;
 
             case "HAIR":
+                FillButtons(ConstructKey("HairTypeKey"));
+                SetActiveButtons(hairSprite);
                 break;
 
             case "HELMET":
@@ -451,10 +403,8 @@ public class CharacterCreator : MonoBehaviour {
 
         return layers;
     }
-
-
-
-    //used by the UI buttons on the button grid.  passes themselves in 
+    
+    //used by the UI buttons on the button grid.  places the sprite represented on the grid onto the paperdoll at the active layer 
     public void SetSpriteToPaperdoll(Button button) {
 
         //get the button sprite
@@ -462,7 +412,7 @@ public class CharacterCreator : MonoBehaviour {
 
         //holds index for the button on the grid
         int buttonIndex = 0;
-        for (int i = 0; i < buttonGrid.Length; i++) {
+        for (int i = 0; i < currentbuttonGridLength; i++) {
 
             if (buttonGrid[i] == button) {
 
@@ -481,19 +431,35 @@ public class CharacterCreator : MonoBehaviour {
             case "BODY": //body
 
                 paperDollLayers[activeLayer].sprite = buttonSprite;
-                ToggleButtonColorsForGrid(button);
+
+                TogglePressedStateAsGroup(button);
                 bodyType = buttonIndex;
                 Debug.Log("BodyType = " + bodyType);
 
                 break;
+                
+            case "CHEST":
+                paperDollLayers[activeLayer].sprite = buttonSprite;
 
-            case "CLOTHING":
-
-                paperDollClothingLayers[buttonIndex].gameObject.SetActive(!paperDollClothingLayers[buttonIndex].gameObject.activeSelf);
-                //add fxn to toggle button color here
+                TogglePressedStateAsGroup(button);
+                chestType = buttonIndex;
+                Debug.Log("ChestType = " + chestType);
 
                 break;
 
+            case "HAIR":
+                paperDollLayers[activeLayer].sprite = buttonSprite;
+
+                TogglePressedStateAsGroup(button);
+                hairSprite = buttonIndex;
+                Debug.Log("HairSprite = " + hairSprite);
+                break;
+
+            case "CLOTHING":
+                paperDollClothingLayers[buttonIndex].sprite = ReturnButtonSpriteAsToggle(button);
+                //paperDollClothingLayers[buttonIndex].gameObject.SetActive(!paperDollClothingLayers[buttonIndex].gameObject.activeSelf);
+                //TogglePressedState(button);
+                break;
 
             default:
                 break;
@@ -789,6 +755,7 @@ public class CharacterCreator : MonoBehaviour {
     
     #region Button Grid Methods
 
+    //defines the buttonGrid
     void SetButtons()
     {
 
@@ -879,12 +846,13 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
+    //places a button in a pressed state if the type of that item is currently active on the paperdoll.  then places the rest of the buttons into the unpressed state
     void SetActiveButtons(int type) {
 
         if (paperDollLayers[activeLayer].gameObject.activeSelf)
         {
-
-            for (int i = 0; i < buttonGrid.Length; i++)
+            
+            for (int i = 0; i < currentbuttonGridLength; i++)
             {
 
                 if (i == type)
@@ -906,7 +874,7 @@ public class CharacterCreator : MonoBehaviour {
         else {
 
 
-            for (int i = 0; i < buttonGrid.Length; i++)
+            for (int i = 0; i < currentbuttonGridLength; i++)
             {
 
                buttonGrid[i].image.color = buttonGrid[i].colors.normalColor;
@@ -918,34 +886,27 @@ public class CharacterCreator : MonoBehaviour {
 
 
     }
-
+    //overload method that takes an array rather than a single interger.
     void SetActiveButtons(int[] types)
     {
-
-        for (int i = 0; i < buttonGrid.Length; i++)
+        //sets all buttons into an unpressed state
+        for (int i = 0; i < currentbuttonGridLength; i++)
         {
 
-            for (int j = 0; j < types.Length; j++) {
+            buttonGrid[i].image.color = buttonGrid[i].colors.normalColor;
 
-                if (i == types[j])
-                {
+        }
+        //then presses the ones that are currently active on the paperdoll
+        for (int i = 0; i < types.Length; i++) {
 
-                    buttonGrid[i].image.color = buttonGrid[i].colors.pressedColor;
-                }
-
-                else
-                {
-
-                    buttonGrid[i].image.color = buttonGrid[i].colors.normalColor;
-
-                }
-
-            }
+            buttonGrid[types[i]].image.color = buttonGrid[types[i]].colors.pressedColor;
+            
         }
 
     }
 
-    Sprite ReturnButtonSpriteAsToggle(Button button) {
+    Sprite ReturnButtonSpriteAsToggle(Button button)
+    {
 
         Sprite buttonSprite = button.transform.GetChild(0).GetComponent<Image>().sprite; // gets the sprite from the child object's image that actually holds the sprite we want.
 
@@ -968,7 +929,27 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
-    void ToggleButtonColorsForGrid(Button button)
+    void TogglePressedState(Button button)
+    {
+
+        //checks to see if the button is not yet pressed.  if the button is normal color (not pressed) apply the button's sprite and change it to pressed color;
+        if (button.image.color == button.colors.normalColor)
+        {
+
+            button.image.color = button.colors.pressedColor;
+
+
+        }
+        //if button was already pressed and active, toggle it back to the normal color and return a blank sprite.
+        else
+        {
+
+            button.image.color = button.colors.normalColor;
+            
+        }
+    }
+
+    void TogglePressedStateAsGroup(Button button)
     {
         
         for (int i = 0; i < buttonGrid.Length; i++){
@@ -1005,7 +986,7 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
-    void DeactivateAllButtons() {
+    public void DeactivateAllButtons() {
 
         for (int i = 0; i < buttonGrid.Length; i++){
 
@@ -1135,7 +1116,7 @@ public class CharacterCreator : MonoBehaviour {
 
         paperDollLayers = ReturnImages("PaperdollLayer");
    
-        paperDollClothingLayers = ReturnImages("PaperdollSubLayer", paperDollLayers[1]);
+        paperDollClothingLayers = ReturnImages("PaperdollSubLayer", paperDollLayers[2]);
 
         SetUpColorPicker();
 
@@ -1145,6 +1126,9 @@ public class CharacterCreator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        paperDollLayers[1].color = paperDollLayers[0].color;
+
 
         UpdateButtonSpriteColor();
         //UpdateActiveLayerColor();
