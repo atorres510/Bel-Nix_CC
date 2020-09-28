@@ -29,6 +29,7 @@ public class CharacterCreator : MonoBehaviour {
     public GameObject paperDoll;
     Image[] paperDollLayers;
     Image[] paperDollClothingLayers;
+    Image[] paperDollAccessoryLayers;
 
     public int activeLayer;
     //0: Body, 1: Clothing, 2: Hand
@@ -63,6 +64,7 @@ public class CharacterCreator : MonoBehaviour {
     int handSprite = 0;
     int headSprite = 0;
     int helmetSprite = 0;
+    int ScarfSprite = 0;
 
     //arrays of strings that are used to construct the keys needed to GetSprites or FillButtons.  Used by ConstructKey
     //these will need to be in alphabetical order because that is how the folders are ordered.
@@ -70,7 +72,7 @@ public class CharacterCreator : MonoBehaviour {
     string[] sizeStrings = { "Med", "Sm" };
     string[] bodyStrings = { "Bony", "Fit", "Stout", "Thick", "Buff"};
     string[] raceStrings = { "Base", "Dragonborn" };
-    string[] accessoryStrings = { "BackItems", "HandItems", "HelmetItems", "ShoulderItems", "CapeItems" };
+    string[] accessoryStrings = { "BackItems", "HandItems", "HelmetItems", "ShoulderItems", "CapeItems", "ScarfItems" };
 
     //Stores Keys
     string bodyTypeKey;
@@ -169,6 +171,24 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
+    int lastfilledAccessory = 0;
+
+    Image ReturnEmptySubLayer(Image[] layers) {
+
+        for (int i = 0; i < layers.Length; i++) {
+
+            if (layers[i].sprite == blankSprite) {
+
+                return layers[i];
+
+            }
+            
+        }
+        lastfilledAccessory++;
+        return layers[lastfilledAccessory];
+
+    }
+
     //For use of the UI to determine what layer of the paperdoll is currently being edited, and to fill the buttons with the appropriate sprites for player's selection
     public void SetActiveLayer(string layer)
     {
@@ -196,6 +216,7 @@ public class CharacterCreator : MonoBehaviour {
                 FillButtons(ConstructKey("bodytypekey"));
                 SetActiveButtons(bodyType);
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
+                ChangeFixedColumnCount(3);
     
 
                 break;
@@ -203,13 +224,15 @@ public class CharacterCreator : MonoBehaviour {
 
                 FillButtons(ConstructKey("clothingtypekey"));
                 SetActiveButtons(ReturnFilledLayers(paperDollClothingLayers));
-
+                ChangeFixedColumnCount(2);
+          
                 break;
 
             case "CHEST":
 
                 FillButtons(ConstructKey("chesttypekey"));
                 SetActiveButtons(chestType);
+                ChangeFixedColumnCount(3);
                 break;
 
             case "ACCESSORIES":
@@ -243,6 +266,7 @@ public class CharacterCreator : MonoBehaviour {
             case "HAIR":
                 FillButtons(ConstructKey("HairTypeKey"));
                 SetActiveButtons(hairSprite);
+                ChangeFixedColumnCount(3);
                 break;
 
             case "HELMET":
@@ -250,11 +274,9 @@ public class CharacterCreator : MonoBehaviour {
 
             default:
                 break;
-
-
-
+                
         }
-
+        
     }
 
     #endregion
@@ -459,6 +481,38 @@ public class CharacterCreator : MonoBehaviour {
                 paperDollClothingLayers[buttonIndex].sprite = ReturnButtonSpriteAsToggle(button);
                 //paperDollClothingLayers[buttonIndex].gameObject.SetActive(!paperDollClothingLayers[buttonIndex].gameObject.activeSelf);
                 //TogglePressedState(button);
+                break;
+
+            case "ACCESSORIES":
+
+                ReturnEmptySubLayer(paperDollAccessoryLayers).sprite = ReturnButtonSpriteAsToggle(button);
+
+                string currentAccessory = accessoryStrings[accessoryType];
+
+                currentAccessory.ToUpper();
+
+                switch (currentAccessory) {
+
+                    case "BACKITEMS":
+                        //backSprite = buttonIndex;
+                        break;
+
+                    case "HANDITEMS":
+                        handSprite = buttonIndex;
+                        break;
+
+                    case "HELMETITEMS":
+                        helmetSprite = buttonIndex;
+                        break;
+
+                    case "SHOULDERITEMS":
+                        //shoulderSprite = buttonIndex;
+                        break;
+
+                    case "SCARFITEMS":
+                        break;
+                        
+                }
                 break;
 
             default:
@@ -800,6 +854,12 @@ public class CharacterCreator : MonoBehaviour {
         
     }
 
+    void ChangeFixedColumnCount(int size) {
+
+        gridObject.GetComponent<GridLayoutGroup>().constraintCount = size;
+        
+    }
+
     void UpdateButtonSpriteColor() {
 
         if (activeLayer == 0 || activeLayer == 7)
@@ -1117,6 +1177,8 @@ public class CharacterCreator : MonoBehaviour {
         paperDollLayers = ReturnImages("PaperdollLayer");
    
         paperDollClothingLayers = ReturnImages("PaperdollSubLayer", paperDollLayers[2]);
+
+        paperDollAccessoryLayers = ReturnImages("PaperdollSubLayer", paperDollLayers[6]);
 
         SetUpColorPicker();
 
