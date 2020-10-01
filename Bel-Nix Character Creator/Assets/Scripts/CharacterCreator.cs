@@ -18,9 +18,11 @@ public class CharacterCreator : MonoBehaviour {
 
     public ColorPicker picker;
     public Image emptyImage;
-    Image updatedImage;
+    public Button emptyButton;
+    Image lastSelectedLayer;
     Color layerColor;
-    Button currentButton;
+    Button lastSelectedButton;
+    bool isSubLayerActive;
     Image skinLayer;
     Color skinColor;
 
@@ -37,6 +39,7 @@ public class CharacterCreator : MonoBehaviour {
     Image[] paperDollClothingLayers;
     Image[] paperDollHandLayers;
     Image[] paperDollAccessoryLayers;
+    string[] subLayers = {"Clothing", "Hands"};
     public Image[] skinLayers;
 
     public int activeLayer;
@@ -156,11 +159,11 @@ public class CharacterCreator : MonoBehaviour {
 
     #endregion
 
-    #region Layer Methods
-    //the layer methods are for UI use to set active layers and to fill the grid buttons with the appropriate sprites for use.  
+    #region Layer and SubLayer Methods
+    //the layer and sublayer methods are for UI use to set active layers and to fill the grid buttons with the appropriate sprites for use.  
 
     //takes a paperdoll layer or sub layer and returns values that represent the layers that are enabled as gameobjects (this is mostly for clothing) 
-    int[] ReturnFilledLayers(Image[] layers) {
+    int[] ReturnIndexsForFilledLayers(Image[] layers) {
 
         List<int> activeLayers = new List<int>(); //holds the list of active layers 
 
@@ -204,6 +207,47 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
+    bool DoesLayerContainSubLayers(Image layer) {
+
+        for (int i = 0; i < subLayers.Length; i++) {
+
+            if (layer.name == subLayers[i]) {
+
+                return true;
+
+            }
+
+        }
+
+        return false;
+
+    }
+
+    Image[] ReturnActiveLayer() {
+
+        string layerName = paperDollLayers[activeLayer].name;
+
+        switch (layerName) {
+
+            case "Clothing":
+                return paperDollClothingLayers;
+
+            case "Hands":
+                return paperDollHandLayers;
+
+            default:
+                return paperDollLayers;
+                
+        }
+        
+    }
+
+    void ResetLastSelectedLayer() {
+
+        lastSelectedLayer = emptyImage;
+        
+    }
+
     //For use of the UI to determine what layer of the paperdoll is currently being edited, and to fill the buttons with the appropriate sprites for player's selection
     public void SetActiveLayer(string layer)
     {
@@ -222,7 +266,10 @@ public class CharacterCreator : MonoBehaviour {
         }
 
         Debug.Log("ActiveLayer = " + activeLayer);
-
+        
+        ResetButtonSelection();
+        ResetLastSelectedLayer();
+        
         layer = layer.ToUpper();
 
         switch (layer)
@@ -233,25 +280,33 @@ public class CharacterCreator : MonoBehaviour {
                 FillButtons(ConstructKey("bodytypekey"));
                 SetButtonPressedStates(bodyType);
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
-                updatedImage = skinLayer;
+                lastSelectedLayer = skinLayer;
+                isSubLayerActive = false;
                 ChangeFixedColumnCount(3);
+                ResizeButtonGridSprites(1);
     
 
                 break;
             case "CLOTHING":
 
                 FillButtons(ConstructKey("clothingtypekey"));
-                SetButtonPressedStates(ReturnFilledLayers(paperDollClothingLayers));
-                ChangeFixedColumnCount(2);
-          
+                SetButtonPressedStates(ReturnIndexsForFilledLayers(paperDollClothingLayers));
+                ResetActiveColor();
+                SetLayerColorstoButtonGrid(paperDollClothingLayers);
+                isSubLayerActive = true;
+                ChangeFixedColumnCount(3);
+                ResizeButtonGridSprites(1);
                 break;
 
             case "CHEST":
 
                 FillButtons(ConstructKey("chesttypekey"));
                 SetButtonPressedStates(chestType);
-                updatedImage = skinLayer;
+                picker.CurrentColor = paperDollLayers[activeLayer].color;
+                lastSelectedLayer = skinLayer;
+                isSubLayerActive = false;
                 ChangeFixedColumnCount(3);
+                ResizeButtonGridSprites(1);
                 break;
 
             case "ACCESSORIES":
@@ -261,8 +316,12 @@ public class CharacterCreator : MonoBehaviour {
             case "HANDS":
                 
                 FillButtons(ConstructKey("HandTypeKey"));
-                SetButtonPressedStates(ReturnFilledLayers(paperDollHandLayers));
+                SetButtonPressedStates(ReturnIndexsForFilledLayers(paperDollHandLayers));
+                ResetActiveColor();
+                SetLayerColorstoButtonGrid(paperDollHandLayers);
+                isSubLayerActive = true;
                 ChangeFixedColumnCount(2);
+                ResizeButtonGridSprites(3);
                 break;
 
             case "BACK":
@@ -272,13 +331,12 @@ public class CharacterCreator : MonoBehaviour {
                 break;
 
             case "CAPE":
-                //accessoryType = 4;
-                // FillButtons(ConstructKey("AccessoryTypeKey"));
-                // SetActiveButtons(backSprite);
-
                 FillButtons("CAPEITEMS");
                 SetButtonPressedStates(capeSprite);
+                picker.CurrentColor = paperDollLayers[activeLayer].color;
+                lastSelectedLayer = paperDollLayers[activeLayer];
                 ChangeFixedColumnCount(3);
+                ResizeButtonGridSprites(1);
 
                 break;
 
@@ -291,7 +349,11 @@ public class CharacterCreator : MonoBehaviour {
             case "HAIR":
                 FillButtons(ConstructKey("HairTypeKey"));
                 SetButtonPressedStates(hairSprite);
+                isSubLayerActive = false;
+                picker.CurrentColor = paperDollLayers[activeLayer].color;
+                lastSelectedLayer = paperDollLayers[activeLayer];
                 ChangeFixedColumnCount(3);
+                ResizeButtonGridSprites(1);
                 break;
 
             case "HELMET":
@@ -318,7 +380,7 @@ public class CharacterCreator : MonoBehaviour {
         });
 
     }
-
+    //for presets in UI
     public void SetActiveColor(Button button)
     {
 
@@ -328,18 +390,17 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
+    void LayerToBeColored(Image layer) {
+
+        lastSelectedLayer = layer;
+        
+    }
+
     public void UpdateActiveLayerColor()
     {
+        
+        lastSelectedLayer.color = activeRenderer.material.color;
 
-
-
-
-
-
-
-
-
-        updatedImage.color = activeRenderer.material.color;
 
     }
     
@@ -410,11 +471,18 @@ public class CharacterCreator : MonoBehaviour {
     
     //used by the UI buttons on the button grid.  places the sprite represented on the grid onto the paperdoll at the active layer 
     public void SetSpriteToPaperdoll(Button button) {
-
+        
         //get the button sprite
-        Sprite buttonSprite = button.transform.GetChild(0).GetComponent<Image>().sprite; // gets the sprite from the child object's image that actually holds the sprite we want.
+        Image buttonImage = button.transform.GetChild(0).GetComponent<Image>(); // gets the sprite from the child object's image that actually holds the sprite we want.
 
-        currentButton = button;
+        Sprite buttonSprite = buttonImage.sprite;
+
+        if (DoesLayerContainSubLayers(paperDollLayers[activeLayer])){
+            
+            SetButtonSeletionState(button);
+            
+        }
+        
 
         //holds index for the button on the grid
         int buttonIndex = 0;
@@ -438,7 +506,7 @@ public class CharacterCreator : MonoBehaviour {
 
                 paperDollLayers[activeLayer].sprite = buttonSprite;
                 TogglePressedStateAsGroup(button);
-                
+               
                 bodyType = buttonIndex;
                 Debug.Log("BodyType = " + bodyType);
 
@@ -455,16 +523,20 @@ public class CharacterCreator : MonoBehaviour {
 
             case "HAIR":
                 paperDollLayers[activeLayer].sprite = buttonSprite;
-
+                
                 TogglePressedStateAsGroup(button);
-                updatedImage = paperDollLayers[activeLayer];
+                lastSelectedLayer = paperDollLayers[activeLayer];
                 hairSprite = buttonIndex;
                 Debug.Log("HairSprite = " + hairSprite);
                 break;
 
             case "CLOTHING":
+                lastSelectedLayer = paperDollClothingLayers[buttonIndex];
+                picker.CurrentColor = buttonImage.color;
+                if (WasButtonLastSelected(button) && IsButtonPressed(button))
+                    break;
                 paperDollClothingLayers[buttonIndex].sprite = ReturnButtonSpriteAsToggle(button);
-                updatedImage = paperDollClothingLayers[buttonIndex];
+                
                 //paperDollClothingLayers[buttonIndex].gameObject.SetActive(!paperDollClothingLayers[buttonIndex].gameObject.activeSelf);
                 //TogglePressedState(button);
                 break;
@@ -472,11 +544,18 @@ public class CharacterCreator : MonoBehaviour {
             case "CAPE":
                 paperDollLayers[activeLayer].sprite = buttonSprite;
                 TogglePressedStateAsGroup(button);
-                updatedImage = paperDollLayers[activeLayer];
+                lastSelectedLayer = paperDollLayers[activeLayer];
+                capeSprite = buttonIndex;
+
                 Debug.Log("CapeSprite = " + capeSprite);
                 break;
 
             case "HANDS":
+                
+                lastSelectedLayer = paperDollHandLayers[buttonIndex];
+                picker.CurrentColor = buttonImage.color;
+                if (WasButtonLastSelected(button) && IsButtonPressed(button))
+                    break;
                 paperDollHandLayers[buttonIndex].sprite = ReturnButtonSpriteAsToggle(button);
                 break;
 
@@ -604,76 +683,104 @@ public class CharacterCreator : MonoBehaviour {
         
     }
 
+    void ResizeButtonGridSprites(int resize) {
+
+        for (int i = 0; i < currentbuttonGridLength; i++) {
+
+            Image buttonImage = buttonGrid[i].transform.GetChild(0).GetComponent<Image>();
+                
+            buttonImage.transform.localScale = new Vector3(resize, resize, resize);
+
+            float repos = resize - 1; //for resize 1, this will create a reposition vector of o,o,o.  
+
+            buttonImage.rectTransform.position = Vector3.zero;
+
+            if (i % 2 == 0 || i == 0) {
+                float x = repos * 30.0f;
+                buttonImage.transform.localPosition = new Vector3(x, 0, 0);
+            }
+            
+            else {
+                float x = repos * -30.0f;
+                buttonImage.transform.localPosition = new Vector3(x, 0, 0);
+            }
+               
+                
+
+        }
+
+    }
+
     void ChangeFixedColumnCount(int size) {
 
         gridObject.GetComponent<GridLayoutGroup>().constraintCount = size;
         
     }
 
-    /*void UpdateButtonSpriteColor() {
+    //manages the button's selection state between inactive (not pressed), active (pressed), and selected (being edited by the color picker)
+    void SetButtonSeletionState(Button button) {
 
-        if (activeLayer == 0 || activeLayer == 7)
-        { //body and hair colors
+        if (IsButtonPressed(button) && WasButtonLastSelected(button))
+        {
 
+            lastSelectedButton = emptyButton;
+
+        }
+
+        else if (IsButtonPressed(button) && !WasButtonLastSelected(button))
+        {
+
+            lastSelectedButton = button;
+
+        }
+
+        else if (!IsButtonPressed(button)) {
+
+            lastSelectedButton = button;
+
+        }
+
+        Debug.Log("Last Selected Button was " + button.name);
+
+    }
+
+
+
+    bool WasButtonLastSelected(Button button) {
+
+        if (lastSelectedButton == button)
+            return true;
+        
+        else
+            return false;
+        
+    }
+    
+    void UpdateButtonColor() {
+        
+        bool isSubLayer = DoesLayerContainSubLayers(paperDollLayers[activeLayer]);
+
+        //check see if the active layer contains sublayers
+
+        Image[] layers = ReturnActiveLayer();
+        
+        if (isSubLayer)
+        {
+            lastSelectedButton.transform.GetChild(0).GetComponent<Image>().color = lastSelectedLayer.color;
+        }
+           
+        
+        else{
+            
             for (int i = 0; i < currentbuttonGridLength; i++)
             {
 
-                //set sprite
-                Image buttonImage = buttonGrid[i].transform.GetChild(0).GetComponent<Image>();
-
-                buttonImage.color = activeRenderer.material.color;
+                buttonGrid[i].transform.GetChild(0).GetComponent<Image>().color = layers[activeLayer].color;
 
             }
 
         }
-
-        else if (activeLayer == 1 || activeLayer == 2 || activeLayer == 3)
-        {
-
-            Image buttonImage = buttonGrid[(activeLayer - 1)].transform.GetChild(0).GetComponent<Image>();
-
-            buttonImage.color = activeRenderer.material.color;
-
-        }
-
-        else if (activeLayer == 9)
-        {
-
-            for (int i = 0; i < 3; i++)
-            {
-
-                Image buttonImage = buttonGrid[i].transform.GetChild(0).GetComponent<Image>();
-
-                buttonImage.color = paperDollLayers[(i + 1)].color;
-
-
-            }
-
-        }
-
-        else { }
-
-
-    }*/
-
-    void UpdateButtonColor(Button button) {
-
-            Image buttonImage = button.transform.GetChild(0).GetComponent<Image>();
-
-            buttonImage.color = activeRenderer.material.color;
         
-    }
-
-    void UpdateButtonColor(Button[] grid) {
-
-        for (int i = 0; i < currentbuttonGridLength; i++) {
-
-            Image buttonImage = grid[i].transform.GetChild(0).GetComponent<Image>();
-
-            buttonImage.color = activeRenderer.material.color;
-            
-        }
-
     }
 
     //places a button in a pressed state if the type of that item is currently active on the paperdoll.  then places the rest of the buttons into the unpressed state
@@ -732,6 +839,24 @@ public class CharacterCreator : MonoBehaviour {
             buttonGrid[types[i]].image.color = buttonGrid[types[i]].colors.pressedColor;
             
         }
+
+    }
+
+    bool IsButtonPressed(Button button) {
+
+        if (button.image.color == button.colors.pressedColor)
+        {
+
+            return true;
+
+        }
+
+        else {
+
+            return false;
+
+        }
+
 
     }
 
@@ -801,8 +926,40 @@ public class CharacterCreator : MonoBehaviour {
         }
 
     }
+
+    void ResetButtonSelection() {
+
+        lastSelectedButton = emptyButton;
+
+    }
     
-    void ResetColorsOnSpriteGrid() {
+    //Used by catagory buttons in UI to apply colors from the layer to the appropriate buttons.
+    void SetLayerColorstoButtonGrid(Image layer)
+    {
+
+        for (int i = 0; i < buttonGrid.Length; i++)
+        {
+
+            buttonGrid[i].transform.GetChild(0).GetComponent<Image>().color = layer.color;
+
+        }
+
+    }
+
+    //overloaded for SubLayers
+    void SetLayerColorstoButtonGrid(Image[] layers) {
+
+        for (int i = 0; i < layers.Length; i++) {
+
+            buttonGrid[i].transform.GetChild(0).GetComponent<Image>().color = layers[i].color;
+            
+        }
+
+    }
+   
+    
+
+    void ResetColorsOnButtonGrid() {
 
 
         for (int i = 0; i < buttonGrid.Length; i++)
@@ -895,7 +1052,7 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
-   void ReassignRedundantExportName(string name, string folderPath) {
+    void ReassignRedundantExportName(string name, string folderPath) {
 
         string[] filePaths = Directory.GetFiles(folderPath);
 
@@ -936,7 +1093,7 @@ public class CharacterCreator : MonoBehaviour {
       
     }
         
-        #endregion
+    #endregion
   
     // Use this for initialization
     void Start () {
@@ -953,12 +1110,12 @@ public class CharacterCreator : MonoBehaviour {
 
         SetUpColorPicker();
 
-        updatedImage = emptyImage;
+        lastSelectedButton = emptyButton;
+
+        lastSelectedLayer = emptyImage;
 
         skinLayer = skinLayers[0];
 
-        currentButton = buttonGrid[0];
-        
         DeactivateAllButtons();
       
 }
@@ -969,7 +1126,7 @@ public class CharacterCreator : MonoBehaviour {
         paperDollLayers[1].color = paperDollLayers[0].color;
 
         
-        //UpdateButtonColor();
+        UpdateButtonColor();
         UpdateActiveLayerColor();
         UpdateSkinColor();
         //UpdatePaperDoll();
