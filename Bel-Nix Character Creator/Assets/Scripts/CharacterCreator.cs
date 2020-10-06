@@ -223,6 +223,16 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
+    bool IsLayerEmpty(Image layer) {
+
+        if (layer.sprite == blankSprite)
+            return true;
+
+        else
+            return false;
+            
+    }
+
     Image[] ReturnActiveLayer() {
 
         string layerName = paperDollLayers[activeLayer].name;
@@ -369,7 +379,7 @@ public class CharacterCreator : MonoBehaviour {
     #endregion
 
     #region ColorPicker Methods
-
+    //for start()
     void SetUpColorPicker() {
 
         picker.CurrentColor = Color.white;
@@ -380,7 +390,8 @@ public class CharacterCreator : MonoBehaviour {
         });
 
     }
-    //for presets in UI
+
+    //for preset buttons in UI
     public void SetActiveColor(Button button)
     {
 
@@ -390,12 +401,14 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
+    //sets the passed layer to become our last selected layer.  
     void LayerToBeColored(Image layer) {
 
         lastSelectedLayer = layer;
         
     }
 
+    //called in update().  sets the color of the last selected layer using the color picker.
     public void UpdateActiveLayerColor()
     {
         
@@ -404,6 +417,7 @@ public class CharacterCreator : MonoBehaviour {
 
     }
     
+    //not really sure what this does again. probably used in the UI somewhere
     public void ResetActiveColor()
     {
         picker.SendChangedEvent();
@@ -417,9 +431,9 @@ public class CharacterCreator : MonoBehaviour {
     Image[] ReturnImages(string layerTag)
     {
 
-        List<Image> tempList = new List<Image>();
+        List<Image> tempList = new List<Image>(); // new list to place our filtered images
 
-        GameObject[] layerObjects = GameObject.FindGameObjectsWithTag(layerTag);
+        GameObject[] layerObjects = GameObject.FindGameObjectsWithTag(layerTag); //creates an array with all the objects that fit our tag.
 
         for (int i = 0; i < layerObjects.Length; i++)
         {
@@ -599,24 +613,51 @@ public class CharacterCreator : MonoBehaviour {
 
         }
 
-
-
-
-
-    }
-
-    void UpdatePaperDoll() {
-
-        //update body
-        paperDollLayers[0].sprite = spriteLibrary.GetSprite(ConstructKey("bodytypekey"), bodyType);
-
-        //update clothes
-        paperDollLayers[1].sprite = spriteLibrary.GetSprite(ConstructKey("clothingtypekey"), 1);
-        paperDollLayers[2].sprite = spriteLibrary.GetSprite(ConstructKey("clothingtypekey"), 2);
-        paperDollLayers[3].sprite = spriteLibrary.GetSprite(ConstructKey("clothingtypekey"), 3);
+        UpdatePaperDoll();
         
     }
 
+
+    //called in SetSpriteToPaperdoll() and other UI buttons.  updates sprites that are dependant on other variables, such as race, body type, chest type, etc.
+    void UpdatePaperDoll() {
+
+        //update body based on race
+        
+        //update chest
+        paperDollLayers[1].sprite = spriteLibrary.GetSprite(ConstructKey("chesttypekey"), chestType);
+
+        //update clothes
+        for (int i = 0; i < paperDollClothingLayers.Length; i++) {
+
+            if (!IsLayerEmpty(paperDollClothingLayers[i])) {
+                paperDollClothingLayers[i].sprite = spriteLibrary.GetSprite(ConstructKey("clothingtypekey"), i);
+            }
+            
+        }
+
+        //update hands
+        for (int i = 0; i < paperDollHandLayers.Length; i++)
+        {
+
+            if (!IsLayerEmpty(paperDollHandLayers[i]))
+            {
+                paperDollHandLayers[i].sprite = spriteLibrary.GetSprite(ConstructKey("handtypekey"), i);
+            }
+
+        }
+
+        //capes do not update 
+
+        //update head based on race
+
+        //update hair based on race
+
+        //update helmet based on race
+
+
+    }
+
+    //updates the color of all the layers dependant on skin color, such as body, chest, and head.  skinLayer is the first object in the skinLayers array.
     void UpdateSkinColor() {
 
         skinColor = skinLayer.color;
@@ -629,6 +670,7 @@ public class CharacterCreator : MonoBehaviour {
         
     }
 
+    //changes the scale of the paperdoll for closer inspection by the player.  called by UI elements
     public void ResizePaperdoll(int resize)
     {
         paperDoll.transform.localScale = new Vector3(resize, resize, resize);
@@ -638,8 +680,8 @@ public class CharacterCreator : MonoBehaviour {
     
     #region Button Grid Methods
 
-    //defines the buttonGrid
-    void SetButtons()
+    //called in Start(). defines the buttonGrid
+    void SetUpButtons()
     {
 
         buttonGrid = gridObject.transform.GetComponentsInChildren<Button>();
@@ -648,9 +690,9 @@ public class CharacterCreator : MonoBehaviour {
 
     //activates the appropriate number of buttons needed, applying the appropriate sprite dictated by the sprite library
     void FillButtons(string filePath) {
-        
+        //gets the sprites from the library
         Sprite[] sprites = spriteLibrary.GetSprites(filePath);
-
+        //activates the appropriate number of buttons on the grid.
         if (currentbuttonGridLength < sprites.Length) {
 
             for (int i = currentbuttonGridLength; i < sprites.Length; i++) {
@@ -660,41 +702,42 @@ public class CharacterCreator : MonoBehaviour {
             }
 
         }
-
+        //updates the image o the buttons to be those from the sprite library
         for (int i = 0; i < sprites.Length; i++)
         {
 
             //set sprite
-            Image buttonImage = buttonGrid[i].transform.GetChild(0).GetComponent<Image>();
+            Image buttonImage = buttonGrid[i].transform.GetChild(0).GetComponent<Image>(); //requires get child, as the buttons in the grid hold a child object with the image component.  this component is the one we apply the sprites to.
             
             buttonImage.sprite = sprites[i];
 
         }
-
+        //deactivates any un-needed buttons
         for (int i = sprites.Length; i < buttonGrid.Length; i++)
         {
 
             buttonGrid[i].gameObject.SetActive(false);
 
         }
-
+        //updates the current length of the button grid.  
         currentbuttonGridLength = sprites.Length;
-
         
     }
 
+    //resizes images on the button grid.  when increasing size the sprites would shift and the last part of this method helps normalize that.
     void ResizeButtonGridSprites(int resize) {
 
         for (int i = 0; i < currentbuttonGridLength; i++) {
 
             Image buttonImage = buttonGrid[i].transform.GetChild(0).GetComponent<Image>();
                 
-            buttonImage.transform.localScale = new Vector3(resize, resize, resize);
+            buttonImage.transform.localScale = new Vector3(resize, resize, resize); //changes the scale of the image
 
             float repos = resize - 1; //for resize 1, this will create a reposition vector of o,o,o.  
 
-            buttonImage.rectTransform.position = Vector3.zero;
+            buttonImage.rectTransform.position = Vector3.zero;  
 
+            //the following is for the hands layer, which requires that the even images be centered more to the right with the odd images to the left
             if (i % 2 == 0 || i == 0) {
                 float x = repos * 30.0f;
                 buttonImage.transform.localPosition = new Vector3(x, 0, 0);
@@ -711,6 +754,7 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
+    //changes the number of columns in the grid
     void ChangeFixedColumnCount(int size) {
 
         gridObject.GetComponent<GridLayoutGroup>().constraintCount = size;
@@ -743,9 +787,8 @@ public class CharacterCreator : MonoBehaviour {
         Debug.Log("Last Selected Button was " + button.name);
 
     }
-
-
-
+    
+    //checks if the button passed through the method equals the lastSelectedButton, and if so returns true
     bool WasButtonLastSelected(Button button) {
 
         if (lastSelectedButton == button)
@@ -756,6 +799,7 @@ public class CharacterCreator : MonoBehaviour {
         
     }
     
+    //called in Update(), this updates the colors of the buttons.  
     void UpdateButtonColor() {
         
         bool isSubLayer = DoesLayerContainSubLayers(paperDollLayers[activeLayer]);
@@ -764,13 +808,13 @@ public class CharacterCreator : MonoBehaviour {
 
         Image[] layers = ReturnActiveLayer();
         
-        if (isSubLayer)
+        if (isSubLayer) // if the active layer is a sublayer, then only update the last selected button.  this is used for clothing, hands, and other layers that contain sublayers
         {
             lastSelectedButton.transform.GetChild(0).GetComponent<Image>().color = lastSelectedLayer.color;
         }
            
         
-        else{
+        else{ //if the active layer is not a sublayer, then update all the buttons on the grid.  this is used for body, hair, capes, etc
             
             for (int i = 0; i < currentbuttonGridLength; i++)
             {
@@ -842,6 +886,7 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
+    //checks if the button is in the pressed state, returning true if it is.
     bool IsButtonPressed(Button button) {
 
         if (button.image.color == button.colors.pressedColor)
@@ -860,6 +905,7 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
+    //this will return the sprite associated with the button passed through this method.  It will also toggle it's pressed state.
     Sprite ReturnButtonSpriteAsToggle(Button button)
     {
 
@@ -884,6 +930,7 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
+    //toggles between pressed and normal states.
     void TogglePressedState(Button button)
     {
 
@@ -904,19 +951,20 @@ public class CharacterCreator : MonoBehaviour {
         }
     }
 
+    //toggles a set of buttons as a group, ensuring only one button is pressed from the group at a time.
     void TogglePressedStateAsGroup(Button button)
     {
         
         for (int i = 0; i < buttonGrid.Length; i++){
 
-            if (buttonGrid[i] == button) {
+            if (buttonGrid[i] == button) { //looks for the button within the grid, making sure it is in the pressed state
                 
                 buttonGrid[i].image.color = buttonGrid[i].colors.pressedColor;
                 
             }
 
             else
-            {
+            {// sets the rest of the buttons in the grid that are not the target button to normal color (unpressed)
 
                 buttonGrid[i].image.color = buttonGrid[i].colors.normalColor;
                 
@@ -957,8 +1005,7 @@ public class CharacterCreator : MonoBehaviour {
 
     }
    
-    
-
+    //sets all the buttons in the button grid to white
     void ResetColorsOnButtonGrid() {
 
 
@@ -972,6 +1019,7 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
+    //sets all buttons on the buttonGrid to be inactive
     public void DeactivateAllButtons() {
 
         for (int i = 0; i < buttonGrid.Length; i++){
@@ -1098,22 +1146,19 @@ public class CharacterCreator : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        SetButtons();
-
-        paperDollLayers = ReturnImages("PaperdollLayer");
-   
-        paperDollClothingLayers = ReturnImages("PaperdollSubLayer", paperDollLayers[2]);
-
-        paperDollHandLayers = ReturnImages("PaperdollSubLayer", paperDollLayers[3]);
-
-        paperDollAccessoryLayers = ReturnImages("PaperdollSubLayer", paperDollLayers[6]);
+        SetUpButtons();
 
         SetUpColorPicker();
 
-        lastSelectedButton = emptyButton;
+        ResetButtonSelection();
 
-        lastSelectedLayer = emptyImage;
+        ResetLastSelectedLayer();
 
+        //sets our paperdoll layer arrays
+        paperDollLayers = ReturnImages("PaperdollLayer");
+        paperDollClothingLayers = ReturnImages("PaperdollSubLayer", paperDollLayers[2]);
+        paperDollHandLayers = ReturnImages("PaperdollSubLayer", paperDollLayers[3]);
+        
         skinLayer = skinLayers[0];
 
         DeactivateAllButtons();
@@ -1122,14 +1167,11 @@ public class CharacterCreator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-        paperDollLayers[1].color = paperDollLayers[0].color;
-
         
         UpdateButtonColor();
         UpdateActiveLayerColor();
         UpdateSkinColor();
-        //UpdatePaperDoll();
+        //UpdatePaperDoll(); <- this is no longer called in update, but instead called as needed by SetSpriteToPaperDoll and other UI buttons
 
     }
 }
