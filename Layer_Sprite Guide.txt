@@ -1,0 +1,43 @@
+Layers and the inflencing Variables
+
+Body: 
+	-Size
+	-Race?
+
+Chest:
+	-Size
+	-Body Type
+
+Clothing:
+	-Size
+	-Body Type
+	-Chest Type
+
+Hair:
+	-Size
+	-Race
+
+Hand:
+	-Size
+	-Body
+	-Race
+	
+	
+Variables and the dependant layers:
+
+Size:
+	-Every Layer
+	
+Body Type:
+	-Chest
+	-Clothing
+	-Hands
+	
+Chest Type:
+	-Clothing
+
+Race: 
+	-Body
+	-Hands
+	-Hair
+	

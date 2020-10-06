@@ -1,0 +1,12 @@
+Sprites Needed (Ranked from Most to Least needed)
+
+-dragonborn specific items
+	-scaled body type x 2 
+	-matching chest type x 2
+	-ridges or cartilage sprites or racial trait x 1
+	-hair/cartilage type x 1-2
+	-helmet item x 1
+	-hand item/claw types x 1
+	
+	
+	

@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
+
+    //Methods for UI use on Main Menu
     
     //For exit button, quits the game.
     public void QuitGame() {
@@ -13,15 +15,11 @@ public class MainMenuManager : MonoBehaviour
 
     }
 
-
+    //loads level
     public void LoadLevel(int levelID) {
 
         SceneManager.LoadScene(levelID);
 
     }
-
     
-
-
-
 }
