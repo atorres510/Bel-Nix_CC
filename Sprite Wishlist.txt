@@ -7,6 +7,8 @@ Sprites Needed (Ranked from Most to Least needed)
 	-hair/cartilage type x 1-2
 	-helmet item x 1
 	-hand item/claw types x 1
+-chest clothing
+	-A and B cups for fit and bony body types
 	
 	
 	
