@@ -93,7 +93,6 @@ public class CharacterCreator : MonoBehaviour {
     string hairTypeKey;
     
    
-
     #region Sprite Key Methods
     
     //takes all of the featureString variables and uses them to construct a specific key and returns it as a string for use by GetSprite or FillButton
@@ -151,7 +150,7 @@ public class CharacterCreator : MonoBehaviour {
 
         key = key.ToUpper();
 
-        Debug.Log(key);
+        //Debug.Log(key);
 
         return key;
 
@@ -161,6 +160,125 @@ public class CharacterCreator : MonoBehaviour {
 
     #region Layer and SubLayer Methods
     //the layer and sublayer methods are for UI use to set active layers and to fill the grid buttons with the appropriate sprites for use.  
+
+    //For use of the UI to determine what layer of the paperdoll is currently being edited, and to fill the buttons with the appropriate sprites for player's selection
+    public void SetActiveLayer(string layer)
+    {
+
+        //search for the active layer based on the string and set it to the active layer.
+        for (int i = 0; i < paperDollLayers.Length; i++)
+        {
+
+            if (paperDollLayers[i].name == layer)
+            {
+
+                activeLayer = i;
+                break;
+            }
+
+        }
+
+        Debug.Log("ActiveLayer = " + activeLayer);
+
+        //resets button and layers so that they previous ones are not editted by accident.
+        ResetButtonSelection();
+        ResetLastSelectedLayer();
+
+        layer = layer.ToUpper();
+
+        switch (layer)
+        {
+
+            case "BODY": //layer template
+
+                FillButtons(ConstructKey("bodytypekey")); //assigns sprites to the grid, activating the appropriate number of buttons on buttonGrid to list all the sprites in the folder.
+                SetButtonPressedStates(bodyType); //leaves the button with the sprite of the current body type pressed, with the rest remaining in normal state (unpressed).
+                picker.CurrentColor = paperDollLayers[activeLayer].color; //sets the color of the body to be the one selected on the color pick for easier editing.
+                lastSelectedLayer = skinLayer; //since the body color should coordinate with other layers associated with skin, the skinlayer is used.  This will also update things like head, chest.
+                isSubLayerActive = false;//
+                ChangeFixedColumnCount(3);//number of columns is 3 on the grid.
+                ResizeButtonGridSprites(1); //sprites will be at normal transform.scale = (1, 1, 1)
+
+
+                break;
+            case "CLOTHING":  //sublayer parent template
+
+                FillButtons(ConstructKey("clothingtypekey"));
+                SetButtonPressedStates(ReturnIndexsForFilledLayers(paperDollClothingLayers)); //uses overloaded method to 
+                ResetActiveColor(); //since the player hasn't selected a sprite to edit, the current color on the color picker will remain white until a sprite is selected.
+                SetLayerColorstoButtonGrid(paperDollClothingLayers); //takes the sublayers' colors and applies them in order on the buttonGrid for easier editing.  
+                isSubLayerActive = true;
+                ChangeFixedColumnCount(3);
+                ResizeButtonGridSprites(1);
+                break;
+
+            case "CHEST": //layer
+
+                FillButtons(ConstructKey("chesttypekey"));
+                SetButtonPressedStates(chestType);
+                picker.CurrentColor = paperDollLayers[activeLayer].color;
+                lastSelectedLayer = skinLayer;
+                isSubLayerActive = false;
+                ChangeFixedColumnCount(3);
+                ResizeButtonGridSprites(1);
+                break;
+
+            case "ACCESSORIES":
+
+                break;
+
+            case "HANDS": //sublayer parent
+
+                FillButtons(ConstructKey("HandTypeKey"));
+                SetButtonPressedStates(ReturnIndexsForFilledLayers(paperDollHandLayers));
+                ResetActiveColor();
+                SetLayerColorstoButtonGrid(paperDollHandLayers);
+                isSubLayerActive = true;
+                ChangeFixedColumnCount(2);
+                ResizeButtonGridSprites(3);
+                break;
+
+            case "BACK":
+                accessoryType = 0;
+                FillButtons(ConstructKey("AccessoryTypeKey"));
+                SetButtonPressedStates(backSprite);
+                break;
+
+            case "CAPE":
+                FillButtons("CAPEITEMS");
+                SetButtonPressedStates(capeSprite);
+                picker.CurrentColor = paperDollLayers[activeLayer].color;
+                lastSelectedLayer = paperDollLayers[activeLayer];
+                ChangeFixedColumnCount(3);
+                ResizeButtonGridSprites(1);
+
+                break;
+
+            case "SHOULDER":
+                break;
+
+            case "HEAD":
+                break;
+
+            case "HAIR":
+                FillButtons(ConstructKey("HairTypeKey"));
+                SetButtonPressedStates(hairSprite);
+                isSubLayerActive = false;
+                picker.CurrentColor = paperDollLayers[activeLayer].color;
+                lastSelectedLayer = paperDollLayers[activeLayer];
+                ChangeFixedColumnCount(3);
+                ResizeButtonGridSprites(1);
+                break;
+
+            case "HELMET":
+                break;
+
+            default:
+                break;
+
+        }
+
+    }
 
     //takes a paperdoll layer or sub layer and returns values that represent the layers that are enabled as gameobjects (this is mostly for clothing) 
     int[] ReturnIndexsForFilledLayers(Image[] layers) {
@@ -261,124 +379,7 @@ public class CharacterCreator : MonoBehaviour {
         
     }
 
-    //For use of the UI to determine what layer of the paperdoll is currently being edited, and to fill the buttons with the appropriate sprites for player's selection
-    public void SetActiveLayer(string layer)
-    {
-
-        //search for the active layer based on the string and set it to the active layer.
-        for (int i = 0; i < paperDollLayers.Length; i++)
-        {
-
-            if (paperDollLayers[i].name == layer)
-            {
-
-                activeLayer = i;
-                break;
-            }
-
-        }
-
-        Debug.Log("ActiveLayer = " + activeLayer);
-        
-        //resets button and layers so that they previous ones are not editted by accident.
-        ResetButtonSelection();
-        ResetLastSelectedLayer();
-        
-        layer = layer.ToUpper();
-
-        switch (layer)
-        {
-
-            case "BODY": //layer template
-
-                FillButtons(ConstructKey("bodytypekey")); //assigns sprites to the grid, activating the appropriate number of buttons on buttonGrid to list all the sprites in the folder.
-                SetButtonPressedStates(bodyType); //leaves the button with the sprite of the current body type pressed, with the rest remaining in normal state (unpressed).
-                picker.CurrentColor = paperDollLayers[activeLayer].color; //sets the color of the body to be the one selected on the color pick for easier editing.
-                lastSelectedLayer = skinLayer; //since the body color should coordinate with other layers associated with skin, the skinlayer is used.  This will also update things like head, chest.
-                isSubLayerActive = false;//
-                ChangeFixedColumnCount(3);//number of columns is 3 on the grid.
-                ResizeButtonGridSprites(1); //sprites will be at normal transform.scale = (1, 1, 1)
-    
-
-                break;
-            case "CLOTHING":  //sublayer parent template
-
-                FillButtons(ConstructKey("clothingtypekey"));
-                SetButtonPressedStates(ReturnIndexsForFilledLayers(paperDollClothingLayers)); //uses overloaded method to 
-                ResetActiveColor(); //since the player hasn't selected a sprite to edit, the current color on the color picker will remain white until a sprite is selected.
-                SetLayerColorstoButtonGrid(paperDollClothingLayers); //takes the sublayers' colors and applies them in order on the buttonGrid for easier editing.  
-                isSubLayerActive = true; 
-                ChangeFixedColumnCount(3);
-                ResizeButtonGridSprites(1);
-                break;
-
-            case "CHEST": //layer
-
-                FillButtons(ConstructKey("chesttypekey"));
-                SetButtonPressedStates(chestType);
-                picker.CurrentColor = paperDollLayers[activeLayer].color;
-                lastSelectedLayer = skinLayer;
-                isSubLayerActive = false;
-                ChangeFixedColumnCount(3);
-                ResizeButtonGridSprites(1);
-                break;
-
-            case "ACCESSORIES":
-
-                break;
-
-            case "HANDS": //sublayer parent
-                
-                FillButtons(ConstructKey("HandTypeKey"));
-                SetButtonPressedStates(ReturnIndexsForFilledLayers(paperDollHandLayers));
-                ResetActiveColor();
-                SetLayerColorstoButtonGrid(paperDollHandLayers);
-                isSubLayerActive = true;
-                ChangeFixedColumnCount(2);
-                ResizeButtonGridSprites(3);
-                break;
-
-            case "BACK":
-                accessoryType = 0;
-                FillButtons(ConstructKey("AccessoryTypeKey"));
-                SetButtonPressedStates(backSprite);
-                break;
-
-            case "CAPE":
-                FillButtons("CAPEITEMS");
-                SetButtonPressedStates(capeSprite);
-                picker.CurrentColor = paperDollLayers[activeLayer].color;
-                lastSelectedLayer = paperDollLayers[activeLayer];
-                ChangeFixedColumnCount(3);
-                ResizeButtonGridSprites(1);
-
-                break;
-
-            case "SHOULDER":
-                break;
-
-            case "HEAD":
-                break;
-
-            case "HAIR":
-                FillButtons(ConstructKey("HairTypeKey"));
-                SetButtonPressedStates(hairSprite);
-                isSubLayerActive = false;
-                picker.CurrentColor = paperDollLayers[activeLayer].color;
-                lastSelectedLayer = paperDollLayers[activeLayer];
-                ChangeFixedColumnCount(3);
-                ResizeButtonGridSprites(1);
-                break;
-
-            case "HELMET":
-                break;
-
-            default:
-                break;
-                
-        }
-        
-    }
+   
 
     #endregion
 
@@ -619,20 +620,90 @@ public class CharacterCreator : MonoBehaviour {
         UpdatePaperDoll();
         
     }
-    
+
+    //used by UI button "Random".  assigns random values to sprites then uses UpdatePaperdoll to apply them.  Also uses set active layer to update button pressed states and colors.
+    //does not randomize color yet.
+    public void RandomizePaperdoll() {
+
+        //body
+        bodyType = Random.Range(0, bodyStrings.Length); //sets a random body type
+
+        //hair 
+        hairSprite = Random.Range(0, spriteLibrary.GetSprites(ConstructKey("hairtypekey")).Length);
+        
+
+        //clothing
+        Sprite[] clothingSprites = spriteLibrary.GetSprites(ConstructKey("clothingtypekey"));
+        
+
+        for (int i = 0; i < paperDollClothingLayers.Length; i++) {
+
+            if (Random.value < 0.5f)
+                paperDollClothingLayers[i].sprite = clothingSprites[i];
+
+            else
+                paperDollClothingLayers[i].sprite = blankSprite;
+
+        }
+
+        //hands  this will stay commented out until we have more hand sprites.
+        /*Sprite[] handSprites = spriteLibrary.GetSprites(ConstructKey("handtypekey"));
+
+        int handCounter = 0;
+        int maxHandSprites = 4;
+
+        for (int i = 0; i < paperDollHandLayers.Length; i++)
+        {
+
+            if (Random.value < 0.5f)
+            {
+                paperDollHandLayers[i].sprite = handSprites[i];
+                handCounter++;
+            }
+                
+            else
+                paperDollHandLayers[i].sprite = blankSprite;
+
+            
+            if (handCounter == maxHandSprites)
+                break;
+        }
+        */
+
+
+
+
+        //cape
+        capeSprite = Random.Range(0, spriteLibrary.GetSprites("CAPEITEMS").Length);
+        
+
+
+
+        SetActiveLayer(paperDollLayers[activeLayer].name); //updates the buttons 
+
+
+        UpdatePaperDoll(); //updates the paperdolls
+
+
+    }
+
     //called in SetSpriteToPaperdoll() and other UI buttons.  updates sprites that are dependant on other variables, such as race, body type, chest type, etc.
     void UpdatePaperDoll() {
 
         //update body based on race
+        paperDollLayers[0].sprite = spriteLibrary.GetSprite(ConstructKey("bodytypekey"), bodyType);
+        
         
         //update chest
         paperDollLayers[1].sprite = spriteLibrary.GetSprite(ConstructKey("chesttypekey"), chestType);
+        
 
         //update clothes
         for (int i = 0; i < paperDollClothingLayers.Length; i++) {
 
             if (!IsLayerEmpty(paperDollClothingLayers[i])) {
                 paperDollClothingLayers[i].sprite = spriteLibrary.GetSprite(ConstructKey("clothingtypekey"), i);
+                
             }
             
         }
@@ -644,15 +715,23 @@ public class CharacterCreator : MonoBehaviour {
             if (!IsLayerEmpty(paperDollHandLayers[i]))
             {
                 paperDollHandLayers[i].sprite = spriteLibrary.GetSprite(ConstructKey("handtypekey"), i);
+                
             }
 
         }
 
-        //capes do not update 
+        //capes
+        paperDollLayers[4].sprite = spriteLibrary.GetSprite("CAPEITEMS", capeSprite);
+        
+
 
         //update head based on race
 
         //update hair based on race
+        paperDollLayers[6].sprite = spriteLibrary.GetSprite(ConstructKey("hairtypekey"), hairSprite);
+        
+
+
 
         //update helmet based on race
 
