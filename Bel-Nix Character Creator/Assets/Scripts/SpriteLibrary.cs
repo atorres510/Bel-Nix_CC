@@ -120,7 +120,7 @@ public class SpriteLibrary : MonoBehaviour {
             
 				spriteLibrary.Add(key, sprites);
 
-                //Debug.Log(key);
+                Debug.Log(key);
 				
 			}
 		

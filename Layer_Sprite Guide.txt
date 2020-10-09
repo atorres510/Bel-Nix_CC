@@ -37,6 +37,7 @@ Chest Type:
 	-Clothing
 
 Race: 
+	-Head
 	-Body
 	-Hands
 	-Hair

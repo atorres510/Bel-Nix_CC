@@ -42,17 +42,15 @@ public class CharacterCreator : MonoBehaviour {
     string[] subLayers = {"Clothing", "Hands"};
     public Image[] skinLayers;
 
-    public int activeLayer;
-    //0: Body, 1: Clothing, 2: Hand
-    //3: Back, 4: Shoulder, 5: Hair
-    //6: Helmet/Head
+    public int activeLayer; //layer based on the paperdoll order
+   
 
     int activeSublayer;
     
     
     // informs the current race of the token.  this value is changed by the buttons in the RaceButtonList UI
     //determines presets, size, and raceType.  
-    public int race = 2; //default race is human.
+    public int raceID = 2; //default race is human.
     // 1: Dwarf, 2: Human, 3: Half-elf
     // 4: Elf, 5: Dragonborn, 6: Half-Orc
     // 7: Halfling, 8: Gnome, 9: tiefling
@@ -63,7 +61,7 @@ public class CharacterCreator : MonoBehaviour {
     int sex = 1; //0 female, 1 male
     int chestType = 0; //0 none, 1 Acup, 2 Bcup
     int size = 0; //0 medium, 1 small
-    int raceType = 0;   //0 Base, 1 Dragonborn
+    int raceType = 0;   //0 Base, 1 Dragonborn, 2 tiefling
     int bodyType = 1; // 0 Bony, 1 Fit
     int accessoryType = 0; // 0 backitem, 1, handitem, 2, helmetitem, 3 shoulderitems, 4 capeitems
 
@@ -76,14 +74,15 @@ public class CharacterCreator : MonoBehaviour {
     int headSprite = 0;
     int helmetSprite = 0;
     int ScarfSprite = 0;
-    
+
 
     //arrays of strings that are used to construct the keys needed to GetSprites or FillButtons.  Used by ConstructKey
     //these will need to be in alphabetical order because that is how the folders are ordered.
+    string headString = "Base";
     string[] sexStrings = { "F", "M" };
     string[] sizeStrings = { "Med", "Sm" };
     string[] bodyStrings = { "Bony", "Fit", "Stout", "Thick", "Buff"};
-    string[] raceStrings = { "Base", "Dragonborn" };
+    string[] raceStrings = { "Base", "Dragonborn", "Tiefling" };
     string[] accessoryStrings = { "BackItems", "HandItems", "HelmetItems", "ShoulderItems", "CapeItems", "ScarfItems" };
 
     //Stores Keys
@@ -92,7 +91,6 @@ public class CharacterCreator : MonoBehaviour {
     string accessoryTypeKey;
     string hairTypeKey;
     
-   
     #region Sprite Key Methods
     
     //takes all of the featureString variables and uses them to construct a specific key and returns it as a string for use by GetSprite or FillButton
@@ -127,6 +125,12 @@ public class CharacterCreator : MonoBehaviour {
             case "ACCESSORYTYPEKEY":
 
                 key = sizeStrings[size] + "_" + raceStrings[raceType] + "_" + accessoryStrings[accessoryType];
+
+                break;
+
+            case "HEADTYPEKEY":
+
+                key = sizeStrings[size] + "_" + headString + "_headType";
 
                 break;
 
@@ -292,7 +296,7 @@ public class CharacterCreator : MonoBehaviour {
 
                 activeLayers.Add(i);
 
-                Debug.Log(i);
+                //Debug.Log(i);
             }
 
             else { }
@@ -487,6 +491,97 @@ public class CharacterCreator : MonoBehaviour {
         Image[] layers = tempList.ToArray();
 
         return layers;
+    }
+
+    //for use of UI race buttons to change race and the dependant variables
+    public void ChangeRace(string race)
+    {
+
+        race = race.ToUpper();
+
+        switch (race)
+        {
+
+            case "DWARF":
+                raceID = 1;
+                headString = "Base";
+                raceType = 0;
+                bodyType = 2;
+                size = 0;
+                break;
+
+            case "HUMAN":
+                raceID = 2;
+                headString = "Base";
+                raceType = 0;
+                bodyType = 1;
+                size = 0;
+                break;
+
+            case "HALFELF":
+                raceID = 3;
+                headString = "HalfEars";
+                raceType = 0;
+                bodyType = 1;
+                size = 0;
+                break;
+
+            case "ELF":
+                raceID = 4;
+                headString = "LongEars";
+                raceType = 0;
+                bodyType = 1;
+                size = 0;
+                break;
+
+            case "DRAGONBORN":
+                raceID = 5;
+                headString = "Dragonborn";
+                raceType = 1;
+                bodyType = 1;
+                hairSprite = 0;
+                size = 0;
+                break;
+
+            case "HALFORC":
+                raceID = 6;
+                headString = "HalfEars";
+                raceType = 0;
+                bodyType = 4;
+                size = 0;
+                break;
+
+            case "HALFLING":
+                raceID = 7;
+                headString = "Base";
+                raceType = 0;
+                bodyType = 1;
+                size = 1;
+                break;
+
+            case "GNOME":
+                raceID = 8;
+                headString = "LongEars";
+                raceType = 0;
+                bodyType = 0;
+                size = 1;
+                break;
+
+            case "TIEFLING":
+                raceID = 9;
+                headString = "LongEars";
+                raceType = 2;
+                bodyType = 1;
+                size = 0;
+                break;
+                
+            default:
+                break;
+
+
+        }
+
+        UpdatePaperDoll();
     }
     
     //used by the UI buttons on the button grid.  places the sprite represented on the grid onto the paperdoll at the active layer 
@@ -690,14 +785,15 @@ public class CharacterCreator : MonoBehaviour {
     //called in SetSpriteToPaperdoll() and other UI buttons.  updates sprites that are dependant on other variables, such as race, body type, chest type, etc.
     void UpdatePaperDoll() {
 
+        //update head based on race
+        paperDollLayers[5].sprite = spriteLibrary.GetSprite("HEADS", ConstructKey("headtypekey"));
+
         //update body based on race
         paperDollLayers[0].sprite = spriteLibrary.GetSprite(ConstructKey("bodytypekey"), bodyType);
-        
         
         //update chest
         paperDollLayers[1].sprite = spriteLibrary.GetSprite(ConstructKey("chesttypekey"), chestType);
         
-
         //update clothes
         for (int i = 0; i < paperDollClothingLayers.Length; i++) {
 
