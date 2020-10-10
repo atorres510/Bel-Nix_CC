@@ -19,6 +19,13 @@ public class ButtonGroupBehaviour : MonoBehaviour
         }
         
     }
+
+    public void ResetToggleGroup() {
+
+        for (int i = 0; i < buttonGroup.Length; i++)
+            buttonGroup[i].interactable = true;
+        
+    }
     
     //For use in Start().  sets buttongroup based on the fellow children of the parent of this object
     void FindButtonGroup() {

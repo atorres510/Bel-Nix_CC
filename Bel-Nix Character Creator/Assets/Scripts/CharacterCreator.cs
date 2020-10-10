@@ -38,8 +38,9 @@ public class CharacterCreator : MonoBehaviour {
     Image[] paperDollLayers;
     Image[] paperDollClothingLayers;
     Image[] paperDollHandLayers;
+    Image[] paperDollRacialLayers;
     Image[] paperDollAccessoryLayers;
-    string[] subLayers = {"Clothing", "Hands"};
+    string[] subLayers = {"Clothing", "Hands", "RacialFeatures"};
     public Image[] skinLayers;
 
     public int activeLayer; //layer based on the paperdoll order
@@ -106,7 +107,7 @@ public class CharacterCreator : MonoBehaviour {
 
             case "BODYTYPEKEY":
 
-                key = sizeStrings[size] + "_bodyType";
+                key = sizeStrings[size] + "_" + raceStrings[raceType] + "_bodyType";
 
                 break;
 
@@ -142,7 +143,13 @@ public class CharacterCreator : MonoBehaviour {
 
             case "HANDTYPEKEY":
 
-                key = sizeStrings[size] + "_" + bodyStrings[bodyType] +"_handType";
+                key = sizeStrings[size] + "_" + raceStrings[raceType] + "_" + bodyStrings[bodyType] +"_handType";
+
+                break;
+
+            case "RACIALFEATUREKEY":
+
+                key = raceStrings[raceType] + "_racialFeatures";
 
                 break;
                 
@@ -271,6 +278,17 @@ public class CharacterCreator : MonoBehaviour {
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = paperDollLayers[activeLayer];
                 ChangeFixedColumnCount(3);
+                ResizeButtonGridSprites(1);
+                break;
+
+            case "RACIALFEATURES": //sublayer parent
+
+                FillButtons(ConstructKey("RacialFeatureKey"));
+                SetButtonPressedStates(ReturnIndexsForFilledLayers(paperDollRacialLayers));
+                ResetActiveColor();
+                SetLayerColorstoButtonGrid(paperDollRacialLayers);
+                isSubLayerActive = true;
+                ChangeFixedColumnCount(2);
                 ResizeButtonGridSprites(1);
                 break;
 
@@ -672,6 +690,15 @@ public class CharacterCreator : MonoBehaviour {
                 paperDollHandLayers[buttonIndex].sprite = ReturnButtonSpriteAsToggle(button);
                 break;
 
+            case "RACIALFEATURES":
+
+                lastSelectedLayer = paperDollRacialLayers[buttonIndex];
+                picker.CurrentColor = buttonImage.color;
+                if (WasButtonLastSelected(button) && IsButtonPressed(button))
+                    break;
+                paperDollRacialLayers[buttonIndex].sprite = ReturnButtonSpriteAsToggle(button);
+                break;
+
 
             case "ACCESSORIES":
 
@@ -810,7 +837,7 @@ public class CharacterCreator : MonoBehaviour {
 
             if (!IsLayerEmpty(paperDollHandLayers[i]))
             {
-                paperDollHandLayers[i].sprite = spriteLibrary.GetSprite(ConstructKey("handtypekey"), i);
+               // paperDollHandLayers[i].sprite = spriteLibrary.GetSprite(ConstructKey("handtypekey"), i);
                 
             }
 
@@ -1338,6 +1365,7 @@ public class CharacterCreator : MonoBehaviour {
         paperDollLayers = ReturnImagesFromTag("PaperdollLayer");
         paperDollClothingLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[2]);
         paperDollHandLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[3]);
+        paperDollRacialLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[7]);
         
         skinLayer = skinLayers[0]; //skinLayer only needs to be set to any of the skin layers
 
