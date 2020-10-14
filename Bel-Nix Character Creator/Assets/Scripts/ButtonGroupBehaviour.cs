@@ -2,111 +2,74 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class ButtonGroupBehaviour : MonoBehaviour
 {
-    Button button;
-
     Button[] buttonGroup;
 
-    int myButton = 0;
+    //finds all the children and adds them to the group.
+    private void FindButtonChildren() {
 
-    //for button UI
-    public void OnPress() {
-
-        if (!IsButtonPressed()) {
-            TogglePressedStateAsGroup();
-        }
+        buttonGroup = GetComponentsInChildren<Button>(true);
         
     }
 
-    public void ResetToggleGroup() {
-
-        for (int i = 0; i < buttonGroup.Length; i++)
-            buttonGroup[i].interactable = true;
-        
-    }
-    
-    //For use in Start().  sets buttongroup based on the fellow children of the parent of this object
-    void FindButtonGroup() {
-
-        GameObject parentObject = gameObject.transform.parent.gameObject;
-
-        buttonGroup = parentObject.GetComponentsInChildren<Button>();
-        
-    }
-
-    //For use in Start(). finds the index of this button within the buttongroup
-    void FindMyButton() {
+    //uses onClick.AddListener to add the togglepressedstateasgroup() for each of the buttons in the group.
+    private void AddListenersFunctions() {
 
         for (int i = 0; i < buttonGroup.Length; i++) {
 
-            if (button == buttonGroup[i])
-            {
+            int button = i;
 
-                myButton = i;
-                break;
-
-            }
-
-            else { }
-
+            buttonGroup[button].onClick.AddListener(delegate { TogglePressedStateAsGroup(buttonGroup[button]); });
+            //Debug.Log("Adding listener from " + buttonGroup[i].name + ".");
         }
-        
+       
     }
-    
-    //checks if the button is in the pressed state, returning true if it is.
-    bool IsButtonPressed()
-    {
 
-        if (!button.IsInteractable())
-            return true;
-
-        else
-            return false;
-
-    }
-    
-    //toggles between pressed and normal states.
-    void TogglePressedState()
-    {
-
-        button.interactable = !button.IsInteractable();
-
-    }
 
     //toggles a set of buttons as a group, ensuring only one button is pressed from the group at a time. similar to a toggle group component
-    void TogglePressedStateAsGroup()
+    void TogglePressedStateAsGroup(Button thisButton)
     {
 
+        thisButton.interactable = false; //this button is now pressed.
+        
         for (int i = 0; i < buttonGroup.Length; i++)
         {
-            
-            if (i == myButton)
-            { //looks for this button within the grid, making sure it is in the pressed state
-
-                buttonGroup[i].interactable = false;
-
-            }
-
-            else
-            {// sets the rest of the buttons in the grid that are not the target button to normal color (unpressed)
-
+            //find the rest of the buttons in the group, and sets them to the unpressed state.
+            if (buttonGroup[i] != thisButton)
+            { 
+                
                 buttonGroup[i].interactable = true;
 
             }
+            
 
         }
 
     }
 
-    void Start()
-    {
-        
-        button = gameObject.GetComponent<Button>();
-        FindButtonGroup();
-        FindMyButton();
+    //to be called by a button that would activate the group to reset it.  
+    public void ResetGroup() {
 
+        for (int i = 0; i < buttonGroup.Length; i++) {
+
+            buttonGroup[i].interactable = true;
+
+        }
+        
     }
+    
+
+    void Awake()
+    {
+
+        FindButtonChildren();
+        AddListenersFunctions();
+        
+    }
+
 
 }

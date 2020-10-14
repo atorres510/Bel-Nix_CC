@@ -9,7 +9,7 @@ Sprites Needed (Ranked from Most to Least needed)
 	-hand item/claw types x 1
 
 -chest clothing
-	-A and B cups for fit and bony body types
+	-none, A, and B cups for fit and bony body types
 
 -helmet (one base one dragonborn each)
 	- cloth  
