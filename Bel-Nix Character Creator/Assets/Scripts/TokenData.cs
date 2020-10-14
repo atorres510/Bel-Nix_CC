@@ -19,6 +19,10 @@ public class TokenData {
     public int helmetSprite;
     public int racialSprite;
 
+    public string[] paperdollLayerHexColors;
+    public string[] paperdollClothingLayerHexColors;
+    public string[] paperdollHandLayerHexColors;
+
     public TokenData(CharacterCreator creator) {
 
 

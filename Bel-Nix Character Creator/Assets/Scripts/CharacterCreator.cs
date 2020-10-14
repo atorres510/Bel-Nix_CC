@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEditor;
 using System.IO;
 
 
@@ -43,11 +44,7 @@ public class CharacterCreator : MonoBehaviour {
     public Image[] skinLayers;
 
     public int activeLayer; //layer based on the paperdoll order
-   
-
-    int activeSublayer;
-    
-    
+ 
     // informs the current race of the token.  this value is changed by the buttons in the RaceButtonList UI
     //determines presets, size, and raceType.  
     public int raceID = 2; //default race is human.
@@ -1375,6 +1372,8 @@ public class CharacterCreator : MonoBehaviour {
         skinLayer = skinLayers[0]; //skinLayer only needs to be set to any of the skin layers
 
         DeactivateAllButtons();
+
+        
       
 }
 	
