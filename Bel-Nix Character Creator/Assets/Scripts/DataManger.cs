@@ -1,28 +1,57 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class DataManger : MonoBehaviour
 {
 
-    string dataPath = "";
+    string fileName = "";
 
-    public void WriteDataPath(string path) {
+    public string FileName { get { return fileName; } set { fileName = value; } }
+    
+    public string[] GetFileNames(string path) {
 
-        dataPath = Application.dataPath + "/Tokens/" + path + ".token";
-        Debug.Log(dataPath);
+        //get all files from our path, but only the ones ending in "n"
+        string[] files = Directory.GetFiles(path, "*token");
 
+        List<string> cleanedFiles = new List<string>();
+
+        foreach (string file in files) {
+
+            //removes "\"
+            string[] splitFile = file.Split('\\');
+            //removes "."
+            splitFile = splitFile[1].Split('.');
+            //takes the text that comes before the ".", this should be the file's name
+            string cleanString = splitFile[0];
+            //trims leading and trailing whitespace
+            cleanString = cleanString.Trim();
+
+            cleanedFiles.Add(cleanString);
+
+        }
+
+        string[] fileNames = cleanedFiles.ToArray();
+
+        return fileNames;
+        
     }
-
+    
     public void SaveToken(Token token) {
 
-        SaveSystem.SaveToken(token, dataPath);
+        if (token.name == "") {
+            Debug.LogError("Token needs a name before saving.");
+            return;
+        }
+           
+        SaveSystem.SaveToken(token);
         Debug.Log(token.name + " is saved!");
     }
 
     public void LoadToken(Token token) {
 
-        TokenData data = SaveSystem.LoadToken(dataPath);
+        TokenData data = SaveSystem.LoadToken(fileName);
 
         token.name = data.name;  
 
@@ -73,9 +102,5 @@ public class DataManger : MonoBehaviour
 
     }
 
-    private void Start()
-    {
-        WriteDataPath("myToken");
-    }
 
 }

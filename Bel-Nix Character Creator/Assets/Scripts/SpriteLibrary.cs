@@ -147,7 +147,7 @@ public class SpriteLibrary : MonoBehaviour {
 	}
 
 	//cleans the path to make the dictionary key
-	string MakeKey (string path){
+	string MakeKey(string path){
 
 		string[] s = path.Split ('/');
 

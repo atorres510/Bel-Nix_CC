@@ -35,7 +35,7 @@ public class CharacterCreator : MonoBehaviour {
 
     public GameObject canvasBackgroundObject;
 
-    public string exportName = "CharacterExport";
+    string exportName;
 
     public GameObject paperDoll;
     Image[] paperDollLayers;
@@ -854,10 +854,17 @@ public class CharacterCreator : MonoBehaviour {
         //update helmet based on race
 
         //update racial feature
-        if (raceType == 0) {
+        if (raceType == 0)
+        {
 
             paperDollLayers[7].sprite = blankSprite;
             racialSprite = 0;
+
+        }
+
+        else {
+
+            paperDollLayers[7].sprite = spriteLibrary.GetSprite(ConstructKey("racialfeaturekey"), racialSprite);
 
         }
            
@@ -1278,8 +1285,8 @@ public class CharacterCreator : MonoBehaviour {
         for (int i = 0; i < token.handSprites.Length; i++)
         {
 
-            if (token.handSprites[i]) { }
-            //paperDollHandLayers[i].sprite = spriteLibrary.GetSprite(ConstructKey("handtypekey"), i);
+            if (token.handSprites[i])
+                paperDollHandLayers[i].sprite = spriteLibrary.GetSprite(ConstructKey("handtypekey"), i);
 
             else
                 paperDollHandLayers[i].sprite = blankSprite;
@@ -1290,7 +1297,6 @@ public class CharacterCreator : MonoBehaviour {
         for (int i = 0; i < paperDollLayers.Length; i++)
         {
             paperDollLayers[i].color = token.paperdollLayerColors[i];
-            Debug.Log(ColorUtility.ToHtmlStringRGBA(token.paperdollLayerColors[i]));
             paperDollLayers[i].rectTransform.localRotation = new Quaternion(0, token.paperdollLayerRotations[i], 0, 0);
         }
         
@@ -1308,6 +1314,7 @@ public class CharacterCreator : MonoBehaviour {
             paperDollHandLayers[i].rectTransform.localRotation = new Quaternion(0, token.paperdollHandLayerRotations[i], 0, 0);
         }
 
+        ResetLastSelectedLayer();
 
         UpdatePaperDoll();
         
@@ -1400,6 +1407,7 @@ public class CharacterCreator : MonoBehaviour {
     public void SetExportName(string name) {
 
         exportName = name;
+        token.name = name;
         //Debug.Log(exportName);
         
     }
@@ -1529,11 +1537,12 @@ public class CharacterCreator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        
+
         UpdateButtonColor();
         UpdateActiveLayerColor();
         UpdateSkinColor();
         //UpdatePaperDoll(); <- this is no longer called in update, but instead called as needed by SetSpriteToPaperDoll and other UI buttons
+
 
     }
 }
