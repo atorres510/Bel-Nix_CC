@@ -4,24 +4,29 @@ using UnityEngine;
 
 public class Token : MonoBehaviour
 {
+    public string name = "";
 
     public int size;
     public int chestType;
-    public int race;
+    public int raceID;
+    public int raceType;
     public int bodyType;
+    public string head;
 
     public int hairSprite;
     public int capeSprite;
     public int backSprite;
     public int shoulderSprite;
-    public int handSprite;
-    public int headSprite;
     public int helmetSprite;
     public int racialSprite;
 
     public bool[] clothingSprites;
     public bool[] handSprites;
 
+    public float[] paperdollLayerRotations;
+    public float[] paperdollClothingLayerRotations;
+    public float[] paperdollHandLayerRotations;
+    
     public Color[] paperdollLayerColors;
     public Color[] paperdollClothingLayerColors;
     public Color[] paperdollHandLayerColors;
@@ -31,20 +36,24 @@ public class Token : MonoBehaviour
 
         size = data.size;
         chestType = data.chestType;
-        race = data.race;
+        raceID = data.raceID;
+        raceType = data.raceType;
         bodyType = data.bodyType;
+        head = data.head;
 
         hairSprite = data.hairSprite;
         capeSprite = data.capeSprite;
         backSprite = data.backSprite;
         shoulderSprite = data.shoulderSprite;
-        handSprite = data.handSprite;
-        headSprite = data.headSprite;
         helmetSprite = data.helmetSprite;
         racialSprite = data.racialSprite;
 
         clothingSprites = data.clothingSprites;
         handSprites = data.handSprites;
+
+        paperdollLayerRotations = data.paperdollLayerRotations;
+        paperdollClothingLayerRotations = data.paperdollClothingLayerRotations;
+        paperdollHandLayerRotations = data.paperdollHandLayerRotations;
 
         for (int i = 0; i < paperdollLayerColors.Length; i++) {
 

@@ -5,45 +5,56 @@ using UnityEngine;
 [System.Serializable]
 public class TokenData {
 
+    public string name;
+    
     public int size;
     public int chestType;
-    public int race;
+    public int raceID;
     public int bodyType;
+    public int raceType;
+    public string head;
 
     public int hairSprite;
     public int capeSprite;
     public int backSprite;
     public int shoulderSprite;
-    public int handSprite;
-    public int headSprite;
     public int helmetSprite;
     public int racialSprite;
 
     public bool[] clothingSprites;
     public bool[] handSprites;
 
+    public float[] paperdollLayerRotations;
+    public float[] paperdollClothingLayerRotations;
+    public float[] paperdollHandLayerRotations;
+
     public string[] paperdollLayerHexColors;
     public string[] paperdollClothingLayerHexColors;
     public string[] paperdollHandLayerHexColors;
 
     public TokenData(Token token) {
+        name = token.name;
 
         size = token.size;
         chestType = token.chestType;
-        race = token.race;
+        raceID = token.raceID;
+        raceType = token.raceType;
         bodyType = token.bodyType;
+        head = token.head;
 
         hairSprite = token.hairSprite;
         capeSprite = token.capeSprite;
         backSprite = token.backSprite;
         shoulderSprite = token.shoulderSprite;
-        handSprite = token.handSprite;
-        headSprite = token.headSprite;
         helmetSprite = token.helmetSprite;
         racialSprite = token.racialSprite;
 
         clothingSprites = token.clothingSprites;
         handSprites = token.handSprites;
+
+        paperdollLayerRotations = token.paperdollLayerRotations;
+        paperdollClothingLayerRotations = token.paperdollClothingLayerRotations;
+        paperdollHandLayerRotations = token.paperdollHandLayerRotations;
 
         paperdollLayerHexColors = new string[token.paperdollLayerColors.Length];
         paperdollClothingLayerHexColors = new string[token.paperdollClothingLayerColors.Length];
@@ -60,7 +71,7 @@ public class TokenData {
 
         for (int i = 0; i < paperdollClothingLayerHexColors.Length; i++)
         {
-
+            Debug.Log(ColorUtility.ToHtmlStringRGBA(token.paperdollClothingLayerColors[i]));
             paperdollClothingLayerHexColors[i] = ColorUtility.ToHtmlStringRGBA(token.paperdollClothingLayerColors[i]);
 
 
@@ -68,7 +79,7 @@ public class TokenData {
 
         for (int i = 0; i < paperdollHandLayerHexColors.Length; i++)
         {
-
+            Debug.Log(ColorUtility.ToHtmlStringRGBA(token.paperdollHandLayerColors[i]));
             paperdollHandLayerHexColors[i] = ColorUtility.ToHtmlStringRGBA(token.paperdollHandLayerColors[i]);
 
 
