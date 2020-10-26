@@ -9,7 +9,17 @@ using System.IO;
 
 public class CharacterCreator : MonoBehaviour {
 
-    public Token token;
+    public Token currentToken;
+
+    public Token dwarfToken;
+    public Token humanToken;
+    public Token halfelfToken;
+    public Token elfToken;
+    public Token dragonbornToken;
+    public Token halforcToken;
+    public Token halflingToken;
+    public Token gnomeToken;
+    public Token tieflingToken;
 
     public SpriteLibrary spriteLibrary;
     public Renderer activeRenderer;
@@ -25,7 +35,7 @@ public class CharacterCreator : MonoBehaviour {
     Image lastSelectedLayer;
     Color layerColor;
     Button lastSelectedButton;
-    bool isSubLayerActive;
+  
     Image skinLayer;
     Color skinColor;
 
@@ -41,7 +51,7 @@ public class CharacterCreator : MonoBehaviour {
     Image[] paperDollLayers;
     Image[] paperDollClothingLayers;
     Image[] paperDollHandLayers;
-    Image[] paperDollAccessoryLayers;
+   
     string[] subLayers = {"Clothing", "Hands"};
     public Image[] skinLayers;
 
@@ -55,7 +65,6 @@ public class CharacterCreator : MonoBehaviour {
     // 7: Halfling, 8: Gnome, 9: tiefling
     //add more races here!!
     
-    int sex = 1; //0 female, 1 male
     int chestType = 0; //0 none, 1 Acup, 2 Bcup
     int size = 0; //0 medium, 1 small
     int raceType = 0;   //0 Base, 1 Dragonborn, 2 tiefling
@@ -67,10 +76,7 @@ public class CharacterCreator : MonoBehaviour {
     int capeSprite = 0; 
     int backSprite = 0;
     int shoulderSprite = 0;
-    int handSprite = 0;
-    //int headSprite = 0;
     int helmetSprite = 0;
-    int scarfSprite = 0;
     int racialSprite = 0;
 
 
@@ -203,7 +209,7 @@ public class CharacterCreator : MonoBehaviour {
                 SetButtonPressedStates(bodyType); //leaves the button with the sprite of the current body type pressed, with the rest remaining in normal state (unpressed).
                 picker.CurrentColor = paperDollLayers[activeLayer].color; //sets the color of the body to be the one selected on the color pick for easier editing.
                 lastSelectedLayer = skinLayer; //since the body color should coordinate with other layers associated with skin, the skinlayer is used.  This will also update things like head, chest.
-                isSubLayerActive = false;//
+                
                 ChangeFixedColumnCount(3);//number of columns is 3 on the grid.
                 ResizeButtonGridSprites(1); //sprites will be at normal transform.scale = (1, 1, 1)
 
@@ -215,7 +221,7 @@ public class CharacterCreator : MonoBehaviour {
                 SetButtonPressedStates(ReturnIndexsForFilledLayers(paperDollClothingLayers)); //uses overloaded method to 
                 ResetActiveColor(); //since the player hasn't selected a sprite to edit, the current color on the color picker will remain white until a sprite is selected.
                 SetLayerColorstoButtonGrid(paperDollClothingLayers); //takes the sublayers' colors and applies them in order on the buttonGrid for easier editing.  
-                isSubLayerActive = true;
+                
                 ChangeFixedColumnCount(3);
                 ResizeButtonGridSprites(1);
                 break;
@@ -226,7 +232,7 @@ public class CharacterCreator : MonoBehaviour {
                 SetButtonPressedStates(chestType);
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = skinLayer;
-                isSubLayerActive = false;
+               
                 ChangeFixedColumnCount(3);
                 ResizeButtonGridSprites(1);
                 break;
@@ -242,7 +248,7 @@ public class CharacterCreator : MonoBehaviour {
                 SetButtonPressedStates(ReturnIndexsForFilledLayers(paperDollHandLayers));
                 ResetActiveColor();
                 SetLayerColorstoButtonGrid(paperDollHandLayers);
-                isSubLayerActive = true;
+                
                 ChangeFixedColumnCount(2);
                 ResizeButtonGridSprites(3);
                 break;
@@ -272,7 +278,7 @@ public class CharacterCreator : MonoBehaviour {
             case "HAIR":
                 FillButtons(ConstructKey("HairTypeKey"));
                 SetButtonPressedStates(hairSprite);
-                isSubLayerActive = false;
+              
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = paperDollLayers[activeLayer];
                 ChangeFixedColumnCount(3);
@@ -282,7 +288,7 @@ public class CharacterCreator : MonoBehaviour {
             case "RACIALFEATURE":
                 FillButtons(ConstructKey("RacialFeatureKey"));
                 SetButtonPressedStates(racialSprite);
-                isSubLayerActive = false;
+                
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = skinLayer;
                 ChangeFixedColumnCount(3);
@@ -457,17 +463,18 @@ public class CharacterCreator : MonoBehaviour {
     {
 
         List<Image> tempList = new List<Image>(); // new list to place our filtered images
-
-        GameObject[] layerObjects = GameObject.FindGameObjectsWithTag(layerTag); //creates an array with all the objects that fit our tag.
+        
+        RectTransform[] layerObjects = paperDoll.transform.GetComponentsInChildren<RectTransform>(); //creates an array with all the objects that fit our tag.
 
         for (int i = 0; i < layerObjects.Length; i++)
         {
+            if (layerObjects[i].tag == layerTag) {
+                Image imgComponent = layerObjects[i].GetComponent<Image>();
 
-            Image imgComponent = layerObjects[i].GetComponent<Image>();
+                tempList.Add(imgComponent);
+            }
 
-            tempList.Add(imgComponent);
-
-           // Debug.Log(imgComponent.gameObject.name);
+            // Debug.Log(imgComponent.gameObject.name);
 
         }
 
@@ -479,7 +486,7 @@ public class CharacterCreator : MonoBehaviour {
 
     //overloaded for use of an image and its gameobject.  pass in paperdollLayers[i] that are parents of sublayers (such as clothing) as the image variable to return their sublayers as an image[]
     Image[] ReturnImagesFromTag(string layerTag, Image parentImage)
-   {
+    {
 
         List<Image> tempList = new List<Image>();
         //gets the root object and the children
@@ -511,13 +518,13 @@ public class CharacterCreator : MonoBehaviour {
     //for use of UI race buttons to change race and the dependant variables
     public void ChangeRace(string race)
     {
-
+        ApplyPaperdollToToken(currentToken);
         race = race.ToUpper();
 
         switch (race)
         {
 
-            case "DWARF":
+            /*case "DWARF":
                 raceID = 1;
                 headString = "Base";
                 raceType = 0;
@@ -593,11 +600,51 @@ public class CharacterCreator : MonoBehaviour {
                 break;
                 
             default:
+                break;*/
+
+
+
+            case "DWARF":
+                currentToken = dwarfToken;
                 break;
 
+            case "HUMAN":
+                currentToken = humanToken;
+                break;
 
+            case "HALFELF":
+                currentToken = halfelfToken;
+                break;
+
+            case "ELF":
+                currentToken = elfToken;
+                break;
+
+            case "DRAGONBORN":
+                currentToken = dragonbornToken;
+                break;
+
+            case "HALFORC":
+                currentToken = halforcToken;
+                break;
+
+            case "HALFLING":
+                currentToken = halflingToken;
+                break;
+
+            case "GNOME":
+                currentToken = gnomeToken;
+                break;
+
+            case "TIEFLING":
+                currentToken = tieflingToken;
+                break;
+                
+            default:
+                break;
         }
 
+        ApplyTokenToPaperdoll(currentToken);
         UpdatePaperDoll();
 
     }
@@ -698,40 +745,7 @@ public class CharacterCreator : MonoBehaviour {
                 racialSprite = buttonIndex;
                 Debug.Log("RacialFeatureSprite = " + racialSprite);
                 break;
-
-
-            case "ACCESSORIES":
-
-                ReturnEmptySubLayer(paperDollAccessoryLayers).sprite = ReturnButtonSpriteAsToggle(button);
-
-                string currentAccessory = accessoryStrings[accessoryType];
-
-                currentAccessory.ToUpper();
-
-                switch (currentAccessory) {
-
-                    case "BACKITEMS":
-                        //backSprite = buttonIndex;
-                        break;
-
-                    case "HANDITEMS":
-                        handSprite = buttonIndex;
-                        break;
-
-                    case "HELMETITEMS":
-                        helmetSprite = buttonIndex;
-                        break;
-
-                    case "SHOULDERITEMS":
-                        //shoulderSprite = buttonIndex;
-                        break;
-
-                    case "SCARFITEMS":
-                        break;
-                        
-                }
-                break;
-
+                
             default:
                 break;
                 
@@ -1256,7 +1270,7 @@ public class CharacterCreator : MonoBehaviour {
 
         if (token == null) {return;}
 
-        exportName = token.name;
+        exportName = token.tokenName;
 
         size = token.size;
         chestType = token.chestType;
@@ -1281,7 +1295,7 @@ public class CharacterCreator : MonoBehaviour {
                 paperDollClothingLayers[i].sprite = blankSprite;
 
         }
-
+        
         for (int i = 0; i < token.handSprites.Length; i++)
         {
 
@@ -1324,7 +1338,7 @@ public class CharacterCreator : MonoBehaviour {
 
         if (token == null) { return; }
         
-        token.name = exportName;
+        token.tokenName = exportName;
 
         token.size = size;
         token.chestType = chestType;
@@ -1407,7 +1421,7 @@ public class CharacterCreator : MonoBehaviour {
     public void SetExportName(string name) {
 
         exportName = name;
-        token.name = name;
+        currentToken.tokenName = name;
         //Debug.Log(exportName);
         
     }
@@ -1447,10 +1461,10 @@ public class CharacterCreator : MonoBehaviour {
         byte[] bytes = tex.EncodeToPNG();
         Object.Destroy(tex);
 
-        ReassignRedundantExportName(exportName, Application.dataPath + "/Screenshots/");
+        ReassignRedundantExportName(exportName, Application.streamingAssetsPath + "/Screenshots/");
 
         // For testing purposes, also write to a file in the project folder
-        File.WriteAllBytes(Application.dataPath + "/Screenshots/" + exportName + ".png", bytes);
+        File.WriteAllBytes(Application.streamingAssetsPath + "/Screenshots/" + exportName + ".png", bytes);
 
         paperDollRectTransform.position = paperDollOldPos;
         paperDollRectTransform.localScale = paperDollOldScale;
@@ -1478,7 +1492,7 @@ public class CharacterCreator : MonoBehaviour {
         do
         {
 
-            currentFilePath = Application.dataPath + "/Screenshots/" + lessRedundantName + ".png";
+            currentFilePath = Application.streamingAssetsPath + "/Screenshots/" + lessRedundantName + ".png";
             isThereStillARedundancy = false;
 
             foreach (string filePath in filePaths)
@@ -1522,16 +1536,16 @@ public class CharacterCreator : MonoBehaviour {
         paperDollLayers = ReturnImagesFromTag("PaperdollLayer");
         paperDollClothingLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[2]);
         paperDollHandLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[3]);
-       
-        
+
         skinLayer = skinLayers[0]; //skinLayer only needs to be set to any of the skin layers
 
-        ApplyTokenToPaperdoll(token);
-
-
+        ApplyTokenToPaperdoll(currentToken);
+        
         DeactivateAllButtons();
 
-        
+
+
+       
       
 }
 	

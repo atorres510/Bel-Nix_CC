@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Token : MonoBehaviour
 {
-    public string name = "";
+    public string tokenName = "";
 
     public int size;
     public int chestType;

@@ -12,7 +12,7 @@ public class DataManger : MonoBehaviour
     
     public string[] GetFileNames(string path) {
 
-        //get all files from our path, but only the ones ending in "n"
+        //get all files from our path, but only the ones ending in "token"
         string[] files = Directory.GetFiles(path, "*token");
 
         List<string> cleanedFiles = new List<string>();
@@ -40,20 +40,20 @@ public class DataManger : MonoBehaviour
     
     public void SaveToken(Token token) {
 
-        if (token.name == "") {
+        if (token.tokenName == "") {
             Debug.LogError("Token needs a name before saving.");
             return;
         }
            
         SaveSystem.SaveToken(token);
-        Debug.Log(token.name + " is saved!");
+        Debug.Log(token.tokenName + " is saved!");
     }
 
     public void LoadToken(Token token) {
 
         TokenData data = SaveSystem.LoadToken(fileName);
 
-        token.name = data.name;  
+        token.tokenName = data.tokenName;  
 
         token.size = data.size;
         token.chestType = data.chestType;
@@ -97,7 +97,7 @@ public class DataManger : MonoBehaviour
 
         }
         
-        Debug.Log(token.name + " was loaded!");
+        Debug.Log(token.tokenName + " was loaded!");
 
 
     }

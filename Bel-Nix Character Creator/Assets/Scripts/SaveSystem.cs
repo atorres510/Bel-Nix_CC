@@ -8,7 +8,7 @@ public static class SaveSystem
     //takes in a token and the file's name, saving it as new tokendata. the data then gets serialized and saved with the file type ".token"
     public static void SaveToken(Token token) {
 
-        string path = Application.dataPath + "/Tokens/" + token.name + ".token";
+        string path = Application.streamingAssetsPath + "/Tokens/" + token.tokenName + ".token";
 
         BinaryFormatter formatter = new BinaryFormatter();
         FileStream stream = new FileStream(path, FileMode.Create);
@@ -24,7 +24,7 @@ public static class SaveSystem
     //takes in the file's name and obtains the .token which is returned as TokenData
     public static TokenData LoadToken(string fileName) {
 
-        string path = Application.dataPath + "/Tokens/" + fileName + ".token";
+        string path = Application.streamingAssetsPath + "/Tokens/" + fileName + ".token";
 
         if (File.Exists(path))
         {

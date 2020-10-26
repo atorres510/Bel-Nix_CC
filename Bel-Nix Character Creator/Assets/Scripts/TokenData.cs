@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class TokenData {
 
-    public string name;
+    public string tokenName;
     
     public int size;
     public int chestType;
@@ -33,7 +33,7 @@ public class TokenData {
     public string[] paperdollHandLayerHexColors;
 
     public TokenData(Token token) {
-        name = token.name;
+        tokenName = token.tokenName;
 
         size = token.size;
         chestType = token.chestType;

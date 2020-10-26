@@ -19,7 +19,7 @@ public class UI_LoadingPanel : MonoBehaviour
     
     public void InstantiateButtons() {
 
-        string path = Application.dataPath + filePath;
+        string path = Application.streamingAssetsPath + filePath;
 
         string[] fileNames = dataManager.GetFileNames(path);
 
