@@ -69,12 +69,5 @@ public class UI_LoadingPanel : MonoBehaviour
 
 
     }
-
     
-
-
-
-
-
-
 }
