@@ -1,8 +1,0 @@
--save/load
-	-token file type 
-	-be able to change file locations for screenshots and .token files
-
--color presets
-
--randomize settings
-

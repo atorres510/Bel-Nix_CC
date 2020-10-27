@@ -1,12 +1,10 @@
 Sprites Needed (Ranked from Most to Least needed)
 
--dragonborn specific items
-	-scaled body type x 2 
-	-matching chest type x 2
-	-ridges or cartilage sprites or racial trait x 1
-	-hair/cartilage type x 1-2
-	-helmet item x 1
-	-hand item/claw types x 1
+X-dragonborn specific items
+	X-scaled body type x 2 
+	X-ridges or cartilage sprites or racial trait x 1
+	X-hair/cartilage type x 1-2
+	X-hand item/claw types x 1
 
 -chest clothing
 	-none, A, and B cups for fit and bony body types
@@ -21,9 +19,9 @@ Sprites Needed (Ranked from Most to Least needed)
 		-bilateral and unilateral version
 
 -back items
-	-weapon
-	-straps
-	-backpack
+	-weapon x 2 
+	-straps 
+	-backpack 
 	
 	
 	
