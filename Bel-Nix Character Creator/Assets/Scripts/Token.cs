@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Token : MonoBehaviour
 {
@@ -55,6 +53,10 @@ public class Token : MonoBehaviour
         paperdollClothingLayerRotations = data.paperdollClothingLayerRotations;
         paperdollHandLayerRotations = data.paperdollHandLayerRotations;
 
+        paperdollLayerColors = new Color[data.paperdollLayerHexColors.Length];
+        paperdollClothingLayerColors = new Color[data.paperdollClothingLayerHexColors.Length];
+        paperdollHandLayerColors = new Color[data.paperdollHandLayerHexColors.Length];
+
         for (int i = 0; i < paperdollLayerColors.Length; i++) {
 
             ColorUtility.TryParseHtmlString(data.paperdollLayerHexColors[i], out paperdollLayerColors[i]);
@@ -67,17 +69,43 @@ public class Token : MonoBehaviour
 
         }
 
-        for (int i = 0; i < paperdollLayerColors.Length; i++)
+        for (int i = 0; i < paperdollHandLayerColors.Length; i++)
         {
 
             ColorUtility.TryParseHtmlString(data.paperdollHandLayerHexColors[i], out paperdollHandLayerColors[i]);
 
         }
-
-
-
-
+        
     }
 
+    public Token(Token token)
+    {
+
+        size = token.size;
+        chestType = token.chestType;
+        raceID = token.raceID;
+        raceType = token.raceType;
+        bodyType = token.bodyType;
+        head = token.head;
+
+        hairSprite = token.hairSprite;
+        capeSprite = token.capeSprite;
+        backSprite = token.backSprite;
+        shoulderSprite = token.shoulderSprite;
+        helmetSprite = token.helmetSprite;
+        racialSprite = token.racialSprite;
+
+        clothingSprites = token.clothingSprites;
+        handSprites = token.handSprites;
+
+        paperdollLayerRotations = token.paperdollLayerRotations;
+        paperdollClothingLayerRotations = token.paperdollClothingLayerRotations;
+        paperdollHandLayerRotations = token.paperdollHandLayerRotations;
+
+        paperdollLayerColors = token.paperdollLayerColors;
+        paperdollClothingLayerColors = token.paperdollClothingLayerColors;
+        paperdollHandLayerColors = token.paperdollHandLayerColors;
+        
+    }
 
 }

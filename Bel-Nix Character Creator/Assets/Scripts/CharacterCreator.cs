@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using UnityEditor;
 using System.IO;
 
 
@@ -10,8 +9,11 @@ using System.IO;
 public class CharacterCreator : MonoBehaviour {
 
     public Token currentToken;
+    Token previousToken;
+    
+    bool isClothingPersistent = true;
 
-    public Token dwarfToken;
+    /*public Token dwarfToken;
     public Token humanToken;
     public Token halfelfToken;
     public Token elfToken;
@@ -19,7 +21,7 @@ public class CharacterCreator : MonoBehaviour {
     public Token halforcToken;
     public Token halflingToken;
     public Token gnomeToken;
-    public Token tieflingToken;
+    public Token tieflingToken;*/
 
     public SpriteLibrary spriteLibrary;
     public Renderer activeRenderer;
@@ -126,9 +128,9 @@ public class CharacterCreator : MonoBehaviour {
 
                 break;
 
-            case "ACCESSORYTYPEKEY":
+            case "BACKTYPEKEY":
 
-                key = sizeStrings[size] + "_" + raceStrings[raceType] + "_" + accessoryStrings[accessoryType];
+                key = sizeStrings[size] + "_backType";
 
                 break;
 
@@ -149,6 +151,25 @@ public class CharacterCreator : MonoBehaviour {
                 key = sizeStrings[size] + "_" + raceStrings[raceType] + "_" + bodyStrings[bodyType] +"_handType";
 
                 break;
+
+            case "CAPETYPEKEY":
+
+                key = sizeStrings[size] + "_capeType";
+
+                break;
+
+            case "SHOULDERTYPEKEY":
+
+                key = sizeStrings[size] + "_shoulderType";
+
+                break;
+
+            case "HELMETTYPEKEY":
+
+                key = sizeStrings[size] + "_" + raceStrings[raceType] + "_helmetType";
+
+                break;
+
 
             case "RACIALFEATUREKEY":
 
@@ -254,13 +275,17 @@ public class CharacterCreator : MonoBehaviour {
                 break;
 
             case "BACK":
-                accessoryType = 0;
-                FillButtons(ConstructKey("AccessoryTypeKey"));
+                
+                FillButtons(ConstructKey("BackTypeKey"));
                 SetButtonPressedStates(backSprite);
+                picker.CurrentColor = paperDollLayers[activeLayer].color;
+                lastSelectedLayer = paperDollLayers[activeLayer];
+                ChangeFixedColumnCount(3);
+                ResizeButtonGridSprites(1);
                 break;
 
             case "CAPE":
-                FillButtons("CAPEITEMS");
+                FillButtons(ConstructKey("CapeTypeKey"));
                 SetButtonPressedStates(capeSprite);
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = paperDollLayers[activeLayer];
@@ -270,6 +295,12 @@ public class CharacterCreator : MonoBehaviour {
                 break;
 
             case "SHOULDER":
+                FillButtons(ConstructKey("ShoulderTypeKey"));
+                SetButtonPressedStates(shoulderSprite);
+                picker.CurrentColor = paperDollLayers[activeLayer].color;
+                lastSelectedLayer = paperDollLayers[activeLayer];
+                ChangeFixedColumnCount(3);
+                ResizeButtonGridSprites(1);
                 break;
 
             case "HEAD":
@@ -296,6 +327,12 @@ public class CharacterCreator : MonoBehaviour {
                 break;
 
             case "HELMET":
+                FillButtons(ConstructKey("HelmetTypeKey"));
+                SetButtonPressedStates(helmetSprite);
+                picker.CurrentColor = paperDollLayers[activeLayer].color;
+                lastSelectedLayer = paperDollLayers[activeLayer];
+                ChangeFixedColumnCount(3);
+                ResizeButtonGridSprites(1);
                 break;
 
             default:
@@ -515,16 +552,23 @@ public class CharacterCreator : MonoBehaviour {
         return layers;
     }
 
+    //used by a toggle UI to save the clothing preferences when switching between races.
+    public void ToggleClothingPersistance() {
+
+        isClothingPersistent = !isClothingPersistent;
+
+    }
+
     //for use of UI race buttons to change race and the dependant variables
-    public void ChangeRace(string race)
+    /*public void ChangeRace(string race)
     {
         ApplyPaperdollToToken(currentToken);
         race = race.ToUpper();
 
-        switch (race)
+        /*switch (race)
         {
 
-            /*case "DWARF":
+            case "DWARF":
                 raceID = 1;
                 headString = "Base";
                 raceType = 0;
@@ -600,7 +644,7 @@ public class CharacterCreator : MonoBehaviour {
                 break;
                 
             default:
-                break;*/
+                break;
 
 
 
@@ -647,8 +691,38 @@ public class CharacterCreator : MonoBehaviour {
         ApplyTokenToPaperdoll(currentToken);
         UpdatePaperDoll();
 
+    }*/
+
+    public void ChangeRace(Token token) {
+
+
+        ApplyPaperdollToToken(previousToken);
+
+        if (isClothingPersistent)
+        {
+            size = token.size;
+            chestType = token.chestType;
+            raceID = token.raceID;
+            raceType = token.raceType;
+            bodyType = token.bodyType;
+            headString = token.head;
+            hairSprite = token.hairSprite;
+            racialSprite = token.racialSprite;
+            
+        }
+
+        else {
+            
+            ApplyTokenToPaperdoll(token);
+           
+        }
+
+        previousToken = token;
+        ApplyPaperdollToToken(currentToken);
+        UpdatePaperDoll();
+
     }
-    
+
     //used by the UI buttons on the button grid.  places the sprite represented on the grid onto the paperdoll at the active layer 
     public void SetSpriteToPaperdoll(Button button) {
         
@@ -728,6 +802,24 @@ public class CharacterCreator : MonoBehaviour {
                 Debug.Log("CapeSprite = " + capeSprite);
                 break;
 
+            case "BACK":
+                paperDollLayers[activeLayer].sprite = buttonSprite;
+                TogglePressedStateAsGroup(button);
+                lastSelectedLayer = paperDollLayers[activeLayer];
+                backSprite = buttonIndex;
+
+                Debug.Log("BackSprite = " + backSprite);
+                break;
+
+            case "SHOULDER":
+                paperDollLayers[activeLayer].sprite = buttonSprite;
+                TogglePressedStateAsGroup(button);
+                lastSelectedLayer = paperDollLayers[activeLayer];
+                shoulderSprite = buttonIndex;
+
+                Debug.Log("ShoulderSprite = " + shoulderSprite);
+                break;
+
             case "HANDS":
                 
                 lastSelectedLayer = paperDollHandLayers[buttonIndex];
@@ -745,7 +837,16 @@ public class CharacterCreator : MonoBehaviour {
                 racialSprite = buttonIndex;
                 Debug.Log("RacialFeatureSprite = " + racialSprite);
                 break;
-                
+
+            case "HELMET":
+                paperDollLayers[activeLayer].sprite = buttonSprite;
+                TogglePressedStateAsGroup(button);
+                lastSelectedLayer = paperDollLayers[activeLayer];
+                helmetSprite = buttonIndex;
+
+                Debug.Log("HelmetSprite = " + helmetSprite);
+                break;
+
             default:
                 break;
                 
@@ -825,10 +926,7 @@ public class CharacterCreator : MonoBehaviour {
 
     //called in SetSpriteToPaperdoll() and other UI buttons.  updates sprites that are dependant on other variables, such as race, body type, chest type, etc.
     void UpdatePaperDoll() {
-
-        //update head based on race
-        paperDollLayers[5].sprite = spriteLibrary.GetSprite("HEADS", ConstructKey("headtypekey"));
-
+        
         //update body based on race
         paperDollLayers[0].sprite = spriteLibrary.GetSprite(ConstructKey("bodytypekey"), bodyType);
         
@@ -858,32 +956,38 @@ public class CharacterCreator : MonoBehaviour {
         }
 
         //capes
-        paperDollLayers[4].sprite = spriteLibrary.GetSprite("CAPEITEMS", capeSprite);
-        
+        paperDollLayers[4].sprite = spriteLibrary.GetSprite(ConstructKey("capetypekey"), capeSprite);
+
+        //capes
+        paperDollLayers[5].sprite = spriteLibrary.GetSprite(ConstructKey("backtypekey"), backSprite);
+
+        //shoulders
+        paperDollLayers[6].sprite = spriteLibrary.GetSprite(ConstructKey("shouldertypekey"), shoulderSprite);
+
         //update head based on race
+        paperDollLayers[7].sprite = spriteLibrary.GetSprite("HEADS", ConstructKey("headtypekey"));
 
         //update hair based on race
-        paperDollLayers[6].sprite = spriteLibrary.GetSprite(ConstructKey("hairtypekey"), hairSprite);
-
-        //update helmet based on race
-
+        paperDollLayers[8].sprite = spriteLibrary.GetSprite(ConstructKey("hairtypekey"), hairSprite);
+        
         //update racial feature
         if (raceType == 0)
         {
 
-            paperDollLayers[7].sprite = blankSprite;
+            paperDollLayers[9].sprite = blankSprite;
             racialSprite = 0;
 
         }
 
         else {
 
-            paperDollLayers[7].sprite = spriteLibrary.GetSprite(ConstructKey("racialfeaturekey"), racialSprite);
+            paperDollLayers[9].sprite = spriteLibrary.GetSprite(ConstructKey("racialfeaturekey"), racialSprite);
 
         }
-           
-            
-        
+
+        //update helmet based on race
+        paperDollLayers[10].sprite = spriteLibrary.GetSprite(ConstructKey("helmettypekey"), helmetSprite);
+
 
     }
 
@@ -1442,6 +1546,7 @@ public class CharacterCreator : MonoBehaviour {
 
         //get rid of background temporarily to preserve alpha
         canvasBackgroundObject.SetActive(false);
+        gridObject.SetActive(false);
 
         // We should only read the screen buffer after rendering is complete
         yield return new WaitForEndOfFrame();
@@ -1470,6 +1575,7 @@ public class CharacterCreator : MonoBehaviour {
         paperDollRectTransform.localScale = paperDollOldScale;
 
         canvasBackgroundObject.SetActive(true);
+        gridObject.SetActive(true);
         
         Debug.Log("Screenshot Taken");
 
@@ -1523,7 +1629,7 @@ public class CharacterCreator : MonoBehaviour {
   
     // Use this for initialization
     void Start () {
-
+        
         SetUpButtons();
 
         SetUpColorPicker();
@@ -1538,6 +1644,8 @@ public class CharacterCreator : MonoBehaviour {
         paperDollHandLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[3]);
 
         skinLayer = skinLayers[0]; //skinLayer only needs to be set to any of the skin layers
+
+        previousToken = currentToken;
 
         ApplyTokenToPaperdoll(currentToken);
         
