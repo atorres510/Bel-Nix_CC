@@ -11,14 +11,14 @@ X-dragonborn specific items
 
 -helmet (one base one dragonborn each)
 	- cloth  
-	- leather
+	- leather 
 	- chain
 	- plate 
--shoulder
+X-shoulder
 	-add in the four
 		-bilateral and unilateral version
 
--back items
+X-back items
 	-weapon x 2 
 	-straps 
 	-backpack 

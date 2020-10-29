@@ -75,6 +75,7 @@ public class DataManger : MonoBehaviour
         token.paperdollLayerRotations = data.paperdollLayerRotations;
         token.paperdollClothingLayerRotations = data.paperdollClothingLayerRotations;
         token.paperdollHandLayerRotations = data.paperdollHandLayerRotations;
+        token.paperdollEquipmentLayerRotations = data.paperdollEquipmentLayerRotations;
 
         for (int i = 0; i < token.paperdollLayerColors.Length; i++)
         {
@@ -96,7 +97,14 @@ public class DataManger : MonoBehaviour
             ColorUtility.TryParseHtmlString("#" + data.paperdollHandLayerHexColors[i], out token.paperdollHandLayerColors[i]);
 
         }
-        
+
+        for (int i = 0; i < token.paperdollEquipmentLayerColors.Length; i++)
+        {
+
+            ColorUtility.TryParseHtmlString("#" + data.paperdollEquipmentLayerHexColors[i], out token.paperdollEquipmentLayerColors[i]);
+
+        }
+
         Debug.Log(token.tokenName + " was loaded!");
 
 

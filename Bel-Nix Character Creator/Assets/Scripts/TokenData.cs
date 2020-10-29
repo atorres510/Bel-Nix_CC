@@ -27,10 +27,12 @@ public class TokenData {
     public float[] paperdollLayerRotations;
     public float[] paperdollClothingLayerRotations;
     public float[] paperdollHandLayerRotations;
+    public float[] paperdollEquipmentLayerRotations;
 
     public string[] paperdollLayerHexColors;
     public string[] paperdollClothingLayerHexColors;
     public string[] paperdollHandLayerHexColors;
+    public string[] paperdollEquipmentLayerHexColors;
 
     public TokenData(Token token) {
         tokenName = token.tokenName;
@@ -55,10 +57,12 @@ public class TokenData {
         paperdollLayerRotations = token.paperdollLayerRotations;
         paperdollClothingLayerRotations = token.paperdollClothingLayerRotations;
         paperdollHandLayerRotations = token.paperdollHandLayerRotations;
+        paperdollEquipmentLayerRotations = token.paperdollEquipmentLayerRotations;
 
         paperdollLayerHexColors = new string[token.paperdollLayerColors.Length];
         paperdollClothingLayerHexColors = new string[token.paperdollClothingLayerColors.Length];
         paperdollHandLayerHexColors = new string[token.paperdollHandLayerColors.Length];
+        paperdollEquipmentLayerHexColors = new string[token.paperdollEquipmentLayerColors.Length];
 
 
         for (int i = 0; i < paperdollLayerHexColors.Length; i++)
@@ -84,7 +88,15 @@ public class TokenData {
 
 
         }
-        
+
+        for (int i = 0; i < paperdollEquipmentLayerHexColors.Length; i++)
+        {
+            Debug.Log(ColorUtility.ToHtmlStringRGBA(token.paperdollEquipmentLayerColors[i]));
+            paperdollEquipmentLayerHexColors[i] = ColorUtility.ToHtmlStringRGBA(token.paperdollEquipmentLayerColors[i]);
+
+
+        }
+
     }
 
 

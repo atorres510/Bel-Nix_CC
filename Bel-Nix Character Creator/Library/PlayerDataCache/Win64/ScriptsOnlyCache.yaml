@@ -52,6 +52,7 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.Scrollbar
     - UnityEngine.UI.Slider
     - UnityEngine.UI.Text
+    - UnityEngine.UI.Toggle
     - UnityEngine.UI.VerticalLayoutGroup
   sceneClasses:
     Assets/Scenes/CharacterCreationScene.unity:
@@ -161,6 +162,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 13844}
     - Class: 114
       Script: {instanceID: 13912}
+    - Class: 114
+      Script: {instanceID: 13930}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 124
@@ -505,7 +508,7 @@ ScriptsOnlyBuild:
     className: ControlTrack
   - hash:
       serializedVersion: 2
-      Hash: 5c09c86bcb0584597821361195fce10d
+      Hash: 39aa4e8e1d1cbfc2f386db4e594e5892
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Token
@@ -643,7 +646,7 @@ ScriptsOnlyBuild:
     className: Physics2DRaycaster
   - hash:
       serializedVersion: 2
-      Hash: 5f7997254e4015bb169e642762c4c0b4
+      Hash: be9b6664c0470c45526ecd994542c0f8
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CharacterCreator
@@ -819,4 +822,4 @@ ScriptsOnlyBuild:
   scenePathNames:
   - Assets/Scenes/Main Menu.unity
   - Assets/Scenes/CharacterCreationScene.unity
-  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild01/Bel-Nix Character Creator.exe
+  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild02/Bel-Nix Character Creator.exe

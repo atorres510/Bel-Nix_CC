@@ -53,8 +53,9 @@ public class CharacterCreator : MonoBehaviour {
     Image[] paperDollLayers;
     Image[] paperDollClothingLayers;
     Image[] paperDollHandLayers;
-   
-    string[] subLayers = {"Clothing", "Hands"};
+    Image[] paperDollEquipmentLayers;
+
+    string[] subLayers = {"Clothing", "Hands", "Equipment"};
     public Image[] skinLayers;
 
     public int activeLayer; //layer based on the paperdoll order
@@ -167,6 +168,12 @@ public class CharacterCreator : MonoBehaviour {
             case "HELMETTYPEKEY":
 
                 key = sizeStrings[size] + "_" + raceStrings[raceType] + "_helmetType";
+
+                break;
+
+            case "EQUIPMENTTYPEKEY":
+
+                key = sizeStrings[size] + "_EquipmentType";
 
                 break;
 
@@ -303,6 +310,17 @@ public class CharacterCreator : MonoBehaviour {
                 ResizeButtonGridSprites(1);
                 break;
 
+            case "EQUIPMENT": //sublayer parent
+
+                FillButtons(ConstructKey("EquipmentTypeKey"));
+                SetButtonPressedStates(ReturnIndexsForFilledLayers(paperDollEquipmentLayers));
+                ResetActiveColor();
+                SetLayerColorstoButtonGrid(paperDollEquipmentLayers);
+
+                ChangeFixedColumnCount(2);
+                ResizeButtonGridSprites(1);
+                break;
+                
             case "HEAD":
                 break;
 
@@ -820,6 +838,15 @@ public class CharacterCreator : MonoBehaviour {
                 Debug.Log("ShoulderSprite = " + shoulderSprite);
                 break;
 
+            case "EQUIPMENT":
+
+                lastSelectedLayer = paperDollEquipmentLayers[buttonIndex];
+                picker.CurrentColor = buttonImage.color;
+                if (WasButtonLastSelected(button) && IsButtonPressed(button))
+                    break;
+                paperDollEquipmentLayers[buttonIndex].sprite = ReturnButtonSpriteAsToggle(button);
+                break;
+
             case "HANDS":
                 
                 lastSelectedLayer = paperDollHandLayers[buttonIndex];
@@ -949,7 +976,7 @@ public class CharacterCreator : MonoBehaviour {
 
             if (!IsLayerEmpty(paperDollHandLayers[i]))
             {
-               //paperDollHandLayers[i].sprite = spriteLibrary.GetSprite(ConstructKey("handtypekey"), i);
+               paperDollHandLayers[i].sprite = spriteLibrary.GetSprite(ConstructKey("handtypekey"), i);
                 
             }
 
@@ -964,29 +991,41 @@ public class CharacterCreator : MonoBehaviour {
         //shoulders
         paperDollLayers[6].sprite = spriteLibrary.GetSprite(ConstructKey("shouldertypekey"), shoulderSprite);
 
+        //update equipment
+        for (int i = 0; i < paperDollEquipmentLayers.Length; i++)
+        {
+
+            if (!IsLayerEmpty(paperDollEquipmentLayers[i]))
+            {
+                paperDollEquipmentLayers[i].sprite = spriteLibrary.GetSprite(ConstructKey("equipmenttypekey"), i);
+
+            }
+
+        }
+
         //update head based on race
-        paperDollLayers[7].sprite = spriteLibrary.GetSprite("HEADS", ConstructKey("headtypekey"));
+        paperDollLayers[8].sprite = spriteLibrary.GetSprite("HEADS", ConstructKey("headtypekey"));
 
         //update hair based on race
-        paperDollLayers[8].sprite = spriteLibrary.GetSprite(ConstructKey("hairtypekey"), hairSprite);
+        paperDollLayers[9].sprite = spriteLibrary.GetSprite(ConstructKey("hairtypekey"), hairSprite);
         
         //update racial feature
         if (raceType == 0)
         {
 
-            paperDollLayers[9].sprite = blankSprite;
+            paperDollLayers[10].sprite = blankSprite;
             racialSprite = 0;
 
         }
 
         else {
 
-            paperDollLayers[9].sprite = spriteLibrary.GetSprite(ConstructKey("racialfeaturekey"), racialSprite);
+            paperDollLayers[10].sprite = spriteLibrary.GetSprite(ConstructKey("racialfeaturekey"), racialSprite);
 
         }
 
         //update helmet based on race
-        paperDollLayers[10].sprite = spriteLibrary.GetSprite(ConstructKey("helmettypekey"), helmetSprite);
+        paperDollLayers[11].sprite = spriteLibrary.GetSprite(ConstructKey("helmettypekey"), helmetSprite);
 
 
     }
@@ -1411,7 +1450,6 @@ public class CharacterCreator : MonoBehaviour {
 
         }
 
-        
         for (int i = 0; i < paperDollLayers.Length; i++)
         {
             paperDollLayers[i].color = token.paperdollLayerColors[i];
@@ -1642,6 +1680,7 @@ public class CharacterCreator : MonoBehaviour {
         paperDollLayers = ReturnImagesFromTag("PaperdollLayer");
         paperDollClothingLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[2]);
         paperDollHandLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[3]);
+        paperDollEquipmentLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[7]);
 
         skinLayer = skinLayers[0]; //skinLayer only needs to be set to any of the skin layers
 
