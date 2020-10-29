@@ -71,6 +71,7 @@ public class DataManger : MonoBehaviour
 
         token.clothingSprites = data.clothingSprites;
         token.handSprites = data.handSprites;
+        token.equipmentSprites = data.equipmentSprites;
 
         token.paperdollLayerRotations = data.paperdollLayerRotations;
         token.paperdollClothingLayerRotations = data.paperdollClothingLayerRotations;

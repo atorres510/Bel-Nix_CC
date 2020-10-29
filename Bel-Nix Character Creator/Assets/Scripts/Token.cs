@@ -20,6 +20,7 @@ public class Token : MonoBehaviour
 
     public bool[] clothingSprites;
     public bool[] handSprites;
+    public bool[] equipmentSprites;
 
     public float[] paperdollLayerRotations;
     public float[] paperdollClothingLayerRotations;
@@ -50,6 +51,8 @@ public class Token : MonoBehaviour
 
         clothingSprites = data.clothingSprites;
         handSprites = data.handSprites;
+        equipmentSprites = data.equipmentSprites;
+        
 
         paperdollLayerRotations = data.paperdollLayerRotations;
         paperdollClothingLayerRotations = data.paperdollClothingLayerRotations;

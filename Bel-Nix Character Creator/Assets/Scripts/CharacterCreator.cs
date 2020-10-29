@@ -1450,6 +1450,17 @@ public class CharacterCreator : MonoBehaviour {
 
         }
 
+        for (int i = 0; i < token.equipmentSprites.Length; i++)
+        {
+
+            if (token.equipmentSprites[i])
+                paperDollEquipmentLayers[i].sprite = spriteLibrary.GetSprite(ConstructKey("equipmenttypekey"), i);
+
+            else
+                paperDollEquipmentLayers[i].sprite = blankSprite;
+
+        }
+
         for (int i = 0; i < paperDollLayers.Length; i++)
         {
             paperDollLayers[i].color = token.paperdollLayerColors[i];
@@ -1469,6 +1480,13 @@ public class CharacterCreator : MonoBehaviour {
             paperDollHandLayers[i].color = token.paperdollHandLayerColors[i];
             paperDollHandLayers[i].rectTransform.localRotation = new Quaternion(0, token.paperdollHandLayerRotations[i], 0, 0);
         }
+
+        for (int i = 0; i < paperDollEquipmentLayers.Length; i++)
+        {
+            paperDollEquipmentLayers[i].color = token.paperdollEquipmentLayerColors[i];
+            paperDollEquipmentLayers[i].rectTransform.localRotation = new Quaternion(0, token.paperdollEquipmentLayerRotations[i], 0, 0);
+        }
+
 
         ResetLastSelectedLayer();
 
@@ -1519,6 +1537,17 @@ public class CharacterCreator : MonoBehaviour {
 
         }
 
+        for (int i = 0; i < token.equipmentSprites.Length; i++)
+        {
+
+
+            if (!IsLayerEmpty(paperDollEquipmentLayers[i]))
+                token.equipmentSprites[i] = true;
+
+            else
+                token.equipmentSprites[i] = false;
+
+        }
 
         for (int i = 0; i < paperDollLayers.Length; i++)
         {
@@ -1542,9 +1571,13 @@ public class CharacterCreator : MonoBehaviour {
             token.paperdollHandLayerRotations[i] = paperDollHandLayers[i].rectTransform.localRotation.y;
         }
 
+        for (int i = 0; i < paperDollEquipmentLayers.Length; i++)
+        {
 
-
-
+            token.paperdollEquipmentLayerColors[i] = paperDollEquipmentLayers[i].color;
+            token.paperdollEquipmentLayerRotations[i] = paperDollEquipmentLayers[i].rectTransform.localRotation.y;
+        }
+        
 
     }
 

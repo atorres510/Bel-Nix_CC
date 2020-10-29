@@ -23,6 +23,7 @@ public class TokenData {
 
     public bool[] clothingSprites;
     public bool[] handSprites;
+    public bool[] equipmentSprites;
 
     public float[] paperdollLayerRotations;
     public float[] paperdollClothingLayerRotations;
@@ -53,6 +54,7 @@ public class TokenData {
 
         clothingSprites = token.clothingSprites;
         handSprites = token.handSprites;
+        equipmentSprites = token.equipmentSprites;
 
         paperdollLayerRotations = token.paperdollLayerRotations;
         paperdollClothingLayerRotations = token.paperdollClothingLayerRotations;
