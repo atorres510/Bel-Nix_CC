@@ -6,7 +6,7 @@ using System.IO;
 public class DataManger : MonoBehaviour
 {
 
-    string fileName = "";
+    static string fileName = "";
 
     public string FileName { get { return fileName; } set { fileName = value; } }
     

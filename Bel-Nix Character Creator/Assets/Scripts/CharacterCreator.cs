@@ -24,6 +24,7 @@ public class CharacterCreator : MonoBehaviour {
     public Token tieflingToken;*/
 
     public SpriteLibrary spriteLibrary;
+    public DataManger datamanger;
     public Renderer activeRenderer;
     public GameObject gridObject;
     public GameObject presetsObject;
@@ -1716,6 +1717,13 @@ public class CharacterCreator : MonoBehaviour {
         paperDollEquipmentLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[7]);
 
         skinLayer = skinLayers[0]; //skinLayer only needs to be set to any of the skin layers
+
+       
+
+        if (datamanger.FileName != "") {
+            datamanger.LoadToken(currentToken);
+            datamanger.FileName = "";
+        }
 
         previousToken = currentToken;
 
