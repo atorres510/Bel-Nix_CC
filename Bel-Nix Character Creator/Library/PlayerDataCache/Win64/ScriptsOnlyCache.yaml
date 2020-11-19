@@ -17,12 +17,13 @@ ScriptsOnlyBuild:
     - SpriteLibrary
     - Token
     - UI_LoadingPanel
-    - UI_SavingPanel
+    - UI_PopUpBehaviour
     - UnityEngine.UI.BoxSlider
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
     Unity.TextMeshPro.dll:
     - TMPro.TMP_FontAsset
+    - TMPro.TMP_InputField
     - TMPro.TMP_Settings
     - TMPro.TMP_SpriteAsset
     - TMPro.TMP_StyleSheet
@@ -48,6 +49,7 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.Mask
     - UnityEngine.UI.Outline
     - UnityEngine.UI.RawImage
+    - UnityEngine.UI.RectMask2D
     - UnityEngine.UI.ScrollRect
     - UnityEngine.UI.Scrollbar
     - UnityEngine.UI.Slider
@@ -97,6 +99,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12060}
     - Class: 114
+      Script: {instanceID: 12084}
+    - Class: 114
       Script: {instanceID: 12112}
     - Class: 114
       Script: {instanceID: 12126}
@@ -106,6 +110,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 12200}
     - Class: 114
       Script: {instanceID: 12262}
+    - Class: 114
+      Script: {instanceID: 12294}
     - Class: 114
       Script: {instanceID: 12402}
     - Class: 114
@@ -508,7 +514,7 @@ ScriptsOnlyBuild:
     className: ControlTrack
   - hash:
       serializedVersion: 2
-      Hash: 39aa4e8e1d1cbfc2f386db4e594e5892
+      Hash: 79a5b79b15361da4ed4017edd6003025
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Token
@@ -520,10 +526,10 @@ ScriptsOnlyBuild:
     className: Selectable
   - hash:
       serializedVersion: 2
-      Hash: cd1880960110b1ed5f85759f52842e17
+      Hash: ff5dddca9142e2fb9b6b44f15b69637a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: UI_SavingPanel
+    className: UI_PopUpBehaviour
   - hash:
       serializedVersion: 2
       Hash: 040dd48e3a027d5424519a5fa2009df4
@@ -556,7 +562,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: 6918f9ee861d22d0d9c8f93827c9980e
+      Hash: 72c8f2f6b4993b7540cc626042678215
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: UI_LoadingPanel
@@ -646,7 +652,7 @@ ScriptsOnlyBuild:
     className: Physics2DRaycaster
   - hash:
       serializedVersion: 2
-      Hash: be9b6664c0470c45526ecd994542c0f8
+      Hash: 6de3b8c0bacb531374785ee6cf5d34de
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CharacterCreator
@@ -822,4 +828,4 @@ ScriptsOnlyBuild:
   scenePathNames:
   - Assets/Scenes/Main Menu.unity
   - Assets/Scenes/CharacterCreationScene.unity
-  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild02/Bel-Nix Character Creator.exe
+  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild03/Bel-Nix Character Creator.exe
