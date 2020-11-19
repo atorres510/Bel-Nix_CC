@@ -13,7 +13,7 @@ public class UI_LoadingPanel : MonoBehaviour
 
     public DataManger dataManager;
 
-    public TextMeshProUGUI fileNameText;
+    public TMP_InputField fileNameText;
     
     public string filePath = "";
     
@@ -42,7 +42,7 @@ public class UI_LoadingPanel : MonoBehaviour
 
     void ChangeNameText(string name) {
 
-        fileNameText.SetText(name);
+        fileNameText.text = name;
         dataManager.FileName = name;
         
     }
@@ -55,7 +55,7 @@ public class UI_LoadingPanel : MonoBehaviour
 
     public void ResetPanel() {
 
-        fileNameText.SetText("");
+        fileNameText.text = "";
 
         loadButton.interactable = false;
 
