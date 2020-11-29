@@ -49,6 +49,7 @@ public class CharacterCreator : MonoBehaviour {
     public GameObject canvasBackgroundObject;
 
     string exportName;
+    public InputField UIcharacterNameField;
 
     public GameObject paperDoll;
     Image[] paperDollLayers;
@@ -1410,11 +1411,16 @@ public class CharacterCreator : MonoBehaviour {
 
     #region Token Methods
 
+    //takes a token and applies it's data to the paperdoll presented on screen
     public void ApplyTokenToPaperdoll(Token token) {
 
         if (token == null) {return;}
 
         exportName = token.tokenName;
+
+        //changes the inputfield with character name in the UI to match the token's name
+        if (UIcharacterNameField != null)
+            UIcharacterNameField.text = token.tokenName;
 
         size = token.size;
         chestType = token.chestType;
@@ -1429,7 +1435,7 @@ public class CharacterCreator : MonoBehaviour {
         shoulderSprite = token.shoulderSprite;
         helmetSprite = token.helmetSprite;
         racialSprite = token.racialSprite;
-
+        //for each sublayer, it goes through the list of sprites and applies tokens
         for (int i = 0; i < token.clothingSprites.Length; i++) {
 
             if (token.clothingSprites[i])
@@ -1589,8 +1595,15 @@ public class CharacterCreator : MonoBehaviour {
     //for stupid button use
     public void StartUploadPNG() {
 
-      StartCoroutine("UploadPNG");
-      
+        if (exportName == "") {
+            Debug.LogError("Token needs a name before exporting.");
+            return;
+        }
+           
+
+        else
+            StartCoroutine("UploadPNG");
+        
     }
 
     //Sets the name of the file
