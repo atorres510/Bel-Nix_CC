@@ -447,6 +447,9 @@ public class CharacterCreator : MonoBehaviour {
             case "Hands":
                 return paperDollHandLayers;
 
+            case "Equipment":
+                return paperDollEquipmentLayers;
+
             default:
                 return paperDollLayers;
                 
@@ -823,6 +826,7 @@ public class CharacterCreator : MonoBehaviour {
                 break;
 
             case "BACK":
+                Debug.Log("ActiveLayer = " + activeLayer);
                 paperDollLayers[activeLayer].sprite = buttonSprite;
                 TogglePressedStateAsGroup(button);
                 lastSelectedLayer = paperDollLayers[activeLayer];
@@ -986,13 +990,7 @@ public class CharacterCreator : MonoBehaviour {
 
         //capes
         paperDollLayers[4].sprite = spriteLibrary.GetSprite(ConstructKey("capetypekey"), capeSprite);
-
-        //capes
-        paperDollLayers[5].sprite = spriteLibrary.GetSprite(ConstructKey("backtypekey"), backSprite);
-
-        //shoulders
-        paperDollLayers[6].sprite = spriteLibrary.GetSprite(ConstructKey("shouldertypekey"), shoulderSprite);
-
+        
         //update equipment
         for (int i = 0; i < paperDollEquipmentLayers.Length; i++)
         {
@@ -1004,6 +1002,12 @@ public class CharacterCreator : MonoBehaviour {
             }
 
         }
+
+        //Back
+        paperDollLayers[6].sprite = spriteLibrary.GetSprite(ConstructKey("backtypekey"), backSprite);
+
+        //shoulders
+        paperDollLayers[7].sprite = spriteLibrary.GetSprite(ConstructKey("shouldertypekey"), shoulderSprite);
 
         //update head based on race
         paperDollLayers[8].sprite = spriteLibrary.GetSprite("HEADS", ConstructKey("headtypekey"));
@@ -1727,10 +1731,14 @@ public class CharacterCreator : MonoBehaviour {
         paperDollLayers = ReturnImagesFromTag("PaperdollLayer");
         paperDollClothingLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[2]);
         paperDollHandLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[3]);
-        paperDollEquipmentLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[7]);
+        paperDollEquipmentLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[5]);
 
         skinLayer = skinLayers[0]; //skinLayer only needs to be set to any of the skin layers
 
+        for (int i = 0; i < paperDollLayers.Length; i++) {
+            Debug.Log(paperDollLayers[i].name + ": " + i);
+        }
+           
        
 
         if (datamanger.FileName != "") {
