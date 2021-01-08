@@ -90,7 +90,8 @@ public class CharacterCreator : MonoBehaviour {
     string headString = "Base";
     string[] sexStrings = { "F", "M" };
     string[] sizeStrings = { "Med", "Sm" };
-    string[] bodyStrings = { "Bony", "Fit", "Stout", "Thick", "Buff"};
+    string[] chestStrings = { "NoCup", "ACup", "BCup", "CCup", "DCup" };
+    string[] bodyStrings = { "Bony", "BonyThin", "Fit", "FitThin", "Buff", "Stout", "Thick"};
     string[] raceStrings = { "Base", "Dragonborn", "Tiefling" };
     string[] accessoryStrings = { "BackItems", "HandItems", "HelmetItems", "ShoulderItems", "CapeItems", "ScarfItems" };
 
@@ -115,74 +116,74 @@ public class CharacterCreator : MonoBehaviour {
 
             case "BODYTYPEKEY":
 
-                key = sizeStrings[size] + "_" + raceStrings[raceType] + "_bodyType";
+                key = "BodyType_" + sizeStrings[size] + "_" + raceStrings[raceType];
 
                 break;
 
             case "CHESTTYPEKEY":
 
-                key = sizeStrings[size] + "_" + bodyStrings[bodyType] + "_chestType";
+                key = "ChestType_" + sizeStrings[size] + "_" + bodyStrings[bodyType];
 
                 break;
 
             case "CLOTHINGTYPEKEY":
 
-                key = sizeStrings[size] + "_" + bodyStrings[bodyType] + /*chesttype*/ "_clothingType";
+                key = "ClothingType_" + sizeStrings[size] + "_" + bodyStrings[bodyType] + "_" + chestStrings[chestType];
 
                 break;
 
             case "BACKTYPEKEY":
 
-                key = sizeStrings[size] + "_backType";
+                key = "BackType_" + sizeStrings[size];
 
                 break;
 
             case "HEADTYPEKEY":
 
-                key = sizeStrings[size] + "_" + headString + "_headType";
+                key = "HeadType_" + sizeStrings[size] + "_" + headString;
 
                 break;
 
             case "HAIRTYPEKEY":
 
-                key = sizeStrings[size] + "_" + raceStrings[raceType] + "_hairType";
+                key = "HairType_" + sizeStrings[size] + "_" + raceStrings[raceType];
 
                 break;
 
             case "HANDTYPEKEY":
 
-                key = sizeStrings[size] + "_" + raceStrings[raceType] + "_" + bodyStrings[bodyType] +"_handType";
+                key = "HandType_" + sizeStrings[size] + "_" + raceStrings[raceType] + "_" + bodyStrings[bodyType];
 
                 break;
 
             case "CAPETYPEKEY":
 
-                key = sizeStrings[size] + "_capeType";
+                key = "CapeType_"+ sizeStrings[size];
 
                 break;
 
             case "SHOULDERTYPEKEY":
 
-                key = sizeStrings[size] + "_shoulderType";
+                key = "ShoulderType_" + sizeStrings[size];
 
                 break;
 
             case "HELMETTYPEKEY":
 
-                key = sizeStrings[size] + "_" + raceStrings[raceType] + "_helmetType";
+                key = "HelmetType_" + sizeStrings[size] + "_" + raceStrings[raceType];
 
                 break;
 
             case "EQUIPMENTTYPEKEY":
 
-                key = sizeStrings[size] + "_EquipmentType";
+                key = "EquipmentType_" + sizeStrings[size];
 
                 break;
 
 
             case "RACIALFEATUREKEY":
 
-                key = raceStrings[raceType] + "_racialFeatures";
+                key = "racialFeatures_" + raceStrings[raceType];
 
                 break;
                 
@@ -194,7 +195,7 @@ public class CharacterCreator : MonoBehaviour {
 
         key = key.ToUpper();
 
-        //Debug.Log(key);
+        Debug.Log(key);
 
         return key;
 
@@ -1010,7 +1011,7 @@ public class CharacterCreator : MonoBehaviour {
         paperDollLayers[7].sprite = spriteLibrary.GetSprite(ConstructKey("shouldertypekey"), shoulderSprite);
 
         //update head based on race
-        paperDollLayers[8].sprite = spriteLibrary.GetSprite("HEADS", ConstructKey("headtypekey"));
+        paperDollLayers[8].sprite = spriteLibrary.GetSprite("Heads", ConstructKey("headtypekey"));
 
         //update hair based on race
         paperDollLayers[9].sprite = spriteLibrary.GetSprite(ConstructKey("hairtypekey"), hairSprite);
@@ -1176,7 +1177,7 @@ public class CharacterCreator : MonoBehaviour {
 
         }
 
-        Debug.Log("Last Selected Button was " + button.name);
+        //Debug.Log("Last Selected Button was " + button.name);
 
     }
     

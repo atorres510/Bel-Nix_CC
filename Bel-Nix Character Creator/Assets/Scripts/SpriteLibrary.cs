@@ -64,7 +64,7 @@ public class SpriteLibrary : MonoBehaviour {
 
         foreach (Sprite s in sprites)
         {
-
+           
             if (s.name == id)
             {
 
