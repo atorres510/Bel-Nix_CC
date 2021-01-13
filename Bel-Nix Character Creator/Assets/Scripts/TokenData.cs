@@ -19,7 +19,8 @@ public class TokenData {
     public int backSprite;
     public int shoulderSprite;
     public int helmetSprite;
-    public int racialSprite;
+    public int hornSprite;
+    public int tailSprite;
 
     public bool[] clothingSprites;
     public bool[] handSprites;
@@ -50,7 +51,8 @@ public class TokenData {
         backSprite = token.backSprite;
         shoulderSprite = token.shoulderSprite;
         helmetSprite = token.helmetSprite;
-        racialSprite = token.racialSprite;
+        hornSprite = token.hornSprite;
+        tailSprite = token.tailSprite;
 
         clothingSprites = token.clothingSprites;
         handSprites = token.handSprites;

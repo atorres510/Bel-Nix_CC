@@ -67,7 +67,7 @@ public class DataManger : MonoBehaviour
         token.backSprite = data.backSprite;
         token.shoulderSprite = data.shoulderSprite;
         token.helmetSprite = data.helmetSprite;
-        token.racialSprite = data.racialSprite;
+        token.hornSprite = data.hornSprite;
 
         token.clothingSprites = data.clothingSprites;
         token.handSprites = data.handSprites;

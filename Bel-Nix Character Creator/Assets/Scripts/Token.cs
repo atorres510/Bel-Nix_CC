@@ -16,7 +16,8 @@ public class Token : MonoBehaviour
     public int backSprite;
     public int shoulderSprite;
     public int helmetSprite;
-    public int racialSprite;
+    public int hornSprite;
+    public int tailSprite;
 
     public bool[] clothingSprites;
     public bool[] handSprites;
@@ -47,7 +48,7 @@ public class Token : MonoBehaviour
         backSprite = data.backSprite;
         shoulderSprite = data.shoulderSprite;
         helmetSprite = data.helmetSprite;
-        racialSprite = data.racialSprite;
+        hornSprite = data.hornSprite;
 
         clothingSprites = data.clothingSprites;
         handSprites = data.handSprites;
@@ -108,7 +109,7 @@ public class Token : MonoBehaviour
         backSprite = token.backSprite;
         shoulderSprite = token.shoulderSprite;
         helmetSprite = token.helmetSprite;
-        racialSprite = token.racialSprite;
+        hornSprite = token.hornSprite;
 
         clothingSprites = token.clothingSprites;
         handSprites = token.handSprites;

@@ -82,7 +82,8 @@ public class CharacterCreator : MonoBehaviour {
     int backSprite = 0;
     int shoulderSprite = 0;
     int helmetSprite = 0;
-    int racialSprite = 0;
+    int hornSprite = 0;
+    int tailSprite = 0;
 
 
     //arrays of strings that are used to construct the keys needed to GetSprites or FillButtons.  Used by ConstructKey
@@ -95,7 +96,7 @@ public class CharacterCreator : MonoBehaviour {
     string[] raceStrings = { "Base", "Dragonborn", "Tiefling" };
     string[] accessoryStrings = { "BackItems", "HandItems", "HelmetItems", "ShoulderItems", "CapeItems", "ScarfItems" };
 
-    //Stores Keys
+    //Stores Keys 
     string bodyTypeKey;
     string clothingTypeKey;
     string accessoryTypeKey;
@@ -180,13 +181,27 @@ public class CharacterCreator : MonoBehaviour {
 
                 break;
 
+            case "HORNTYPEKEY":
 
-            case "RACIALFEATUREKEY":
-
-                key = "racialFeatures_" + raceStrings[raceType];
+                key = "HornType_" + raceStrings[raceType];
 
                 break;
-                
+
+            case "TAILTYPEKEY":
+
+                key = "TailType_" + raceStrings[raceType];
+
+                break;
+
+
+
+
+            /*case "RACIALFEATUREKEY":
+
+                 key = "racialFeatures_" + raceStrings[raceType];
+
+                 break;*/
+
             default:
                 Debug.Log("Defaulting ConstructKey()");
                 break;
@@ -337,10 +352,20 @@ public class CharacterCreator : MonoBehaviour {
                 ResizeButtonGridSprites(1);
                 break;
 
-            case "RACIALFEATURE":
-                FillButtons(ConstructKey("RacialFeatureKey"));
-                SetButtonPressedStates(racialSprite);
+            case "HORNS":
+                FillButtons(ConstructKey("HornTypeKey"));
+                SetButtonPressedStates(hornSprite);
                 
+                picker.CurrentColor = paperDollLayers[activeLayer].color;
+                lastSelectedLayer = skinLayer;
+                ChangeFixedColumnCount(3);
+                ResizeButtonGridSprites(1);
+                break;
+
+            case "TAIL":
+                FillButtons(ConstructKey("TailTypeKey"));
+                SetButtonPressedStates(tailSprite);
+
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = skinLayer;
                 ChangeFixedColumnCount(3);
@@ -731,7 +756,8 @@ public class CharacterCreator : MonoBehaviour {
             bodyType = token.bodyType;
             headString = token.head;
             hairSprite = token.hairSprite;
-            racialSprite = token.racialSprite;
+            hornSprite = token.hornSprite;
+            tailSprite = token.tailSprite;
             
         }
 
@@ -863,13 +889,22 @@ public class CharacterCreator : MonoBehaviour {
                 paperDollHandLayers[buttonIndex].sprite = ReturnButtonSpriteAsToggle(button);
                 break;
 
-            case "RACIALFEATURE":
+            case "HORNS":
 
                 paperDollLayers[activeLayer].sprite = buttonSprite;
                 TogglePressedStateAsGroup(button);
                 
-                racialSprite = buttonIndex;
-                Debug.Log("RacialFeatureSprite = " + racialSprite);
+                hornSprite = buttonIndex;
+                Debug.Log("HornSprite = " + hornSprite);
+                break;
+
+            case "TAIL":
+
+                paperDollLayers[activeLayer].sprite = buttonSprite;
+                TogglePressedStateAsGroup(button);
+
+                tailSprite = buttonIndex;
+                Debug.Log("TailSprite = " + tailSprite);
                 break;
 
             case "HELMET":
@@ -960,13 +995,31 @@ public class CharacterCreator : MonoBehaviour {
 
     //called in SetSpriteToPaperdoll() and other UI buttons.  updates sprites that are dependant on other variables, such as race, body type, chest type, etc.
     void UpdatePaperDoll() {
-        
+
+        int layer = 0;
+        //update tail
+        if (raceType == 0)
+        {
+
+            paperDollLayers[layer].sprite = blankSprite;
+            tailSprite = 0;
+
+        }
+
+        else
+        {
+
+            paperDollLayers[layer].sprite = spriteLibrary.GetSprite(ConstructKey("tailtypekey"), tailSprite);
+
+        }
+
+        layer++;
         //update body based on race
-        paperDollLayers[0].sprite = spriteLibrary.GetSprite(ConstructKey("bodytypekey"), bodyType);
-        
+        paperDollLayers[layer].sprite = spriteLibrary.GetSprite(ConstructKey("bodytypekey"), bodyType);
+        layer++;
         //update chest
-        paperDollLayers[1].sprite = spriteLibrary.GetSprite(ConstructKey("chesttypekey"), chestType);
-        
+        paperDollLayers[layer].sprite = spriteLibrary.GetSprite(ConstructKey("chesttypekey"), chestType);
+        layer++;
         //update clothes
         for (int i = 0; i < paperDollClothingLayers.Length; i++) {
 
@@ -976,7 +1029,7 @@ public class CharacterCreator : MonoBehaviour {
             }
             
         }
-
+        layer++;
         //update hands
         for (int i = 0; i < paperDollHandLayers.Length; i++)
         {
@@ -988,10 +1041,10 @@ public class CharacterCreator : MonoBehaviour {
             }
 
         }
-
+        layer++;
         //capes
-        paperDollLayers[4].sprite = spriteLibrary.GetSprite(ConstructKey("capetypekey"), capeSprite);
-        
+        paperDollLayers[layer].sprite = spriteLibrary.GetSprite(ConstructKey("capetypekey"), capeSprite);
+        layer++;
         //update equipment
         for (int i = 0; i < paperDollEquipmentLayers.Length; i++)
         {
@@ -1003,36 +1056,36 @@ public class CharacterCreator : MonoBehaviour {
             }
 
         }
-
+        layer++;
         //Back
-        paperDollLayers[6].sprite = spriteLibrary.GetSprite(ConstructKey("backtypekey"), backSprite);
-
+        paperDollLayers[layer].sprite = spriteLibrary.GetSprite(ConstructKey("backtypekey"), backSprite);
+        layer++;
         //shoulders
-        paperDollLayers[7].sprite = spriteLibrary.GetSprite(ConstructKey("shouldertypekey"), shoulderSprite);
-
+        paperDollLayers[layer].sprite = spriteLibrary.GetSprite(ConstructKey("shouldertypekey"), shoulderSprite);
+        layer++;
         //update head based on race
-        paperDollLayers[8].sprite = spriteLibrary.GetSprite("Heads", ConstructKey("headtypekey"));
-
+        paperDollLayers[layer].sprite = spriteLibrary.GetSprite("Heads", ConstructKey("headtypekey"));
+        layer++;
         //update hair based on race
-        paperDollLayers[9].sprite = spriteLibrary.GetSprite(ConstructKey("hairtypekey"), hairSprite);
-        
-        //update racial feature
+        paperDollLayers[layer].sprite = spriteLibrary.GetSprite(ConstructKey("hairtypekey"), hairSprite);
+        layer++;
+        //update horns
         if (raceType == 0)
         {
 
-            paperDollLayers[10].sprite = blankSprite;
-            racialSprite = 0;
+            paperDollLayers[layer].sprite = blankSprite;
+            hornSprite = 0;
 
         }
-
+        
         else {
 
-            paperDollLayers[10].sprite = spriteLibrary.GetSprite(ConstructKey("racialfeaturekey"), racialSprite);
+            paperDollLayers[layer].sprite = spriteLibrary.GetSprite(ConstructKey("horntypekey"), hornSprite);
 
         }
-
+        layer++;
         //update helmet based on race
-        paperDollLayers[11].sprite = spriteLibrary.GetSprite(ConstructKey("helmettypekey"), helmetSprite);
+        paperDollLayers[layer].sprite = spriteLibrary.GetSprite(ConstructKey("helmettypekey"), helmetSprite);
 
 
     }
@@ -1439,7 +1492,8 @@ public class CharacterCreator : MonoBehaviour {
         backSprite = token.backSprite;
         shoulderSprite = token.shoulderSprite;
         helmetSprite = token.helmetSprite;
-        racialSprite = token.racialSprite;
+        hornSprite = token.hornSprite;
+        tailSprite = token.tailSprite;
         //for each sublayer, it goes through the list of sprites and applies tokens
         for (int i = 0; i < token.clothingSprites.Length; i++) {
 
@@ -1524,7 +1578,8 @@ public class CharacterCreator : MonoBehaviour {
         token.backSprite = backSprite;
         token.shoulderSprite = shoulderSprite;
         token.helmetSprite = helmetSprite;
-        token.racialSprite = racialSprite;
+        token.hornSprite = hornSprite;
+        token.tailSprite = tailSprite;
 
         for (int i = 0; i < token.clothingSprites.Length; i++)
         {
@@ -1730,9 +1785,9 @@ public class CharacterCreator : MonoBehaviour {
 
         //sets our paperdoll layer arrays
         paperDollLayers = ReturnImagesFromTag("PaperdollLayer");
-        paperDollClothingLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[2]);
-        paperDollHandLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[3]);
-        paperDollEquipmentLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[5]);
+        paperDollClothingLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[3]);
+        paperDollHandLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[4]);
+        paperDollEquipmentLayers = ReturnImagesFromTag("PaperdollSubLayer", paperDollLayers[6]);
 
         skinLayer = skinLayers[0]; //skinLayer only needs to be set to any of the skin layers
 
