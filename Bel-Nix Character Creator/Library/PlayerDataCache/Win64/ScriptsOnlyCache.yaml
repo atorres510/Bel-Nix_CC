@@ -18,6 +18,7 @@ ScriptsOnlyBuild:
     - Token
     - UI_LoadingPanel
     - UI_PopUpBehaviour
+    - UI_Selector
     - UnityEngine.UI.BoxSlider
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
@@ -34,6 +35,7 @@ ScriptsOnlyBuild:
     - UnityEditor.TestTools.TestRunner.TestRun.TestJobDataHolder
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
+    - UnityEngine.EventSystems.EventTrigger
     - UnityEngine.EventSystems.StandaloneInputModule
     - UnityEngine.EventSystems.TouchInputModule
     - UnityEngine.UI.AspectRatioFitter
@@ -54,7 +56,6 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.Scrollbar
     - UnityEngine.UI.Slider
     - UnityEngine.UI.Text
-    - UnityEngine.UI.Toggle
     - UnityEngine.UI.VerticalLayoutGroup
   sceneClasses:
     Assets/Scenes/CharacterCreationScene.unity:
@@ -149,27 +150,29 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 13332}
     - Class: 114
-      Script: {instanceID: 13424}
+      Script: {instanceID: 13348}
     - Class: 114
-      Script: {instanceID: 13518}
+      Script: {instanceID: 13426}
     - Class: 114
-      Script: {instanceID: 13526}
+      Script: {instanceID: 13520}
     - Class: 114
-      Script: {instanceID: 13586}
+      Script: {instanceID: 13528}
     - Class: 114
-      Script: {instanceID: 13750}
+      Script: {instanceID: 13588}
     - Class: 114
-      Script: {instanceID: 13842}
+      Script: {instanceID: 13752}
     - Class: 114
-      Script: {instanceID: 13850}
+      Script: {instanceID: 13844}
     - Class: 114
-      Script: {instanceID: 13912}
+      Script: {instanceID: 13852}
     - Class: 114
-      Script: {instanceID: 13922}
+      Script: {instanceID: 13914}
     - Class: 114
-      Script: {instanceID: 13992}
+      Script: {instanceID: 13924}
     - Class: 114
-      Script: {instanceID: 14010}
+      Script: {instanceID: 13948}
+    - Class: 114
+      Script: {instanceID: 13994}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 124
@@ -250,17 +253,17 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 13296}
     - Class: 114
-      Script: {instanceID: 13518}
+      Script: {instanceID: 13520}
     - Class: 114
-      Script: {instanceID: 13586}
+      Script: {instanceID: 13588}
     - Class: 114
-      Script: {instanceID: 13750}
+      Script: {instanceID: 13752}
     - Class: 114
-      Script: {instanceID: 13768}
+      Script: {instanceID: 13770}
     - Class: 114
-      Script: {instanceID: 13912}
+      Script: {instanceID: 13914}
     - Class: 114
-      Script: {instanceID: 13992}
+      Script: {instanceID: 13994}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 124
@@ -526,7 +529,7 @@ ScriptsOnlyBuild:
     className: ControlTrack
   - hash:
       serializedVersion: 2
-      Hash: 79a5b79b15361da4ed4017edd6003025
+      Hash: a4610781a16897edf05f04375265d021
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Token
@@ -664,10 +667,16 @@ ScriptsOnlyBuild:
     className: Physics2DRaycaster
   - hash:
       serializedVersion: 2
-      Hash: 87610f2c21ce6dcbc5eead5a2d09acf4
+      Hash: 00945b207e47e1f71304faaccd7bc000
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CharacterCreator
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UI_Selector
   - hash:
       serializedVersion: 2
       Hash: c1933cc0a2f4ff6eb13333347497beb3
@@ -840,4 +849,4 @@ ScriptsOnlyBuild:
   scenePathNames:
   - Assets/Scenes/Main Menu.unity
   - Assets/Scenes/CharacterCreationScene.unity
-  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild04/Bel-Nix Character Creator.exe
+  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild05/Bel-Nix Character Creator.exe

@@ -33,6 +33,7 @@ public class UI_PopUpBehaviour : MonoBehaviour
 
     }
     
+    //called by other objects in the UI
     public void UpdatePopUpText(string keyword) {
 
         if (keyword == "")
