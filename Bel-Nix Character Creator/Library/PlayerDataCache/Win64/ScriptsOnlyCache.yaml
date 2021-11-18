@@ -849,4 +849,4 @@ ScriptsOnlyBuild:
   scenePathNames:
   - Assets/Scenes/Main Menu.unity
   - Assets/Scenes/CharacterCreationScene.unity
-  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild05/Bel-Nix Character Creator.exe
+  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild06/Bel-Nix Character Creator.exe
