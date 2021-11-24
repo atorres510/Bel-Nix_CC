@@ -12,10 +12,12 @@ ScriptsOnlyBuild:
     - ColorSliderImage
     - DataManger
     - HexColorField
+    - ImageExporter
     - SVBoxSlider
     - SceneTransitionManager
     - SpriteLibrary
     - Token
+    - UI_ColorPresets
     - UI_LoadingPanel
     - UI_PopUpBehaviour
     - UI_Selector
@@ -132,47 +134,51 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12900}
     - Class: 114
-      Script: {instanceID: 13020}
+      Script: {instanceID: 12940}
     - Class: 114
-      Script: {instanceID: 13048}
+      Script: {instanceID: 13024}
     - Class: 114
-      Script: {instanceID: 13130}
+      Script: {instanceID: 13052}
     - Class: 114
-      Script: {instanceID: 13214}
+      Script: {instanceID: 13134}
     - Class: 114
-      Script: {instanceID: 13226}
+      Script: {instanceID: 13218}
     - Class: 114
-      Script: {instanceID: 13246}
+      Script: {instanceID: 13230}
     - Class: 114
-      Script: {instanceID: 13276}
+      Script: {instanceID: 13250}
     - Class: 114
       Script: {instanceID: 13280}
     - Class: 114
-      Script: {instanceID: 13332}
+      Script: {instanceID: 13284}
     - Class: 114
-      Script: {instanceID: 13348}
+      Script: {instanceID: 13336}
     - Class: 114
-      Script: {instanceID: 13426}
+      Script: {instanceID: 13352}
     - Class: 114
-      Script: {instanceID: 13520}
+      Script: {instanceID: 13430}
     - Class: 114
-      Script: {instanceID: 13528}
+      Script: {instanceID: 13524}
     - Class: 114
-      Script: {instanceID: 13588}
+      Script: {instanceID: 13532}
     - Class: 114
-      Script: {instanceID: 13752}
+      Script: {instanceID: 13592}
     - Class: 114
-      Script: {instanceID: 13844}
+      Script: {instanceID: 13756}
     - Class: 114
-      Script: {instanceID: 13852}
+      Script: {instanceID: 13848}
     - Class: 114
-      Script: {instanceID: 13914}
+      Script: {instanceID: 13856}
     - Class: 114
-      Script: {instanceID: 13924}
+      Script: {instanceID: 13918}
     - Class: 114
-      Script: {instanceID: 13948}
+      Script: {instanceID: 13928}
     - Class: 114
-      Script: {instanceID: 13994}
+      Script: {instanceID: 13952}
+    - Class: 114
+      Script: {instanceID: 13998}
+    - Class: 114
+      Script: {instanceID: 22774}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 124
@@ -218,6 +224,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 89
       Script: {instanceID: 0}
+    - Class: 95
+      Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
@@ -247,23 +255,23 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12900}
     - Class: 114
-      Script: {instanceID: 13130}
+      Script: {instanceID: 13134}
     - Class: 114
-      Script: {instanceID: 13280}
+      Script: {instanceID: 13284}
     - Class: 114
-      Script: {instanceID: 13296}
+      Script: {instanceID: 13300}
     - Class: 114
-      Script: {instanceID: 13520}
+      Script: {instanceID: 13524}
     - Class: 114
-      Script: {instanceID: 13588}
+      Script: {instanceID: 13592}
     - Class: 114
-      Script: {instanceID: 13752}
+      Script: {instanceID: 13756}
     - Class: 114
-      Script: {instanceID: 13770}
+      Script: {instanceID: 13774}
     - Class: 114
-      Script: {instanceID: 13914}
+      Script: {instanceID: 13918}
     - Class: 114
-      Script: {instanceID: 13994}
+      Script: {instanceID: 13998}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 124
@@ -577,7 +585,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: 72c8f2f6b4993b7540cc626042678215
+      Hash: 8e53cd33a6e88f5a8377a33cf030810b
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: UI_LoadingPanel
@@ -587,6 +595,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestTools.TestRunner.Callbacks
     className: RemoteTestResultSender
+  - hash:
+      serializedVersion: 2
+      Hash: d01d16aab833acd415826f0e1c36050f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ImageExporter
   - hash:
       serializedVersion: 2
       Hash: 4fd8bf02e3089425d3502e26c44ba31a
@@ -845,8 +859,14 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: a45e8ba6b8945fd09da0c694996a889f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UI_ColorPresets
   platform: 19
   scenePathNames:
   - Assets/Scenes/Main Menu.unity
   - Assets/Scenes/CharacterCreationScene.unity
-  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild06/Bel-Nix Character Creator.exe
+  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild07/Bel-Nix Character Creator.exe

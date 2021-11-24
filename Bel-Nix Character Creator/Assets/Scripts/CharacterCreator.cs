@@ -1,9 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
-using System.IO;
-
 
 
 public class CharacterCreator : MonoBehaviour {
@@ -30,7 +29,7 @@ public class CharacterCreator : MonoBehaviour {
     public GameObject presetsObject;
     public Sprite blankUISprite;
 
-    public Sprite blankSprite;
+    public Sprite blankSprite; 
 
     public ColorPicker picker;
     public Image emptyImage;
@@ -211,7 +210,7 @@ public class CharacterCreator : MonoBehaviour {
 
         key = key.ToUpper();
 
-        Debug.Log(key);
+        //Debug.Log(key);
 
         return key;
 
@@ -295,7 +294,7 @@ public class CharacterCreator : MonoBehaviour {
                 SetButtonPressedStates(bodyType); //leaves the button with the sprite of the current body type pressed, with the rest remaining in normal state (unpressed).
                 picker.CurrentColor = paperDollLayers[activeLayer].color; //sets the color of the body to be the one selected on the color pick for easier editing.
                 lastSelectedLayer = paperDollLayers[activeLayer]; //since the body color should coordinate with other layers associated with skin, the skinlayer is used.  This will also update things like head, chest.
-                selector.SelectThis(buttonGrid[bodyType].GetComponent<RectTransform>());
+                //selector.SelectThis(buttonGrid[bodyType].GetComponent<RectTransform>());
                 Debug.Log("Button: " + bodyType);
                 ChangeFixedColumnCount(3);//number of columns is 3 on the grid.
                 ResizeButtonGridSprites(1); //sprites will be at normal transform.scale = (1, 1, 1)
@@ -319,7 +318,7 @@ public class CharacterCreator : MonoBehaviour {
                 SetButtonPressedStates(chestType);
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = paperDollLayers[activeLayer];
-                selector.SelectThis(buttonGrid[chestType].GetComponent<RectTransform>());
+                //selector.SelectThis(buttonGrid[chestType].GetComponent<RectTransform>());
                 ChangeFixedColumnCount(3);
                 ResizeButtonGridSprites(1);
                 break;
@@ -345,7 +344,7 @@ public class CharacterCreator : MonoBehaviour {
                 SetButtonPressedStates(backSprite);
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = paperDollLayers[activeLayer];
-                selector.SelectThis(buttonGrid[backSprite].GetComponent<RectTransform>());
+                //selector.SelectThis(buttonGrid[backSprite].GetComponent<RectTransform>());
                 ChangeFixedColumnCount(3);
                 ResizeButtonGridSprites(1);
                 break;
@@ -355,7 +354,7 @@ public class CharacterCreator : MonoBehaviour {
                 SetButtonPressedStates(capeSprite);
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = paperDollLayers[activeLayer];
-                selector.SelectThis(buttonGrid[capeSprite].GetComponent<RectTransform>());
+                //selector.SelectThis(buttonGrid[capeSprite].GetComponent<RectTransform>());
                 ChangeFixedColumnCount(3);
                 ResizeButtonGridSprites(1);
 
@@ -366,7 +365,7 @@ public class CharacterCreator : MonoBehaviour {
                 SetButtonPressedStates(shoulderSprite);
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = paperDollLayers[activeLayer];
-                selector.SelectThis(buttonGrid[shoulderSprite].GetComponent<RectTransform>());
+                //selector.SelectThis(buttonGrid[shoulderSprite].GetComponent<RectTransform>());
                 ChangeFixedColumnCount(3);
                 ResizeButtonGridSprites(1);
                 break;
@@ -391,7 +390,7 @@ public class CharacterCreator : MonoBehaviour {
               
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = paperDollLayers[activeLayer];
-                selector.SelectThis(buttonGrid[hairSprite].GetComponent<RectTransform>());
+                //selector.SelectThis(buttonGrid[hairSprite].GetComponent<RectTransform>());
                 ChangeFixedColumnCount(3);
                 ResizeButtonGridSprites(1);
                 break;
@@ -402,7 +401,7 @@ public class CharacterCreator : MonoBehaviour {
                 
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = paperDollLayers[activeLayer];
-                selector.SelectThis(buttonGrid[hornSprite].GetComponent<RectTransform>());
+                //selector.SelectThis(buttonGrid[hornSprite].GetComponent<RectTransform>());
                 ChangeFixedColumnCount(3);
                 ResizeButtonGridSprites(1);
                 break;
@@ -412,7 +411,7 @@ public class CharacterCreator : MonoBehaviour {
                 SetButtonPressedStates(helmetSprite);
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = paperDollLayers[activeLayer];
-                selector.SelectThis(buttonGrid[helmetSprite].GetComponent<RectTransform>());
+                //selector.SelectThis(buttonGrid[helmetSprite].GetComponent<RectTransform>());
                 ChangeFixedColumnCount(3);
                 ResizeButtonGridSprites(1);
                 break;
@@ -966,10 +965,10 @@ public class CharacterCreator : MonoBehaviour {
     public void RandomizePaperdoll() {
 
         //body
-        bodyType = Random.Range(0, bodyStrings.Length); //sets a random body type
+        bodyType = UnityEngine.Random.Range(0, bodyStrings.Length); //sets a random body type
 
         //hair 
-        hairSprite = Random.Range(0, spriteLibrary.GetSprites(ConstructKey("hairtypekey")).Length);
+        hairSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites(ConstructKey("hairtypekey")).Length);
         
 
         //clothing
@@ -978,7 +977,7 @@ public class CharacterCreator : MonoBehaviour {
 
         for (int i = 0; i < paperDollClothingLayers.Length; i++) {
 
-            if (Random.value < 0.5f)
+            if (UnityEngine.Random.value < 0.5f)
                 paperDollClothingLayers[i].sprite = clothingSprites[i];
 
             else
@@ -1014,7 +1013,7 @@ public class CharacterCreator : MonoBehaviour {
 
 
         //cape
-        capeSprite = Random.Range(0, spriteLibrary.GetSprites("CAPEITEMS").Length);
+        capeSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("CAPEITEMS").Length);
         
 
 
@@ -1524,13 +1523,16 @@ public class CharacterCreator : MonoBehaviour {
 
     #region Token Methods
 
+   
+
     //takes a token and applies it's data to the paperdoll presented on screen
     public void ApplyTokenToPaperdoll(Token token) {
 
         if (token == null) {return;}
 
-        exportName = token.tokenName;
-
+        currentToken.tokenName = token.tokenName;
+        
+        
         //changes the inputfield with character name in the UI to match the token's name
         if (UIcharacterNameField != null)
             UIcharacterNameField.text = token.tokenName;
@@ -1612,6 +1614,8 @@ public class CharacterCreator : MonoBehaviour {
         ResetLastSelectedLayer();
 
         UpdatePaperDoll();
+
+        token.CallTokenEvents();
         
     }
 
@@ -1619,7 +1623,7 @@ public class CharacterCreator : MonoBehaviour {
 
         if (token == null) { return; }
         
-        token.tokenName = exportName;
+        token.tokenName = currentToken.tokenName;
 
         token.size = size;
         token.chestType = chestType;
@@ -1699,133 +1703,13 @@ public class CharacterCreator : MonoBehaviour {
             token.paperdollEquipmentLayerColors[i] = paperDollEquipmentLayers[i].color;
             token.paperdollEquipmentLayerRotations[i] = paperDollEquipmentLayers[i].rectTransform.localRotation.y;
         }
-        
+
+        token.CallTokenEvents();
 
     }
 
     #endregion  
-
-    #region PNG Export Methods
-
-    //for stupid button use
-    public void StartUploadPNG() {
-
-        if (exportName == "") {
-            Debug.LogError("Token needs a name before exporting.");
-            return;
-        }
-           
-
-        else
-            StartCoroutine("UploadPNG");
-        
-    }
-
-    //Sets the name of the file
-    public void SetExportName(string name) {
-
-        exportName = name;
-        currentToken.tokenName = name;
-        //Debug.Log(exportName);
-        
-    }
-
-    //enumerated method for saving the PNG file to screenshots
-    IEnumerator UploadPNG()
-    {
-        //from unity documentation
-
-        RectTransform paperDollRectTransform = paperDoll.GetComponent<RectTransform>();
-
-        //stores old settings and changes them for the screenshot
-        Vector3 paperDollOldPos = paperDollRectTransform.position;
-        Vector3 paperDollOldScale = paperDollRectTransform.localScale;
-
-        paperDollRectTransform.position = new Vector3(40, 40, 0);
-        paperDollRectTransform.localScale = new Vector3(1, 1, 1);
-
-        //get rid of background temporarily to preserve alpha
-        canvasBackgroundObject.SetActive(false);
-        gridObject.SetActive(false);
-
-        // We should only read the screen buffer after rendering is complete
-        yield return new WaitForEndOfFrame();
-
-        // Create a texture the size of the screen, ARGB32 format
-       // int width = Screen.width;
-       // int height = Screen.height;
-
-      
-        Texture2D tex = new Texture2D(70, 70, TextureFormat.ARGB32, false);
-        
-        // Read screen contents into the texture
-        tex.ReadPixels(new Rect(5, 5, 75, 75), 0, 0);
-        tex.Apply();
-
-        // Encode texture into PNG
-        byte[] bytes = tex.EncodeToPNG();
-        Object.Destroy(tex);
-
-        ReassignRedundantExportName(exportName, Application.streamingAssetsPath + "/Screenshots/");
-
-        // For testing purposes, also write to a file in the project folder
-        File.WriteAllBytes(Application.streamingAssetsPath + "/Screenshots/" + exportName + ".png", bytes);
-
-        paperDollRectTransform.position = paperDollOldPos;
-        paperDollRectTransform.localScale = paperDollOldScale;
-
-        canvasBackgroundObject.SetActive(true);
-        gridObject.SetActive(true);
-        
-        Debug.Log("Screenshot Taken");
-
-        yield return 0;
-
-    }
-
-    //addes numbers to the export name to avoid redundant filenames
-    void ReassignRedundantExportName(string name, string folderPath) {
-
-        string[] filePaths = Directory.GetFiles(folderPath);
-
-        int counter = 0;
-
-        string currentFilePath;
-        string lessRedundantName = name;
-
-        bool isThereStillARedundancy;
-
-        do
-        {
-
-            currentFilePath = Application.streamingAssetsPath + "/Screenshots/" + lessRedundantName + ".png";
-            isThereStillARedundancy = false;
-
-            foreach (string filePath in filePaths)
-            {
-
-                if (filePath == currentFilePath)
-                {
-
-                    counter++;
-                    lessRedundantName = name + counter;
-                    isThereStillARedundancy = true;
-                    //Debug.Log(counter);
-                    
-
-                }
-
-            }
-
-
-
-        } while (isThereStillARedundancy);
-
-        exportName = lessRedundantName;
-      
-    }
-        
-    #endregion
+    
   
     // Use this for initialization
     void Start () {
@@ -1849,7 +1733,7 @@ public class CharacterCreator : MonoBehaviour {
         skinColor = skinLayers[0].color;
 
         for (int i = 0; i < paperDollLayers.Length; i++) {
-            Debug.Log(paperDollLayers[i].name + ": " + i);
+            //Debug.Log(paperDollLayers[i].name + ": " + i);
         }
            
        

@@ -33,7 +33,26 @@ public class Token : MonoBehaviour
     public Color[] paperdollHandLayerColors;
     public Color[] paperdollEquipmentLayerColors;
 
+    public void ChangeTokenName(string name) {
 
+        tokenName = name;
+        CallTokenEvents();
+
+    }
+
+    public void CallTokenEvents() {
+
+        ChangeTokenNameEvent?.Invoke(tokenName);
+        ChangeTokenRaceEvent?.Invoke(raceID);
+
+    }
+
+    public event ChangeTokenNameDelegate ChangeTokenNameEvent;
+    public delegate void ChangeTokenNameDelegate(string n);
+
+    public event ChangeTokenRaceDelegate ChangeTokenRaceEvent;
+    public delegate void ChangeTokenRaceDelegate(int race);
+    
     public Token(TokenData data) {
 
         size = data.size;

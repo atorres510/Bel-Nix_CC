@@ -12,6 +12,7 @@ public class UI_Selector : MonoBehaviour
         gameObject.SetActive(true);
 
         rect.anchoredPosition = buttonTransform.anchoredPosition;
+        
 
         Debug.Log("Button Name: " + buttonTransform.name);
         Debug.Log(buttonTransform.anchoredPosition);

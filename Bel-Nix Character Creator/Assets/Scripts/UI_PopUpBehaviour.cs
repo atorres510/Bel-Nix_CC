@@ -12,23 +12,36 @@ public class UI_PopUpBehaviour : MonoBehaviour
     public string defaultText = "";
 
     public string[] dynamicText;
+
+    int keywordElement;
   
     TextMeshProUGUI TMPComponent;
 
-    string ConstructSentenceWithKeyword(string keyword) {
-
-        string sentence = "";
+    //goes through the dynamic text array to determine the empty space.  this empty space significes where we want the text to go.
+    void SetKeywordElement() {
 
         for (int i = 0; i < dynamicText.Length; i++)
         {
 
             if (dynamicText[i] == "")
-                dynamicText[i] = keyword;
-
-            sentence = sentence + dynamicText[i];
-
+                keywordElement = i;
+            
         }
-        
+
+    }
+
+
+    string ConstructSentenceWithKeyword(string keyword) {
+
+        string sentence = "";
+
+        dynamicText[keywordElement] = keyword;
+
+        for (int i = 0; i < dynamicText.Length; i++)
+        {
+            sentence = sentence + dynamicText[i];
+        }
+
         return sentence;
 
     }
@@ -41,7 +54,9 @@ public class UI_PopUpBehaviour : MonoBehaviour
 
         else
             TMPComponent.SetText(ConstructSentenceWithKeyword(keyword));
-        
+
+
+        Debug.Log(keyword);
     }
 
     IEnumerator PopUpTimer(float seconds) {
@@ -63,6 +78,7 @@ public class UI_PopUpBehaviour : MonoBehaviour
     private void Awake()
     {
         TMPComponent = GetComponentInChildren<TextMeshProUGUI>();
+        SetKeywordElement();
         TMPComponent.SetText(defaultText);
         gameObject.SetActive(false);
     }

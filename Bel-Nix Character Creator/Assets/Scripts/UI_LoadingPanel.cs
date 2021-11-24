@@ -13,7 +13,7 @@ public class UI_LoadingPanel : MonoBehaviour
 
     public DataManger dataManager;
 
-    public TMP_InputField fileNameText;
+    public TMP_Text fileNameText;
     
     public string filePath = "";
     
@@ -27,7 +27,6 @@ public class UI_LoadingPanel : MonoBehaviour
             return;
 
         for (int i = 0; i < fileNames.Length; i++) {
-
 
             //Debug.Log(fileNames[i]);
             Button newButton = Instantiate(buttonPrefab, this.transform);
