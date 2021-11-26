@@ -773,7 +773,7 @@ ScriptsOnlyBuild:
     className: BeforeAfterTestCommandState
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 0b8a7eda88f5544876af08ef4d403f79
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: VideoManager
