@@ -23,7 +23,7 @@ public class SceneTransitionManager : MonoBehaviour
         SceneFadeOut();
         
     }
-
+    
     public void LoadScene() {
 
         SceneManager.LoadScene(nextSceneToLoad);
@@ -46,6 +46,12 @@ public class SceneTransitionManager : MonoBehaviour
     public void SceneFadeOut() {
 
         animator.SetTrigger("FadeOutAnim");
+
+    }
+
+    public void SceneWhiteOut() {
+
+        animator.SetTrigger("WhiteOutAnim");
 
     }
 
