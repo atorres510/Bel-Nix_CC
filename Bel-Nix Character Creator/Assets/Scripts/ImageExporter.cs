@@ -46,7 +46,7 @@ public class ImageExporter : MonoBehaviour
     {
         //from unity documentation
 
-        string exportName = currentToken.name;
+        string exportName = currentToken.tokenName;
 
         RectTransform paperDollRectTransform = paperDoll.GetComponent<RectTransform>();
 

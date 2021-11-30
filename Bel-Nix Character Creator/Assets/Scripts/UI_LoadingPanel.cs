@@ -35,13 +35,16 @@ public class UI_LoadingPanel : MonoBehaviour
 
             newButton.onClick.AddListener(delegate {ChangeNameText(newButton.GetComponentInChildren<TextMeshProUGUI>().text); });
             newButton.onClick.AddListener(delegate { ActivateLoadButton(); });
+
         }
         
     }
 
     void ChangeNameText(string name) {
 
-        fileNameText.text = name;
+        fileNameText.SetText(name);
+        Debug.Log(fileNameText.text);
+        Debug.Log("Name: " + name);
         dataManager.FileName = name;
         
     }
@@ -65,8 +68,7 @@ public class UI_LoadingPanel : MonoBehaviour
             Destroy(button.gameObject);
 
         }
-
-
+        
     }
     
 }

@@ -29,7 +29,6 @@ ScriptsOnlyBuild:
     Unity.TextMeshPro.dll:
     - TMPro.TMP_Dropdown
     - TMPro.TMP_FontAsset
-    - TMPro.TMP_InputField
     - TMPro.TMP_Settings
     - TMPro.TMP_SpriteAsset
     - TMPro.TMP_StyleSheet
@@ -64,7 +63,6 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.Mask
     - UnityEngine.UI.Outline
     - UnityEngine.UI.RawImage
-    - UnityEngine.UI.RectMask2D
     - UnityEngine.UI.ScrollRect
     - UnityEngine.UI.Scrollbar
     - UnityEngine.UI.Slider
@@ -120,8 +118,6 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12070}
     - Class: 114
-      Script: {instanceID: 12094}
-    - Class: 114
       Script: {instanceID: 12122}
     - Class: 114
       Script: {instanceID: 12136}
@@ -131,8 +127,6 @@ ScriptsOnlyBuild:
       Script: {instanceID: 12214}
     - Class: 114
       Script: {instanceID: 12278}
-    - Class: 114
-      Script: {instanceID: 12318}
     - Class: 114
       Script: {instanceID: 12430}
     - Class: 114
@@ -909,4 +903,4 @@ ScriptsOnlyBuild:
   scenePathNames:
   - Assets/Scenes/Main Menu.unity
   - Assets/Scenes/CharacterCreationScene.unity
-  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild09/Bel-Nix Character Creator.exe
+  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild10/Bel-Nix Character Creator.exe
