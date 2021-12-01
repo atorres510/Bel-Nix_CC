@@ -7,13 +7,36 @@ public class SceneTransitionManager : MonoBehaviour
 {
 
     public Animator animator;
+    [Space(10)]
+    public Canvas IntroAnimCanvas;
     public Canvas fadeCanvas;
 
+    Animator IntroAnimCanvasAnimator;
+
+    public static bool isFirstLoad = true;
     int nextSceneToLoad = 0;
 
     public void QuitGame() {
 
         Application.Quit();
+
+    }
+
+    void InstantiateIntroAnimator() {
+
+        if (IntroAnimCanvas != null)
+            IntroAnimCanvasAnimator = IntroAnimCanvas.GetComponent<Animator>();
+        else
+            Debug.LogWarning("No intro animation canvas object.  Please set canvas object in the inspector.");
+
+
+    }
+
+    public void PlayIntroAnimation() {
+
+        animator.SetTrigger("FadeInAnim");
+        IntroAnimCanvasAnimator.SetTrigger("IntroAnim");
+        isFirstLoad = false;
 
     }
 
@@ -49,15 +72,14 @@ public class SceneTransitionManager : MonoBehaviour
 
     }
 
-    public void SceneWhiteOut() {
-
-        animator.SetTrigger("WhiteOutAnim");
-
-    }
-
     private void Awake()
     {
-        //SceneManager.sceneLoaded += SceneFadeIn;
+        InstantiateIntroAnimator();
+
+        if(isFirstLoad)
+            PlayIntroAnimation();
+
+
     }
 
 

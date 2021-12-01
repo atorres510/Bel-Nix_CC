@@ -20,8 +20,11 @@ ScriptsOnlyBuild:
     - Token
     - UI_ColorPresets
     - UI_LoadingPanel
+    - UI_MediaPlayerSlider
+    - UI_MediaPlayerSongTitle
     - UI_PopUpBehaviour
     - UI_Selector
+    - UI_ToggleImage
     - UnityEngine.UI.BoxSlider
     - VideoManager
     Unity.Rider.Editor.dll:
@@ -63,6 +66,7 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.Mask
     - UnityEngine.UI.Outline
     - UnityEngine.UI.RawImage
+    - UnityEngine.UI.RectMask2D
     - UnityEngine.UI.ScrollRect
     - UnityEngine.UI.Scrollbar
     - UnityEngine.UI.Slider
@@ -261,6 +265,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12070}
     - Class: 114
+      Script: {instanceID: 12318}
+    - Class: 114
       Script: {instanceID: 12430}
     - Class: 114
       Script: {instanceID: 12536}
@@ -294,6 +300,12 @@ ScriptsOnlyBuild:
       Script: {instanceID: 14002}
     - Class: 114
       Script: {instanceID: 14020}
+    - Class: 114
+      Script: {instanceID: 28350}
+    - Class: 114
+      Script: {instanceID: 61274}
+    - Class: 114
+      Script: {instanceID: 244892}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 124
@@ -607,7 +619,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: c52eaf78e3fbe04df99e3d43ec8a8f59
+      Hash: 50cff62cd584f9119d1970dd1f67775e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: AudioManager
@@ -781,7 +793,7 @@ ScriptsOnlyBuild:
     className: MarkerTrack
   - hash:
       serializedVersion: 2
-      Hash: fbb2c0a78298fd9f0508debd361fefdc
+      Hash: 4cd7a06d7de13810965db333e182bb54
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SceneTransitionManager
@@ -899,8 +911,26 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: b2a9ef4bc0589aec4377eff6288259cc
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UI_MediaPlayerSlider
+  - hash:
+      serializedVersion: 2
+      Hash: 1fcb1287015504543a942f5016501ccd
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UI_MediaPlayerSongTitle
+  - hash:
+      serializedVersion: 2
+      Hash: a694cf390ddff086e370cdcc790a9bd8
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UI_ToggleImage
   platform: 19
   scenePathNames:
   - Assets/Scenes/Main Menu.unity
   - Assets/Scenes/CharacterCreationScene.unity
-  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild10/Bel-Nix Character Creator.exe
+  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild11/Bel-Nix Character Creator.exe
