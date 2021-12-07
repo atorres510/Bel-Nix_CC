@@ -78,8 +78,7 @@ public class SceneTransitionManager : MonoBehaviour
 
         if(isFirstLoad)
             PlayIntroAnimation();
-
-
+        
     }
 
 

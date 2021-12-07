@@ -39,10 +39,8 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -140,61 +138,61 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12596}
     - Class: 114
-      Script: {instanceID: 12764}
+      Script: {instanceID: 12768}
     - Class: 114
-      Script: {instanceID: 12776}
+      Script: {instanceID: 12780}
     - Class: 114
-      Script: {instanceID: 12832}
+      Script: {instanceID: 12836}
     - Class: 114
-      Script: {instanceID: 12856}
+      Script: {instanceID: 12860}
     - Class: 114
-      Script: {instanceID: 12902}
+      Script: {instanceID: 12906}
     - Class: 114
-      Script: {instanceID: 12942}
+      Script: {instanceID: 12946}
     - Class: 114
-      Script: {instanceID: 13024}
+      Script: {instanceID: 13028}
     - Class: 114
-      Script: {instanceID: 13052}
+      Script: {instanceID: 13056}
     - Class: 114
-      Script: {instanceID: 13134}
+      Script: {instanceID: 13138}
     - Class: 114
-      Script: {instanceID: 13218}
+      Script: {instanceID: 13222}
     - Class: 114
-      Script: {instanceID: 13230}
+      Script: {instanceID: 13234}
     - Class: 114
-      Script: {instanceID: 13250}
+      Script: {instanceID: 13254}
     - Class: 114
-      Script: {instanceID: 13280}
+      Script: {instanceID: 13286}
     - Class: 114
-      Script: {instanceID: 13284}
+      Script: {instanceID: 13290}
     - Class: 114
-      Script: {instanceID: 13308}
+      Script: {instanceID: 13314}
     - Class: 114
-      Script: {instanceID: 13338}
+      Script: {instanceID: 13344}
     - Class: 114
-      Script: {instanceID: 13354}
+      Script: {instanceID: 13360}
     - Class: 114
-      Script: {instanceID: 13432}
+      Script: {instanceID: 13438}
     - Class: 114
-      Script: {instanceID: 13526}
+      Script: {instanceID: 13532}
     - Class: 114
-      Script: {instanceID: 13534}
+      Script: {instanceID: 13540}
     - Class: 114
-      Script: {instanceID: 13594}
+      Script: {instanceID: 13600}
     - Class: 114
-      Script: {instanceID: 13760}
+      Script: {instanceID: 13766}
     - Class: 114
-      Script: {instanceID: 13852}
+      Script: {instanceID: 13858}
     - Class: 114
-      Script: {instanceID: 13860}
+      Script: {instanceID: 13866}
     - Class: 114
-      Script: {instanceID: 13922}
+      Script: {instanceID: 13928}
     - Class: 114
-      Script: {instanceID: 13932}
+      Script: {instanceID: 13938}
     - Class: 114
-      Script: {instanceID: 13956}
+      Script: {instanceID: 13962}
     - Class: 114
-      Script: {instanceID: 14002}
+      Script: {instanceID: 14008}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 124
@@ -273,39 +271,39 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12570}
     - Class: 114
-      Script: {instanceID: 12776}
+      Script: {instanceID: 12686}
     - Class: 114
-      Script: {instanceID: 12888}
+      Script: {instanceID: 12718}
     - Class: 114
-      Script: {instanceID: 12902}
+      Script: {instanceID: 12780}
     - Class: 114
-      Script: {instanceID: 13134}
+      Script: {instanceID: 12892}
     - Class: 114
-      Script: {instanceID: 13284}
+      Script: {instanceID: 12906}
     - Class: 114
-      Script: {instanceID: 13300}
+      Script: {instanceID: 13138}
     - Class: 114
-      Script: {instanceID: 13526}
+      Script: {instanceID: 13276}
     - Class: 114
-      Script: {instanceID: 13594}
+      Script: {instanceID: 13290}
     - Class: 114
-      Script: {instanceID: 13704}
+      Script: {instanceID: 13306}
     - Class: 114
-      Script: {instanceID: 13760}
+      Script: {instanceID: 13532}
     - Class: 114
-      Script: {instanceID: 13778}
+      Script: {instanceID: 13600}
     - Class: 114
-      Script: {instanceID: 13922}
+      Script: {instanceID: 13710}
     - Class: 114
-      Script: {instanceID: 14002}
+      Script: {instanceID: 13766}
     - Class: 114
-      Script: {instanceID: 14020}
+      Script: {instanceID: 13784}
     - Class: 114
-      Script: {instanceID: 28350}
+      Script: {instanceID: 13928}
     - Class: 114
-      Script: {instanceID: 61274}
+      Script: {instanceID: 14008}
     - Class: 114
-      Script: {instanceID: 244892}
+      Script: {instanceID: 14026}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 124
@@ -583,6 +581,18 @@ ScriptsOnlyBuild:
     className: Selectable
   - hash:
       serializedVersion: 2
+      Hash: b2a9ef4bc0589aec4377eff6288259cc
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UI_MediaPlayerSlider
+  - hash:
+      serializedVersion: 2
+      Hash: a694cf390ddff086e370cdcc790a9bd8
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UI_ToggleImage
+  - hash:
+      serializedVersion: 2
       Hash: ff5dddca9142e2fb9b6b44f15b69637a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
@@ -689,6 +699,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: SignalReceiver
+  - hash:
+      serializedVersion: 2
+      Hash: 1fcb1287015504543a942f5016501ccd
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UI_MediaPlayerSongTitle
   - hash:
       serializedVersion: 2
       Hash: 3164bc883ff663a5cdb32d1ef7e7c0c5
@@ -911,26 +927,8 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: b2a9ef4bc0589aec4377eff6288259cc
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: UI_MediaPlayerSlider
-  - hash:
-      serializedVersion: 2
-      Hash: 1fcb1287015504543a942f5016501ccd
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: UI_MediaPlayerSongTitle
-  - hash:
-      serializedVersion: 2
-      Hash: a694cf390ddff086e370cdcc790a9bd8
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: UI_ToggleImage
   platform: 19
   scenePathNames:
   - Assets/Scenes/Main Menu.unity
   - Assets/Scenes/CharacterCreationScene.unity
-  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild11/Bel-Nix Character Creator.exe
+  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild12/Bel-Nix Character Creator.exe

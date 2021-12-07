@@ -6,14 +6,11 @@ public class AudioManager : MonoBehaviour
 {
 
     public string audioSourceTag = "AudioSource";
-
-    [Space(10)]
-
-    public static bool isShuffling;
-
-    [Space(10)]
-
-    public static int startingSong;
+    
+    static bool isLooping;
+    static bool isShuffling;
+    static bool isMuted;
+    static int startingSong;
     public AudioClip[] playList;
 
 
@@ -54,21 +51,6 @@ public class AudioManager : MonoBehaviour
 
     }
 
-    void AudioLoadAssist() {
-
-
-
-    }
-
-    void TurnOnLoadInBackground(AudioClip clip) {
-        
-    }
-
-    void TurnOffLoadInBackground(AudioClip clip) {
-
-
-
-    }
 
 
     //tags audio source as primary;
