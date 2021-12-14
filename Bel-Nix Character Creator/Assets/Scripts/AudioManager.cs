@@ -13,6 +13,8 @@ public class AudioManager : MonoBehaviour
     static int startingSong;
     public AudioClip[] playList;
 
+    public float sourceVolume;
+
 
     AudioSource mainAudioSource;
 
@@ -51,6 +53,14 @@ public class AudioManager : MonoBehaviour
 
     }
 
+    void SyncAudioVariablesToSource(AudioSource source) {
+
+        source.loop = isLooping;
+        source.mute = isMuted;
+
+
+    }
+
 
 
     //tags audio source as primary;
@@ -83,6 +93,7 @@ public class AudioManager : MonoBehaviour
 
         if (isFirstLoad)
         {
+            sourceVolume = 0.25f;
             AudioClip newClip = playList[startingSong];
             mainAudioSource.clip = newClip;
             currentSong = startingSong;
@@ -123,11 +134,8 @@ public class AudioManager : MonoBehaviour
 
             songLengths[i] = playList[i].length;
             
-
-
         }
-
-
+        
     }
 
     int ReturnNextSong() {
@@ -196,10 +204,12 @@ public class AudioManager : MonoBehaviour
 
     public void ToggleLoop() {
 
-        if (mainAudioSource.loop)
-            mainAudioSource.loop = false;
+        if (isLooping)
+            isLooping = false;
         else
-            mainAudioSource.loop = true;
+            isLooping = true;
+
+        SyncAudioVariablesToSource(mainAudioSource);
 
     }
 
@@ -209,6 +219,14 @@ public class AudioManager : MonoBehaviour
             isShuffling = false;
         else
             isShuffling = true;
+
+        SyncAudioVariablesToSource(mainAudioSource);
+    }
+
+    public void SetVolume(float volume) {
+
+        sourceVolume = volume;
+        Debug.Log("Source Volume: " + sourceVolume);
 
     }
 
@@ -251,6 +269,8 @@ public class AudioManager : MonoBehaviour
         FindAudioSources();
 
         OnFirstLoad();
+
+        SyncAudioVariablesToSource(mainAudioSource);
         
         Debug.Log("Currently Playing: " + playList[currentSong].name);
 
@@ -260,6 +280,8 @@ public class AudioManager : MonoBehaviour
     {
         if (IsSongOver() && !mainAudioSource.loop)
             PlayNextSong();
+
+        mainAudioSource.volume = sourceVolume;
     }
 
 }
