@@ -5,7 +5,7 @@ public class VideoManager : MonoBehaviour
 
     int currentWidth = 1920;
     int currentHeight = 1080;
-    public bool isFullscreen;
+    bool isFullscreen;
 
 
     public void DropdownResolutionData(int i) {
@@ -76,6 +76,12 @@ public class VideoManager : MonoBehaviour
         
     }
 
+    public void SetFullscreen(bool fullScreen) {
+
+        isFullscreen = fullScreen;
+
+    }
+    
     private void Awake()
     {
 

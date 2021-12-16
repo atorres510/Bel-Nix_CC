@@ -103,17 +103,14 @@ public class UI_MediaPlayerSongTitle : MonoBehaviour
         SubscribeToAudioManagerEvents();
         border = FindBorder();
         Debug.Log("Border: " + border);
-      
         
-        
-
         //Debug.Log(thisRect.rect.width + maskRect.rect.width / 2);
         
     }
-
+    
     private void Start()
     {
-        UpdateText(currentSongName);
+        UpdateText(audioManager.GetCurrentSong().name);
     }
 
     private void Update()

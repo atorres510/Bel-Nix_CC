@@ -20,9 +20,9 @@ ScriptsOnlyBuild:
     - Token
     - UI_ColorPresets
     - UI_LoadingPanel
-    - UI_MediaPlayerSlider
     - UI_MediaPlayerSongTitle
     - UI_PopUpBehaviour
+    - UI_RaceButtonFix
     - UI_Selector
     - UI_ToggleImage
     - UnityEngine.UI.BoxSlider
@@ -39,8 +39,10 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -193,6 +195,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 13962}
     - Class: 114
       Script: {instanceID: 14008}
+    - Class: 114
+      Script: {instanceID: 321076}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 124
@@ -263,6 +267,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12070}
     - Class: 114
+      Script: {instanceID: 12186}
+    - Class: 114
       Script: {instanceID: 12318}
     - Class: 114
       Script: {instanceID: 12430}
@@ -270,8 +276,6 @@ ScriptsOnlyBuild:
       Script: {instanceID: 12536}
     - Class: 114
       Script: {instanceID: 12570}
-    - Class: 114
-      Script: {instanceID: 12686}
     - Class: 114
       Script: {instanceID: 12718}
     - Class: 114
@@ -629,7 +633,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: 816fbfc2e769651829b042404a2996af
+      Hash: 50cff62cd584f9119d1970dd1f67775e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: AudioManager
@@ -797,7 +801,7 @@ ScriptsOnlyBuild:
     className: BeforeAfterTestCommandState
   - hash:
       serializedVersion: 2
-      Hash: 0b8a7eda88f5544876af08ef4d403f79
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: VideoManager
@@ -927,8 +931,14 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: dfb407d7f8099a15d7831d6ab9f1efcd
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UI_RaceButtonFix
   platform: 19
   scenePathNames:
   - Assets/Scenes/Main Menu.unity
   - Assets/Scenes/CharacterCreationScene.unity
-  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild13/Bel-Nix Character Creator.exe
+  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild14/Bel-Nix Character Creator.exe

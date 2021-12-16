@@ -13,9 +13,8 @@ public class AudioManager : MonoBehaviour
     static int startingSong;
     public AudioClip[] playList;
 
-    public float sourceVolume;
-
-
+    static float sourceVolume;
+    
     AudioSource mainAudioSource;
 
     public AudioSource MainAudioSource {
@@ -33,7 +32,8 @@ public class AudioManager : MonoBehaviour
     public event SongChangeEvent OnSongChange;
     public delegate void SongChangeEvent(string songName, float songLength);
 
-
+    public event OnLoadEvent OnLoad;
+    public delegate void OnLoadEvent();
 
     #region AudioSource Methods
     //finds all audiosources in the game. determines a primary audio source at the first scene of game.  subsequent scenes 
@@ -57,8 +57,7 @@ public class AudioManager : MonoBehaviour
 
         source.loop = isLooping;
         source.mute = isMuted;
-
-
+        
     }
 
 
@@ -121,6 +120,13 @@ public class AudioManager : MonoBehaviour
         //Debug.Log("isSongOver: " + isSongOver);
 
         return isSongOver;
+
+    }
+
+    public AudioClip GetCurrentSong() {
+
+        return playList[currentSong];
+
 
     }
 

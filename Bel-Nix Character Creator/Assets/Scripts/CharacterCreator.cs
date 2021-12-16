@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class CharacterCreator : MonoBehaviour {
 
     public Token currentToken;
+    public Token defaultToken;
     Token previousToken;
     
     bool isClothingPersistent = true;
@@ -804,6 +805,13 @@ public class CharacterCreator : MonoBehaviour {
         ApplyPaperdollToToken(currentToken);
         UpdatePaperDoll();
 
+    }
+
+    public void ResetPaperdollAndToken() {
+
+        ApplyTokenToPaperdoll(defaultToken);
+        ApplyPaperdollToToken(currentToken);
+        
     }
 
     //used by the UI buttons on the button grid.  places the sprite represented on the grid onto the paperdoll at the active layer 

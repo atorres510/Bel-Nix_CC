@@ -31,7 +31,7 @@ public class ButtonGroupBehaviour : MonoBehaviour
 
 
     //toggles a set of buttons as a group, ensuring only one button is pressed from the group at a time. similar to a toggle group component
-    void TogglePressedStateAsGroup(Button thisButton)
+    public void TogglePressedStateAsGroup(Button thisButton)
     {
 
         thisButton.interactable = false; //this button is now pressed.
