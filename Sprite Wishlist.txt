@@ -1,0 +1,27 @@
+Sprites Needed (Ranked from Most to Least needed)
+
+X-dragonborn specific items
+	X-scaled body type x 2 
+	X-ridges or cartilage sprites or racial trait x 1
+	X-hair/cartilage type x 1-2
+	X-hand item/claw types x 1
+
+-chest clothing
+	-none, A, and B cups for fit and bony body types
+
+-helmet (one base one dragonborn each)
+	- cloth  
+	- leather 
+	- chain
+	- plate 
+X-shoulder
+	-add in the four
+		-bilateral and unilateral version
+
+X-back items
+	-weapon x 2 
+	-straps 
+	-backpack 
+	
+	
+	
