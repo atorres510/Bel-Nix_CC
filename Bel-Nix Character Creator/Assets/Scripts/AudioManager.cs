@@ -280,6 +280,8 @@ public class AudioManager : MonoBehaviour
         
         Debug.Log("Currently Playing: " + playList[currentSong].name);
 
+        DontDestroyOnLoad(this.gameObject);
+
     }
 
     private void Update()

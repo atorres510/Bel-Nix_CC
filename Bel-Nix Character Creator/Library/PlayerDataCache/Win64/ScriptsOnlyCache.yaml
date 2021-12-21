@@ -20,6 +20,7 @@ ScriptsOnlyBuild:
     - Token
     - UI_ColorPresets
     - UI_LoadingPanel
+    - UI_MediaPlayerSlider
     - UI_MediaPlayerSongTitle
     - UI_PopUpBehaviour
     - UI_RaceButtonFix
@@ -39,10 +40,8 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -132,6 +131,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12278}
     - Class: 114
+      Script: {instanceID: 12318}
+    - Class: 114
       Script: {instanceID: 12430}
     - Class: 114
       Script: {instanceID: 12536}
@@ -139,6 +140,10 @@ ScriptsOnlyBuild:
       Script: {instanceID: 12564}
     - Class: 114
       Script: {instanceID: 12596}
+    - Class: 114
+      Script: {instanceID: 12686}
+    - Class: 114
+      Script: {instanceID: 12718}
     - Class: 114
       Script: {instanceID: 12768}
     - Class: 114
@@ -152,51 +157,55 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12946}
     - Class: 114
-      Script: {instanceID: 13028}
+      Script: {instanceID: 12990}
     - Class: 114
-      Script: {instanceID: 13056}
+      Script: {instanceID: 13030}
     - Class: 114
-      Script: {instanceID: 13138}
+      Script: {instanceID: 13058}
     - Class: 114
-      Script: {instanceID: 13222}
+      Script: {instanceID: 13140}
     - Class: 114
-      Script: {instanceID: 13234}
+      Script: {instanceID: 13224}
     - Class: 114
-      Script: {instanceID: 13254}
+      Script: {instanceID: 13236}
     - Class: 114
-      Script: {instanceID: 13286}
+      Script: {instanceID: 13256}
     - Class: 114
-      Script: {instanceID: 13290}
+      Script: {instanceID: 13278}
     - Class: 114
-      Script: {instanceID: 13314}
+      Script: {instanceID: 13288}
     - Class: 114
-      Script: {instanceID: 13344}
+      Script: {instanceID: 13292}
     - Class: 114
-      Script: {instanceID: 13360}
+      Script: {instanceID: 13316}
     - Class: 114
-      Script: {instanceID: 13438}
+      Script: {instanceID: 13346}
     - Class: 114
-      Script: {instanceID: 13532}
+      Script: {instanceID: 13362}
     - Class: 114
-      Script: {instanceID: 13540}
+      Script: {instanceID: 13440}
     - Class: 114
-      Script: {instanceID: 13600}
+      Script: {instanceID: 13534}
     - Class: 114
-      Script: {instanceID: 13766}
+      Script: {instanceID: 13542}
     - Class: 114
-      Script: {instanceID: 13858}
+      Script: {instanceID: 13602}
     - Class: 114
-      Script: {instanceID: 13866}
+      Script: {instanceID: 13768}
     - Class: 114
-      Script: {instanceID: 13928}
+      Script: {instanceID: 13860}
     - Class: 114
-      Script: {instanceID: 13938}
+      Script: {instanceID: 13868}
     - Class: 114
-      Script: {instanceID: 13962}
+      Script: {instanceID: 13930}
     - Class: 114
-      Script: {instanceID: 14008}
+      Script: {instanceID: 13940}
     - Class: 114
-      Script: {instanceID: 321076}
+      Script: {instanceID: 13964}
+    - Class: 114
+      Script: {instanceID: 14010}
+    - Class: 114
+      Script: {instanceID: 14028}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 124
@@ -285,29 +294,29 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12906}
     - Class: 114
-      Script: {instanceID: 13138}
+      Script: {instanceID: 13140}
     - Class: 114
-      Script: {instanceID: 13276}
+      Script: {instanceID: 13278}
     - Class: 114
-      Script: {instanceID: 13290}
+      Script: {instanceID: 13292}
     - Class: 114
-      Script: {instanceID: 13306}
+      Script: {instanceID: 13308}
     - Class: 114
-      Script: {instanceID: 13532}
+      Script: {instanceID: 13534}
     - Class: 114
-      Script: {instanceID: 13600}
+      Script: {instanceID: 13602}
     - Class: 114
-      Script: {instanceID: 13710}
+      Script: {instanceID: 13712}
     - Class: 114
-      Script: {instanceID: 13766}
+      Script: {instanceID: 13768}
     - Class: 114
-      Script: {instanceID: 13784}
+      Script: {instanceID: 13786}
     - Class: 114
-      Script: {instanceID: 13928}
+      Script: {instanceID: 13930}
     - Class: 114
-      Script: {instanceID: 14008}
+      Script: {instanceID: 14010}
     - Class: 114
-      Script: {instanceID: 14026}
+      Script: {instanceID: 14028}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 124
@@ -657,6 +666,12 @@ ScriptsOnlyBuild:
     className: ImageExporter
   - hash:
       serializedVersion: 2
+      Hash: dfb407d7f8099a15d7831d6ab9f1efcd
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UI_RaceButtonFix
+  - hash:
+      serializedVersion: 2
       Hash: 4fd8bf02e3089425d3502e26c44ba31a
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -747,7 +762,7 @@ ScriptsOnlyBuild:
     className: UI_ColorPresets
   - hash:
       serializedVersion: 2
-      Hash: 00945b207e47e1f71304faaccd7bc000
+      Hash: fc10aca780edbb00911bb780f6eb80e4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CharacterCreator
@@ -921,6 +936,12 @@ ScriptsOnlyBuild:
     className: SignalEmitter
   - hash:
       serializedVersion: 2
+      Hash: de649be38a2cdc9c8b9d006a0ad938b0
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: MediaPlayer
+  - hash:
+      serializedVersion: 2
       Hash: 0fd6822f6177297bd0eb4d83cc7a9030
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -931,14 +952,8 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: dfb407d7f8099a15d7831d6ab9f1efcd
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: UI_RaceButtonFix
   platform: 19
   scenePathNames:
   - Assets/Scenes/Main Menu.unity
   - Assets/Scenes/CharacterCreationScene.unity
-  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild14/Bel-Nix Character Creator.exe
+  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild15/Bel-Nix Character Creator.exe
