@@ -284,7 +284,7 @@ public class CharacterCreator : MonoBehaviour {
 
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = paperDollLayers[activeLayer];
-                selector.SelectThis(buttonGrid[tailSprite].GetComponent<RectTransform>());
+                //selector.SelectThis(buttonGrid[tailSprite].GetComponent<RectTransform>());
                 ChangeFixedColumnCount(3);
                 ResizeButtonGridSprites(1);
                 break;

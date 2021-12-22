@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UI_MediaPlayerSlider : MonoBehaviour
 {
 
-    public AudioManager audioManager;
-    //AudioSource audioSource;
+    AudioManager audioManager;
+   
     
     Slider slider;
     static float currentSongLength = 0;
@@ -15,7 +16,7 @@ public class UI_MediaPlayerSlider : MonoBehaviour
     void GetComponents() {
 
         slider = gameObject.GetComponent<Slider>();
-        //audioSource = audioManager.MainAudioSource;
+        
         
     }
 
@@ -23,6 +24,12 @@ public class UI_MediaPlayerSlider : MonoBehaviour
 
         audioManager.OnSongChange += UpdateMaxValue;
         
+    }
+    void UnsubscribeToAudioManagerEvents()
+    {
+
+        audioManager.OnSongChange -= UpdateMaxValue;
+
     }
 
     void UpdateSliderValue() {
@@ -47,16 +54,25 @@ public class UI_MediaPlayerSlider : MonoBehaviour
         Debug.Log(slider.maxValue);
 
     }
-    
-
 
     private void Awake()
     {
+        audioManager = FindObjectOfType<AudioManager>() as AudioManager;
         GetComponents();
-        SubscribeToAudioManagerEvents();
-        UpdateMaxValue(currentSongLength);
-
+        UpdateMaxValue(audioManager.playList[audioManager.CurrentSong].length);
+    
     }
+
+    private void OnEnable()
+    {
+        SubscribeToAudioManagerEvents();
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeToAudioManagerEvents();
+    }
+
 
 
     // Update is called once per frame
