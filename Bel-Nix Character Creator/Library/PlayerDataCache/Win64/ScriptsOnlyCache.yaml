@@ -14,10 +14,12 @@ ScriptsOnlyBuild:
     - DataManger
     - HexColorField
     - ImageExporter
+    - MediaPlayer
     - SVBoxSlider
     - SceneTransitionManager
     - SpriteLibrary
     - Token
+    - UI_Brightness
     - UI_ColorPresets
     - UI_LoadingPanel
     - UI_MediaPlayerSlider
@@ -26,6 +28,7 @@ ScriptsOnlyBuild:
     - UI_RaceButtonFix
     - UI_Selector
     - UI_ToggleImage
+    - UI_VideoSettings
     - UnityEngine.UI.BoxSlider
     - VideoManager
     Unity.Rider.Editor.dll:
@@ -92,10 +95,6 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
-    - Class: 82
-      Script: {instanceID: 0}
-    - Class: 83
-      Script: {instanceID: 0}
     - Class: 89
       Script: {instanceID: 0}
     - Class: 91
@@ -109,9 +108,9 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11814}
     - Class: 114
-      Script: {instanceID: 11836}
+      Script: {instanceID: 11816}
     - Class: 114
-      Script: {instanceID: 11874}
+      Script: {instanceID: 11892}
     - Class: 114
       Script: {instanceID: 12028}
     - Class: 114
@@ -157,55 +156,63 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12946}
     - Class: 114
-      Script: {instanceID: 12990}
+      Script: {instanceID: 12992}
     - Class: 114
-      Script: {instanceID: 13030}
+      Script: {instanceID: 13032}
     - Class: 114
-      Script: {instanceID: 13058}
+      Script: {instanceID: 13060}
     - Class: 114
-      Script: {instanceID: 13140}
+      Script: {instanceID: 13142}
     - Class: 114
-      Script: {instanceID: 13224}
+      Script: {instanceID: 13226}
     - Class: 114
-      Script: {instanceID: 13236}
+      Script: {instanceID: 13238}
     - Class: 114
-      Script: {instanceID: 13256}
+      Script: {instanceID: 13258}
     - Class: 114
-      Script: {instanceID: 13278}
+      Script: {instanceID: 13280}
     - Class: 114
-      Script: {instanceID: 13288}
+      Script: {instanceID: 13290}
     - Class: 114
-      Script: {instanceID: 13292}
+      Script: {instanceID: 13294}
     - Class: 114
-      Script: {instanceID: 13316}
+      Script: {instanceID: 13318}
     - Class: 114
-      Script: {instanceID: 13346}
+      Script: {instanceID: 13348}
     - Class: 114
-      Script: {instanceID: 13362}
+      Script: {instanceID: 13364}
     - Class: 114
-      Script: {instanceID: 13440}
+      Script: {instanceID: 13442}
     - Class: 114
-      Script: {instanceID: 13534}
+      Script: {instanceID: 13536}
     - Class: 114
-      Script: {instanceID: 13542}
+      Script: {instanceID: 13544}
     - Class: 114
-      Script: {instanceID: 13602}
+      Script: {instanceID: 13604}
     - Class: 114
-      Script: {instanceID: 13768}
+      Script: {instanceID: 13628}
     - Class: 114
-      Script: {instanceID: 13860}
+      Script: {instanceID: 13716}
     - Class: 114
-      Script: {instanceID: 13868}
+      Script: {instanceID: 13772}
     - Class: 114
-      Script: {instanceID: 13930}
+      Script: {instanceID: 13864}
     - Class: 114
-      Script: {instanceID: 13940}
+      Script: {instanceID: 13872}
     - Class: 114
-      Script: {instanceID: 13964}
+      Script: {instanceID: 13934}
     - Class: 114
-      Script: {instanceID: 14010}
+      Script: {instanceID: 13944}
     - Class: 114
-      Script: {instanceID: 14028}
+      Script: {instanceID: 13968}
+    - Class: 114
+      Script: {instanceID: 14014}
+    - Class: 114
+      Script: {instanceID: 14032}
+    - Class: 114
+      Script: {instanceID: 14068}
+    - Class: 114
+      Script: {instanceID: 175802}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 124
@@ -264,7 +271,7 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11814}
     - Class: 114
-      Script: {instanceID: 11836}
+      Script: {instanceID: 11816}
     - Class: 114
       Script: {instanceID: 11874}
     - Class: 114
@@ -294,29 +301,33 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12906}
     - Class: 114
-      Script: {instanceID: 13140}
+      Script: {instanceID: 13142}
     - Class: 114
-      Script: {instanceID: 13278}
+      Script: {instanceID: 13280}
     - Class: 114
-      Script: {instanceID: 13292}
+      Script: {instanceID: 13294}
     - Class: 114
-      Script: {instanceID: 13308}
+      Script: {instanceID: 13310}
     - Class: 114
-      Script: {instanceID: 13534}
+      Script: {instanceID: 13536}
     - Class: 114
-      Script: {instanceID: 13602}
+      Script: {instanceID: 13604}
     - Class: 114
-      Script: {instanceID: 13712}
+      Script: {instanceID: 13716}
     - Class: 114
-      Script: {instanceID: 13768}
+      Script: {instanceID: 13772}
     - Class: 114
-      Script: {instanceID: 13786}
+      Script: {instanceID: 13790}
     - Class: 114
-      Script: {instanceID: 13930}
+      Script: {instanceID: 13934}
     - Class: 114
-      Script: {instanceID: 14010}
+      Script: {instanceID: 14014}
     - Class: 114
-      Script: {instanceID: 14028}
+      Script: {instanceID: 14032}
+    - Class: 114
+      Script: {instanceID: 14068}
+    - Class: 114
+      Script: {instanceID: 175802}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 124
@@ -594,7 +605,7 @@ ScriptsOnlyBuild:
     className: Selectable
   - hash:
       serializedVersion: 2
-      Hash: b2a9ef4bc0589aec4377eff6288259cc
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: UI_MediaPlayerSlider
@@ -642,7 +653,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: 50cff62cd584f9119d1970dd1f67775e
+      Hash: 60b1aa49def4c4da0aea12e9195e4671
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: AudioManager
@@ -664,6 +675,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ImageExporter
+  - hash:
+      serializedVersion: 2
+      Hash: 27d103c9069d5942b7b775b506e14421
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UI_MediaPlayerTimer
   - hash:
       serializedVersion: 2
       Hash: dfb407d7f8099a15d7831d6ab9f1efcd
@@ -720,7 +737,7 @@ ScriptsOnlyBuild:
     className: SignalReceiver
   - hash:
       serializedVersion: 2
-      Hash: 1fcb1287015504543a942f5016501ccd
+      Hash: a1454ec4dff936c014f29b8390b775cf
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: UI_MediaPlayerSongTitle
@@ -814,6 +831,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestTools
     className: BeforeAfterTestCommandState
+  - hash:
+      serializedVersion: 2
+      Hash: 3c34b08a7591bb5b986e52ab13bff0b8
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UI_Brightness
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -936,7 +959,7 @@ ScriptsOnlyBuild:
     className: SignalEmitter
   - hash:
       serializedVersion: 2
-      Hash: de649be38a2cdc9c8b9d006a0ad938b0
+      Hash: 0f2c431eea15b15e7e08411a1e09f621
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MediaPlayer
@@ -952,8 +975,14 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 4135d817b2e8da8639f19ae979bbd02f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UI_VideoSettings
   platform: 19
   scenePathNames:
   - Assets/Scenes/Main Menu.unity
   - Assets/Scenes/CharacterCreationScene.unity
-  playerPath: D:/Unity Builds/BNCC Builds/BNCCDevBuild15/Bel-Nix Character Creator.exe
+  playerPath: C:/Users/Jena/OneDrive/Desktop/BNCCBuilds/ATGBuild01/Advent Token Generator.exe

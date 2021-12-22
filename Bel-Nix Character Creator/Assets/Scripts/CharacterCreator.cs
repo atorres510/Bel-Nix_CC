@@ -814,6 +814,12 @@ public class CharacterCreator : MonoBehaviour {
         
     }
 
+    public void SetDefaultToken(Token token) {
+
+        defaultToken = token;
+    
+    }
+
     //used by the UI buttons on the button grid.  places the sprite represented on the grid onto the paperdoll at the active layer 
     public void SetSpriteToPaperdoll(Button button) {
         
