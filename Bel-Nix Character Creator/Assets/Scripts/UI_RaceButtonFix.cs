@@ -31,6 +31,7 @@ public class UI_RaceButtonFix : MonoBehaviour
     {
         currentRace = currentToken.raceID - 1;
         bgb.TogglePressedStateAsGroup(childButtons[currentRace]);
+        
     }
 
 

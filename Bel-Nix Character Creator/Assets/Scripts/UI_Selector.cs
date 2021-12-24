@@ -38,7 +38,7 @@ public class UI_Selector : MonoBehaviour
         MyPimpDaddy = gameObject.transform.parent.gameObject;
         rect = gameObject.GetComponent<RectTransform>();
         ResetSelector();
-        Debug.Log("MyPimpDaddy = " + MyPimpDaddy.name);
+        //Debug.Log("MyPimpDaddy = " + MyPimpDaddy.name);
     }
 
 }

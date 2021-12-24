@@ -20,6 +20,7 @@ public class AudioManager : MonoBehaviour
     static float sourceVolume = 0.25f;
 
     AudioSource mainAudioSource;
+    CleanMusicLoop cmlComponent;
 
     public AudioSource MainAudioSource {
 
@@ -111,6 +112,7 @@ public class AudioManager : MonoBehaviour
 
         audioObject.tag = audioSourceTag;
         mainAudioSource = audioObject.GetComponent<AudioSource>();
+        cmlComponent = audioObject.GetComponent<CleanMusicLoop>();
         DontDestroyOnLoad(audioObject);
 
     }
@@ -334,6 +336,8 @@ public class AudioManager : MonoBehaviour
         mainAudioSource.Stop();
         mainAudioSource.clip = newClip;
         mainAudioSource.Play();
+
+        cmlComponent.loopEnd = newClip.length;
         
         OnSongChange?.Invoke(newClip.name, newClip.length);
         Debug.Log("Now Playing: " + newClip.name);
@@ -350,6 +354,8 @@ public class AudioManager : MonoBehaviour
         mainAudioSource.Stop();
         mainAudioSource.clip = newClip;
         mainAudioSource.Play();
+
+        cmlComponent.loopEnd = newClip.length;
 
         OnSongChange?.Invoke(newClip.name, newClip.length);
         Debug.Log("Now Playing: " + playList[currentSong].name);
