@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 
 public class CharacterCreator : MonoBehaviour {
 
+
+    [Header("Tokens")]
     public Token currentToken;
     public Token defaultToken;
-    Token previousToken;
-    
-    bool isClothingPersistent = true;
+  
+    [Space(10)]
 
+    public Token[] tokenBank; //in order of races;
     /*public Token dwarfToken;
     public Token humanToken;
     public Token halfelfToken;
@@ -23,23 +23,39 @@ public class CharacterCreator : MonoBehaviour {
     public Token gnomeToken;
     public Token tieflingToken;*/
 
+    [Space(20)]
+
+    [Header("Components")]
     public SpriteLibrary spriteLibrary;
     public DataManger datamanger;
     public Renderer activeRenderer;
     public GameObject gridObject;
     public GameObject presetsObject;
-    public Sprite blankUISprite;
 
-    public Sprite blankSprite; 
 
+    [Space(20)]
+
+    [Header("UI Elements")]
     public ColorPicker picker;
+    public UI_Selector selector;
+    public GameObject canvasBackgroundObject; 
+    string exportName;
+    public InputField UIcharacterNameField;
+    public Button chestButton;
+    public Button hornButton;
+    public Button tailButton;
+
+
+    [Space(10)]
+
+    [Header("Empty UI Elements")]
+
+    public Sprite blankUISprite;
+    public Sprite blankSprite;
     public Image emptyImage;
     public Button emptyButton;
-    public UI_Selector selector;
-    Image lastSelectedLayer;
-    Color layerColor;
-    Button lastSelectedButton;
-  
+
+
     Image skinLayer;
     Color skinColor;
 
@@ -47,12 +63,18 @@ public class CharacterCreator : MonoBehaviour {
     Button[] buttonGrid;
     int currentbuttonGridLength = 0;
 
-    public GameObject canvasBackgroundObject;
 
-    string exportName;
-    public InputField UIcharacterNameField;
+    [Space(20)]
+
+    [Header("Paperdoll")]
 
     public GameObject paperDoll;
+
+
+    Image lastSelectedLayer;
+    Color layerColor;
+    Button lastSelectedButton;
+
     Image[] paperDollLayers;
     Image[] paperDollClothingLayers;
     Image[] paperDollHandLayers;
@@ -239,7 +261,7 @@ public class CharacterCreator : MonoBehaviour {
         string[] splitName = name.Split('_');
 
         name = splitName[splitName.Length - 1];
-
+        
         return name;
     }
 
@@ -284,7 +306,7 @@ public class CharacterCreator : MonoBehaviour {
 
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = paperDollLayers[activeLayer];
-                selector.SelectThis(buttonGrid[tailSprite].GetComponent<RectTransform>());
+                //selector.SelectThis(buttonGrid[tailSprite].GetComponent<RectTransform>());
                 ChangeFixedColumnCount(3);
                 ResizeButtonGridSprites(1);
                 break;
@@ -635,12 +657,6 @@ public class CharacterCreator : MonoBehaviour {
         return layers;
     }
 
-    //used by a toggle UI to save the clothing preferences when switching between races.
-    public void ToggleClothingPersistance() {
-
-        isClothingPersistent = !isClothingPersistent;
-
-    }
 
     //for use of UI race buttons to change race and the dependant variables
     /*public void ChangeRace(string race)
@@ -778,32 +794,107 @@ public class CharacterCreator : MonoBehaviour {
 
     public void ChangeRace(Token token) {
 
+        int raceIndexed = currentToken.raceID - 1; //changes the index of the races from 1 to 0 so they can be used in an array.
 
-        ApplyPaperdollToToken(previousToken);
+        ApplyPaperdollToToken(tokenBank[raceIndexed]);
 
-        if (isClothingPersistent)
-        {
-            size = token.size;
-            chestType = token.chestType;
-            raceID = token.raceID;
-            raceType = token.raceType;
-            bodyType = token.bodyType;
-            headString = token.head;
-            hairSprite = token.hairSprite;
-            hornSprite = token.hornSprite;
-            tailSprite = token.tailSprite;
-            
-        }
+      
+        size = token.size;
+        chestType = token.chestType;
+        raceID = token.raceID;
+        raceType = token.raceType;
+        bodyType = token.bodyType;
+        headString = token.head;
+        hairSprite = token.hairSprite;
+        hornSprite = token.hornSprite;
+        tailSprite = token.tailSprite;
+         
 
-        else {
-            
-            ApplyTokenToPaperdoll(token);
-           
-        }
-
-        previousToken = token;
+        ApplyRacialExceptions(token);
         ApplyPaperdollToToken(currentToken);
         UpdatePaperDoll();
+        
+
+    }
+
+    //hardcoding exceptions to fix errors when changing races.  
+    void ApplyRacialExceptions(Token token) {
+
+        switch (token.size) {
+
+            case 0: //med
+                break;
+
+            case 1: //sm
+                if (bodyType > 2)
+                {
+
+                    bodyType = 0;
+
+                }
+                else { }
+                break;
+
+            default:
+                break;
+        
+        }
+
+
+        switch (token.raceType) {
+
+
+            case 0: //base
+                break;
+            case 1: //dragonborn
+                paperDollHandLayers[12].sprite = blankSprite;
+                paperDollHandLayers[13].sprite = blankSprite;
+                helmetSprite = 0;
+                break;
+
+            case 2: //tiefling
+                helmetSprite = 0;
+                break;
+
+            default:
+                break;
+        
+        
+        
+        }
+
+
+    
+    
+    }
+
+    public void UpdateRaceButtons()
+    {
+
+        int race = raceType;
+
+        switch (race) {
+
+            case 0: //base
+                chestButton.gameObject.SetActive(true);
+                hornButton.gameObject.SetActive(false);
+                tailButton.gameObject.SetActive(false);
+                break;
+            case 1: //dragonborn
+                chestButton.gameObject.SetActive(false);
+                hornButton.gameObject.SetActive(true);
+                tailButton.gameObject.SetActive(false);
+                break;
+            case 2://tiefling
+                chestButton.gameObject.SetActive(true);
+                hornButton.gameObject.SetActive(true);
+                tailButton.gameObject.SetActive(true);
+                break;
+            default:
+                Debug.LogError("RaceType not vaild.");
+                break;
+        
+        }
 
     }
 
@@ -812,6 +903,12 @@ public class CharacterCreator : MonoBehaviour {
         ApplyTokenToPaperdoll(defaultToken);
         ApplyPaperdollToToken(currentToken);
         
+    }
+
+    public void SetDefaultToken(Token token) {
+
+        defaultToken = token;
+    
     }
 
     //used by the UI buttons on the button grid.  places the sprite represented on the grid onto the paperdoll at the active layer 
@@ -973,7 +1070,7 @@ public class CharacterCreator : MonoBehaviour {
     public void RandomizePaperdoll() {
 
         //body
-        bodyType = UnityEngine.Random.Range(0, bodyStrings.Length); //sets a random body type
+        //bodyType = UnityEngine.Random.Range(0, bodyStrings.Length); //sets a random body type
 
         //hair 
         hairSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites(ConstructKey("hairtypekey")).Length);
@@ -1017,12 +1114,25 @@ public class CharacterCreator : MonoBehaviour {
         }
         */
 
+        //shoulder
+        shoulderSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("shoulderTypeKey").Length);
 
+        //back
+        backSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("backtypekey").Length);
 
 
         //cape
-        capeSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("CAPEITEMS").Length);
+        capeSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("capetypekey").Length);
+
+        /*
+        if (raceType == 1)
+            hornSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("horntypekey").Length);
+
+        if (raceType == 2) { 
         
+            hornSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("horntypekey").Length);
+            tailSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("tailtypekey").Length);
+        }*/
 
 
 
@@ -1531,19 +1641,20 @@ public class CharacterCreator : MonoBehaviour {
 
     #region Token Methods
 
-   
-
     //takes a token and applies it's data to the paperdoll presented on screen
     public void ApplyTokenToPaperdoll(Token token) {
 
         if (token == null) {return;}
 
         currentToken.tokenName = token.tokenName;
-        
-        
+
+
         //changes the inputfield with character name in the UI to match the token's name
-        if (UIcharacterNameField != null)
+        if (UIcharacterNameField != null) {
             UIcharacterNameField.text = token.tokenName;
+            UIcharacterNameField.onEndEdit.Invoke(token.tokenName);
+        }
+            
 
         size = token.size;
         chestType = token.chestType;
@@ -1751,7 +1862,6 @@ public class CharacterCreator : MonoBehaviour {
             datamanger.FileName = "";
         }
 
-        previousToken = currentToken;
 
         ApplyTokenToPaperdoll(currentToken);
         

@@ -22,7 +22,7 @@ public class ImageExporter : MonoBehaviour
     public void StartExportPNG()
     {
 
-        if (currentToken.name == "")
+        if (currentToken.tokenName == "")
         {
             Debug.LogError("Token needs a name before exporting.");
             return;

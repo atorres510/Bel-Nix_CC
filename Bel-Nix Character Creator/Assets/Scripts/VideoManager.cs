@@ -3,8 +3,8 @@
 public class VideoManager : MonoBehaviour
 {
 
-    int currentWidth = 1920;
-    int currentHeight = 1080;
+    int currentWidth;
+    int currentHeight;
     bool isFullscreen;
 
 

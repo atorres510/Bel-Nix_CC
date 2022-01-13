@@ -1,31 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
 
     public string audioSourceTag = "AudioSource";
-    
+    public string audioManagerTag = "AudioManager";
+
+    [Space(10)]
+
     static bool isLooping;
     static bool isShuffling;
     static bool isMuted;
-    static int startingSong;
+    static int startingSong = 0;
     public AudioClip[] playList;
 
-    static float sourceVolume;
-    
+    static float sourceVolume = 0.25f;
+
     AudioSource mainAudioSource;
+    CleanMusicLoop cmlComponent;
 
     public AudioSource MainAudioSource {
 
         get { return mainAudioSource; }
 
     }
-    
+
     static bool isFirstLoad = true;
     static int currentSong;
-    static float[] songLengths;
+    //static float[] songLengths;
     static Stack<int> previousSongs = new Stack<int>();
 
 
@@ -35,6 +40,47 @@ public class AudioManager : MonoBehaviour
     public event OnLoadEvent OnLoad;
     public delegate void OnLoadEvent();
 
+    public bool IsLooping
+    {
+
+        get { return isLooping; }
+
+    }
+
+    public bool IsShuffling
+    {
+
+        get { return isShuffling; }
+
+    }
+
+    public bool IsMuted
+    {
+
+        get { return isMuted; }
+
+    }
+
+    public float SourceVolume
+    {
+
+        get { return sourceVolume; }
+
+    }
+
+    /*public float[] SongLengths 
+    {
+
+        get { return songLengths; }
+        
+    }*/
+
+    public int CurrentSong 
+    {
+    
+        get { return currentSong; }
+    
+    }
     #region AudioSource Methods
     //finds all audiosources in the game. determines a primary audio source at the first scene of game.  subsequent scenes 
     //will have all other sources except the primary audiosource removed.
@@ -49,15 +95,14 @@ public class AudioManager : MonoBehaviour
         else 
             RemoveOtherAudioSources(audioSources);
         
-
-
     }
+
 
     void SyncAudioVariablesToSource(AudioSource source) {
 
         source.loop = isLooping;
         source.mute = isMuted;
-        
+                
     }
 
 
@@ -67,6 +112,7 @@ public class AudioManager : MonoBehaviour
 
         audioObject.tag = audioSourceTag;
         mainAudioSource = audioObject.GetComponent<AudioSource>();
+        cmlComponent = audioObject.GetComponent<CleanMusicLoop>();
         DontDestroyOnLoad(audioObject);
 
     }
@@ -88,10 +134,31 @@ public class AudioManager : MonoBehaviour
         
     }
 
+    //removes all other audio sources that do not have the tag.
+    void RemoveOtherAudioManagers(AudioManager[] audioManagers)
+    {
+
+            foreach (AudioManager a in audioManagers)
+            {
+
+                if (a.gameObject.tag == audioManagerTag) { }
+
+                else
+                    Destroy(a.gameObject);
+
+            }
+    
+
+
+        
+
+    }
+
     void OnFirstLoad() {
 
         if (isFirstLoad)
         {
+
             sourceVolume = 0.25f;
             AudioClip newClip = playList[startingSong];
             mainAudioSource.clip = newClip;
@@ -99,8 +166,9 @@ public class AudioManager : MonoBehaviour
 
             OnSongChange?.Invoke(newClip.name, newClip.length);
             mainAudioSource.Play();
+            gameObject.tag = "AudioManager";
             isFirstLoad = false;
-
+            DontDestroyOnLoad(gameObject);
         }
 
         else return;
@@ -134,7 +202,9 @@ public class AudioManager : MonoBehaviour
 
     #region Playlist Methods
 
-    void GetSongLengths() {
+    /*void GetSongLengths() {
+
+        
 
         for (int i = 0; i < playList.Length; i++) {
 
@@ -142,7 +212,7 @@ public class AudioManager : MonoBehaviour
             
         }
         
-    }
+    }*/
 
     int ReturnNextSong() {
 
@@ -211,10 +281,30 @@ public class AudioManager : MonoBehaviour
     public void ToggleLoop() {
 
         if (isLooping)
+        {
             isLooping = false;
-        else
-            isLooping = true;
+            mainAudioSource.GetComponent<CleanMusicLoop>().enabled = false;
+        }
 
+        else {
+            isLooping = true;
+            mainAudioSource.GetComponent<CleanMusicLoop>().enabled = true;
+        }
+            
+
+        Debug.Log("Looping = " + IsLooping);
+        SyncAudioVariablesToSource(mainAudioSource);
+
+    }
+
+    public void ToggleMute() {
+
+        if (isMuted)
+            isMuted = false;
+        else
+            isMuted = true;
+
+        Debug.Log("Muted = " + IsMuted);
         SyncAudioVariablesToSource(mainAudioSource);
 
     }
@@ -226,6 +316,7 @@ public class AudioManager : MonoBehaviour
         else
             isShuffling = true;
 
+        Debug.Log("Shuffle = " + IsShuffling);
         SyncAudioVariablesToSource(mainAudioSource);
     }
 
@@ -245,6 +336,8 @@ public class AudioManager : MonoBehaviour
         mainAudioSource.Stop();
         mainAudioSource.clip = newClip;
         mainAudioSource.Play();
+
+        cmlComponent.loopEnd = newClip.length;
         
         OnSongChange?.Invoke(newClip.name, newClip.length);
         Debug.Log("Now Playing: " + newClip.name);
@@ -262,6 +355,8 @@ public class AudioManager : MonoBehaviour
         mainAudioSource.clip = newClip;
         mainAudioSource.Play();
 
+        cmlComponent.loopEnd = newClip.length;
+
         OnSongChange?.Invoke(newClip.name, newClip.length);
         Debug.Log("Now Playing: " + playList[currentSong].name);
     }
@@ -271,17 +366,25 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-
         FindAudioSources();
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
-        OnFirstLoad();
-
-        SyncAudioVariablesToSource(mainAudioSource);
+        Debug.Log("AudioManager Awake Fired.");
         
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode) 
+    {
         Debug.Log("Currently Playing: " + playList[currentSong].name);
+        if(!isFirstLoad)
+            RemoveOtherAudioManagers(FindObjectsOfType<AudioManager>() as AudioManager[]);
+        RemoveOtherAudioSources(FindObjectsOfType<AudioSource>() as AudioSource[]);
+        Debug.Log("AudioManager OnSceneLoaded Fired."); 
+    }
 
-        DontDestroyOnLoad(this.gameObject);
-
+    private void Start()
+    {
+        OnFirstLoad();
     }
 
     private void Update()
@@ -290,6 +393,7 @@ public class AudioManager : MonoBehaviour
             PlayNextSong();
 
         mainAudioSource.volume = sourceVolume;
+
     }
 
 }

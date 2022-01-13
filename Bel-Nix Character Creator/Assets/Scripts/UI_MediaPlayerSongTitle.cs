@@ -6,7 +6,7 @@ using TMPro;
 
 public class UI_MediaPlayerSongTitle : MonoBehaviour
 {
-    public AudioManager audioManager;
+    AudioManager audioManager;
     public GameObject maskObject;
 
     [Space(10)]
@@ -33,9 +33,16 @@ public class UI_MediaPlayerSongTitle : MonoBehaviour
     }
 
     void SubscribeToAudioManagerEvents() {
-
+        
         audioManager.OnSongChange += UpdateText;
          
+    }
+
+    void UnsubscribeToAudioManagerEvents()
+    {
+
+        audioManager.OnSongChange -= UpdateText;
+
     }
 
     float FindBorder() {
@@ -99,18 +106,24 @@ public class UI_MediaPlayerSongTitle : MonoBehaviour
 
     private void Awake()
     {
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
         GetComponents();
-        SubscribeToAudioManagerEvents();
         border = FindBorder();
         Debug.Log("Border: " + border);
-        
         //Debug.Log(thisRect.rect.width + maskRect.rect.width / 2);
-        
-    }
-    
-    private void Start()
-    {
         UpdateText(audioManager.GetCurrentSong().name);
+       
+       
+    }
+
+    private void OnEnable()
+    {
+        SubscribeToAudioManagerEvents();
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeToAudioManagerEvents();
     }
 
     private void Update()
