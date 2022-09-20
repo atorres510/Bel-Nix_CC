@@ -8,6 +8,10 @@ public class SpriteLibrary : MonoBehaviour {
     public string rootPath;
 
 	public string[] folderPaths;
+
+    [Space(20)]
+    [Tooltip("When true, allows errors when sprite cannot be found.  When false, SpriteLibrary will find next best ID value.")]
+    public bool debuggingOn;
     
     List<string> keys = new List<string>();
 
@@ -25,7 +29,7 @@ public class SpriteLibrary : MonoBehaviour {
 		Sprite[] sprites = Resources.LoadAll<Sprite>(path);
 		
 		//checks if the array would throw an out of index error.  if so, throw error and errorsprite
-		if (sprites.Length < id) {
+		if (sprites.Length < id && debuggingOn) {
 			
 			Debug.LogError("Failed to Assign Sprite: Out of Index");
 			return errorSprite;
@@ -35,7 +39,7 @@ public class SpriteLibrary : MonoBehaviour {
 		else{
 			
 			//checks if the array would throw an out of index error.  if so, throw error and errorsprite
-			if(id < 0){
+			if(id < 0 && debuggingOn){
 				
 				Debug.LogError("Failed to Assign Sprite: Out of Index");
 				return errorSprite;
@@ -77,9 +81,13 @@ public class SpriteLibrary : MonoBehaviour {
 
         }
 
+   
         Debug.LogError("Failed to Assign Sprite: No Match");
 
         return errorSprite;
+
+      
+     
 
     }
 
@@ -246,6 +254,21 @@ public class SpriteLibrary : MonoBehaviour {
 		errorSprite = Resources.Load<Sprite>("Sprites/ErrorSprite");
 	
 	}
+
+    Sprite SubstituteOutOfBoundsSprite(Sprite[] SpriteList, int id) {
+
+        int i = id;
+
+        while (SpriteList.Length <= i) {
+
+            i--;
+
+        }
+
+        return SpriteList[i];
+
+
+    }
 
 	
 	void Awake(){
