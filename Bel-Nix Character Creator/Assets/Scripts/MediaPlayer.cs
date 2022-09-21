@@ -92,8 +92,7 @@ public class MediaPlayer : MonoBehaviour
         SetPreviousButton();
     
     }
-
-
+    
     void FindAudioManager() {
 
         audioManager = FindObjectOfType<AudioManager>() as AudioManager;

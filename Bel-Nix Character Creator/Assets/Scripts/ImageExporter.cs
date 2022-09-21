@@ -16,31 +16,91 @@ public class ImageExporter : MonoBehaviour
     public string filePath;
 
 
-    //PNG Export Method
+    public event DisplayTextEvent OnExportToken;
+    public delegate void DisplayTextEvent(string text);
 
+    //PNG Export Method
     //for stupid button use
     public void StartExportPNG()
     {
 
+        string textToDisplay = "Error";
+
         if (currentToken.tokenName == "")
         {
             Debug.LogError("Token needs a name before exporting.");
-            return;
+            textToDisplay = "Token needs a name before exporting.";
+        }
+
+        else if (currentToken.tokenName.Contains("/") || currentToken.tokenName.Contains(@"\"))
+        {
+            Debug.LogError(@"Token cannot contain '/' or '\' characters.");
+            textToDisplay = @"Token cannot contain '/' or '\' characters.";
         }
 
 
         else
+        {
             StartCoroutine("ExportPNG");
+            Debug.Log(currentToken.tokenName + " was exported!");
+            textToDisplay = currentToken.tokenName + " was exported!";
+        }
+
+        OnExportToken?.Invoke(textToDisplay);
 
     }
 
+    //sets the obstructive UI objects to active/inactive to keep them from ruining the screenshot
     void SetUIObjectActive(bool isActive) {
 
         foreach (GameObject UIObject in obstructingUIObjects)
             UIObject.SetActive(isActive);
         
     }
+    
+    //addes numbers to the export name to avoid redundant filenames
+    string ReturnNonRedudantName(string name, string folderPath)
+    {
 
+        string[] filePaths = Directory.GetFiles(folderPath);
+
+        int counter = 0;
+
+        string currentFilePath;
+        string lessRedundantName = name;
+
+        bool isThereStillARedundancy;
+
+        do
+        {
+
+            currentFilePath = Application.streamingAssetsPath + filePath + lessRedundantName + ".png";
+            isThereStillARedundancy = false;
+
+            foreach (string path in filePaths)
+            {
+
+                if (path == currentFilePath)
+                {
+
+                    counter++;
+                    lessRedundantName = name + counter;
+                    isThereStillARedundancy = true;
+                    //Debug.Log(counter);
+
+
+                }
+
+            }
+
+
+
+        } while (isThereStillARedundancy);
+
+        return lessRedundantName;
+
+    }
+    
     //enumerated method for saving the PNG file to screenshots
     IEnumerator ExportPNG()
     {
@@ -91,49 +151,6 @@ public class ImageExporter : MonoBehaviour
         Debug.Log("Screenshot Taken");
 
         yield return 0;
-
-    }
-
-    //addes numbers to the export name to avoid redundant filenames
-    string ReturnNonRedudantName(string name, string folderPath)
-    {
-
-        string[] filePaths = Directory.GetFiles(folderPath);
-
-        int counter = 0;
-
-        string currentFilePath;
-        string lessRedundantName = name;
-
-        bool isThereStillARedundancy;
-
-        do
-        {
-
-            currentFilePath = Application.streamingAssetsPath + filePath + lessRedundantName + ".png";
-            isThereStillARedundancy = false;
-
-            foreach (string path in filePaths)
-            {
-
-                if (path == currentFilePath)
-                {
-                    
-                    counter++;
-                    lessRedundantName = name + counter;
-                    isThereStillARedundancy = true;
-                    //Debug.Log(counter);
-
-
-                }
-
-            }
-
-
-
-        } while (isThereStillARedundancy);
-
-        return lessRedundantName;
 
     }
 

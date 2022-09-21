@@ -44,8 +44,7 @@ public class CharacterCreator : MonoBehaviour {
     public Button chestButton;
     public Button hornButton;
     public Button tailButton;
-
-
+   
     [Space(10)]
 
     [Header("Empty UI Elements")]
@@ -1827,9 +1826,8 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
-    #endregion  
-    
-  
+    #endregion
+
     // Use this for initialization
     void Start () {
         

@@ -1,13 +1,18 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
 public class DataManger : MonoBehaviour
 {
-
+    
+    public event DisplayTextEvent OnSaveToken;
+    public event DisplayTextEvent OnLoadToken;
+    public delegate void DisplayTextEvent(string text);
+    
     static string fileName = "";
-
+    
     public string FileName { get { return fileName; } set { fileName = value; } }
     
     public string[] GetFileNames(string path) {
@@ -40,13 +45,30 @@ public class DataManger : MonoBehaviour
     
     public void SaveToken(Token token) {
 
-        if (token.tokenName == "") {
+        string textToDisplay = "Error.";
+
+        if (token.tokenName == "")
+        {
             Debug.LogError("Token needs a name before saving.");
-            return;
+            textToDisplay = "Token needs a name before saving.";
         }
-           
-        SaveSystem.SaveToken(token);
-        Debug.Log(token.tokenName + " is saved!");
+
+        else if (token.tokenName.Contains("/") || token.tokenName.Contains(@"\"))
+        {
+            Debug.LogError(@"Token cannot contain '/' or '\' characters.");
+            textToDisplay = @"Token cannot contain '/' or '\' characters.";
+        }
+
+        else
+        {
+            SaveSystem.SaveToken(token);
+            Debug.Log(token.tokenName + " is saved!");
+            textToDisplay = token.tokenName + " is saved!";
+        }
+
+        //handle events
+        OnSaveToken?.Invoke(textToDisplay);
+        
     }
 
     public void LoadToken(Token token) {
@@ -107,9 +129,8 @@ public class DataManger : MonoBehaviour
         }
 
         Debug.Log(token.tokenName + " was loaded!");
-
+        OnLoadToken?.Invoke(token.tokenName + " was loaded!");
 
     }
-
 
 }

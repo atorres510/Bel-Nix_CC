@@ -81,6 +81,7 @@ public class AudioManager : MonoBehaviour
         get { return currentSong; }
     
     }
+
     #region AudioSource Methods
     //finds all audiosources in the game. determines a primary audio source at the first scene of game.  subsequent scenes 
     //will have all other sources except the primary audiosource removed.
@@ -202,17 +203,29 @@ public class AudioManager : MonoBehaviour
 
     #region Playlist Methods
 
-    /*void GetSongLengths() {
+    public void PlaySongByName(string name) {
 
+
+        AudioClip newClip = null;
         
+        foreach (AudioClip song in playList) {
 
-        for (int i = 0; i < playList.Length; i++) {
+            if (song.name == name)
+                newClip = song;
 
-            songLengths[i] = playList[i].length;
-            
         }
-        
-    }*/
+
+        mainAudioSource.Stop();
+        mainAudioSource.clip = newClip;
+        mainAudioSource.Play();
+
+        cmlComponent.loopEnd = newClip.length;
+
+        OnSongChange?.Invoke(newClip.name, newClip.length);
+        Debug.Log("Now Playing: " + newClip.name);
+
+
+    }
 
     int ReturnNextSong() {
 
