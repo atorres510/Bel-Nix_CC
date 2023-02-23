@@ -14,8 +14,9 @@ public static class SaveSystem
         FileStream stream = new FileStream(path, FileMode.Create);
 
         TokenData data = new TokenData(token);
-
+        
         formatter.Serialize(stream, data);
+
 
         stream.Close();
         
