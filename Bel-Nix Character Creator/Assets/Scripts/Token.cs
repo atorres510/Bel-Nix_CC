@@ -4,6 +4,8 @@ public class Token : MonoBehaviour
 {
     public string tokenName = "";
 
+    public int versionNumber;
+
     public int size;
     public int chestType;
     public int raceID;
@@ -32,17 +34,19 @@ public class Token : MonoBehaviour
     public Color[] paperdollClothingLayerColors;
     public Color[] paperdollHandLayerColors;
     public Color[] paperdollEquipmentLayerColors;
+    
 
     public void ChangeTokenName(string name) {
 
         tokenName = name;
-        CallTokenEvents();
+        ChangeTokenNameEvent?.Invoke(tokenName);
 
     }
 
-    public void CallTokenEvents() {
+    public void ChangeTokenRace(int race)
+    {
 
-        ChangeTokenNameEvent?.Invoke(tokenName);
+        raceID = race;
         ChangeTokenRaceEvent?.Invoke(raceID);
 
     }
@@ -54,6 +58,8 @@ public class Token : MonoBehaviour
     public delegate void ChangeTokenRaceDelegate(int race);
     
     public Token(TokenData data) {
+
+        
 
         size = data.size;
         chestType = data.chestType;

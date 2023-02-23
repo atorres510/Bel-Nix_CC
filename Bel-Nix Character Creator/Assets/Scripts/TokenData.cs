@@ -6,7 +6,9 @@ using UnityEngine;
 public class TokenData {
 
     public string tokenName;
-    
+
+    public int versionNumber;
+
     public int size;
     public int chestType;
     public int raceID;
@@ -37,7 +39,10 @@ public class TokenData {
     public string[] paperdollEquipmentLayerHexColors;
 
     public TokenData(Token token) {
+
+
         tokenName = token.tokenName;
+        versionNumber = token.versionNumber;
 
         size = token.size;
         chestType = token.chestType;
@@ -71,34 +76,30 @@ public class TokenData {
 
         for (int i = 0; i < paperdollLayerHexColors.Length; i++)
         {
-            Debug.Log(ColorUtility.ToHtmlStringRGBA(token.paperdollLayerColors[i]));
+            //Debug.Log(ColorUtility.ToHtmlStringRGBA(token.paperdollLayerColors[i]));
             paperdollLayerHexColors[i] = ColorUtility.ToHtmlStringRGBA(token.paperdollLayerColors[i]);
             
-
         }
 
         for (int i = 0; i < paperdollClothingLayerHexColors.Length; i++)
         {
-            Debug.Log(ColorUtility.ToHtmlStringRGBA(token.paperdollClothingLayerColors[i]));
+            //Debug.Log(ColorUtility.ToHtmlStringRGBA(token.paperdollClothingLayerColors[i]));
             paperdollClothingLayerHexColors[i] = ColorUtility.ToHtmlStringRGBA(token.paperdollClothingLayerColors[i]);
-
-
+            
         }
 
         for (int i = 0; i < paperdollHandLayerHexColors.Length; i++)
         {
-            Debug.Log(ColorUtility.ToHtmlStringRGBA(token.paperdollHandLayerColors[i]));
+            //Debug.Log(ColorUtility.ToHtmlStringRGBA(token.paperdollHandLayerColors[i]));
             paperdollHandLayerHexColors[i] = ColorUtility.ToHtmlStringRGBA(token.paperdollHandLayerColors[i]);
-
-
+            
         }
 
         for (int i = 0; i < paperdollEquipmentLayerHexColors.Length; i++)
         {
-            Debug.Log(ColorUtility.ToHtmlStringRGBA(token.paperdollEquipmentLayerColors[i]));
+            //Debug.Log(ColorUtility.ToHtmlStringRGBA(token.paperdollEquipmentLayerColors[i]));
             paperdollEquipmentLayerHexColors[i] = ColorUtility.ToHtmlStringRGBA(token.paperdollEquipmentLayerColors[i]);
-
-
+            
         }
 
     }

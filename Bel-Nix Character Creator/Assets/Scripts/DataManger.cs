@@ -6,7 +6,9 @@ using System.IO;
 
 public class DataManger : MonoBehaviour
 {
-    
+
+    public float versionNumber;
+
     public event DisplayTextEvent OnSaveToken;
     public event DisplayTextEvent OnLoadToken;
     public delegate void DisplayTextEvent(string text);
@@ -75,7 +77,10 @@ public class DataManger : MonoBehaviour
 
         TokenData data = SaveSystem.LoadToken(fileName);
 
-        token.tokenName = data.tokenName;  
+        token.tokenName = data.tokenName;
+
+        token.versionNumber = data.versionNumber;
+        Debug.Log("VersionNumber" + token.versionNumber);
 
         token.size = data.size;
         token.chestType = data.chestType;
@@ -121,9 +126,8 @@ public class DataManger : MonoBehaviour
 
         }
 
-        for (int i = 0; i < token.paperdollEquipmentLayerColors.Length; i++)
+        for (int i = 0; i < data.paperdollEquipmentLayerHexColors.Length; i++)
         {
-
             ColorUtility.TryParseHtmlString("#" + data.paperdollEquipmentLayerHexColors[i], out token.paperdollEquipmentLayerColors[i]);
 
         }
