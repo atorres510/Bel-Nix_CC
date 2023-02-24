@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
+//[System.Serializable]
 public class TokenData {
 
     public string tokenName;
@@ -37,6 +37,8 @@ public class TokenData {
     public string[] paperdollClothingLayerHexColors;
     public string[] paperdollHandLayerHexColors;
     public string[] paperdollEquipmentLayerHexColors;
+
+    public TokenData() { }
 
     public TokenData(Token token) {
 
