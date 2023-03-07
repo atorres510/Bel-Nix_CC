@@ -12,7 +12,10 @@ public class CharacterCreator : MonoBehaviour {
   
     [Space(10)]
 
-    public Token[] tokenBank; //in order of races;
+    public TokenBank tokenBank;
+    public TokenBank defaultTokenBank;
+    
+    //in order of races;
     /*public Token dwarfToken;
     public Token humanToken;
     public Token halfelfToken;
@@ -68,7 +71,6 @@ public class CharacterCreator : MonoBehaviour {
     [Header("Paperdoll")]
 
     public GameObject paperDoll;
-
 
     Image lastSelectedLayer;
     Color layerColor;
@@ -641,9 +643,9 @@ public class CharacterCreator : MonoBehaviour {
     public void ChangeRace(Token token) {
 
         int raceIndexed = currentToken.raceID - 1; //changes the index of the races from 1 to 0 so they can be used in an array.
-        Debug.Log("racechange line 644 Race ID:" + currentToken.raceID);
-        ApplyPaperdollToToken(tokenBank[raceIndexed]);
-        Debug.Log(tokenBank[raceIndexed].name);
+        //Debug.Log("racechange line 644 Race ID:" + currentToken.raceID);
+        //ApplyPaperdollToToken(tokenBank[raceIndexed]);
+        //Debug.Log(tokenBank[raceIndexed].name);
 
         size = token.size;
         chestType = token.chestType;
@@ -752,9 +754,9 @@ public class CharacterCreator : MonoBehaviour {
         
     }
 
-    public void SetDefaultToken(Token token) {
+    public void SetDefaultToken(int raceID) {
 
-        defaultToken = token;
+        defaultToken = defaultTokenBank.SearchTokenbyRace(raceID);
     
     }
 
@@ -1661,6 +1663,8 @@ public class CharacterCreator : MonoBehaviour {
         }
         
     }
+
+    
 
     #endregion
 
