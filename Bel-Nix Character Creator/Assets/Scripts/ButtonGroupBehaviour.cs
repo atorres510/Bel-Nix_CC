@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public class ButtonGroupBehaviour : MonoBehaviour
 {
-    Button[] buttonGroup;
+    public Button[] buttonGroup;
 
     //finds all the children and adds them to the group.
     private void FindButtonChildren() {

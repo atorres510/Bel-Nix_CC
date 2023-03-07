@@ -80,7 +80,7 @@ public class DataManger : MonoBehaviour
         token.tokenName = data.tokenName;
 
         token.versionNumber = data.versionNumber;
-        Debug.Log("VersionNumber" + token.versionNumber);
+        Debug.Log("VersionNumber: " + token.versionNumber);
 
         token.size = data.size;
         token.chestType = data.chestType;
@@ -134,7 +134,8 @@ public class DataManger : MonoBehaviour
 
         Debug.Log(token.tokenName + " was loaded!");
         OnLoadToken?.Invoke(token.tokenName + " was loaded!");
-
+        Debug.Log("Racetype = " + token.raceType);
+        Debug.Log("RaceID =" + token.raceID);
     }
 
 }

@@ -6,7 +6,6 @@ using UnityEngine;
 public class TokenData {
 
     public string tokenName;
-
     public int versionNumber;
 
     public int size;

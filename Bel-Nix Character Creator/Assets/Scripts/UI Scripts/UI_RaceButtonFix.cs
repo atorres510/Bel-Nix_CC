@@ -4,33 +4,33 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class UI_RaceButtonFix : MonoBehaviour
+public class UI_RaceButtonFix : ButtonGroupBehaviour
 {
 
-    public CharacterCreator characterCreator;
+    CharacterCreator characterCreator;
 
     Token currentToken;
 
     int currentRace;
-
-    ButtonGroupBehaviour bgb;
-
-    Button[] childButtons;
     
-    private void Awake()
+    /*private void Awake()
     {
         bgb = GetComponent<ButtonGroupBehaviour>();
-
+        
         childButtons = GetComponentsInChildren<Button>();
 
         currentToken = characterCreator.currentToken;
-    }
+        Debug.Log("dd");
+    }*/
 
-
+    
     private void OnEnable()
     {
+
+        characterCreator = FindObjectOfType<CharacterCreator>() as CharacterCreator;
+        currentToken = characterCreator.currentToken;
         currentRace = currentToken.raceID - 1;
-        bgb.TogglePressedStateAsGroup(childButtons[currentRace]);
+        TogglePressedStateAsGroup(buttonGroup[currentRace]);
         
     }
 

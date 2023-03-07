@@ -641,10 +641,10 @@ public class CharacterCreator : MonoBehaviour {
     public void ChangeRace(Token token) {
 
         int raceIndexed = currentToken.raceID - 1; //changes the index of the races from 1 to 0 so they can be used in an array.
-
+        Debug.Log("racechange line 644 Race ID:" + currentToken.raceID);
         ApplyPaperdollToToken(tokenBank[raceIndexed]);
+        Debug.Log(tokenBank[raceIndexed].name);
 
-      
         size = token.size;
         chestType = token.chestType;
         raceID = token.raceID;
@@ -658,7 +658,9 @@ public class CharacterCreator : MonoBehaviour {
         ApplyRacialExceptions(token);
         ApplyPaperdollToToken(currentToken);
         UpdatePaperDoll();
-        
+
+        Debug.Log("CC race type" + raceType);
+        Debug.Log("CC raceID" + raceID);
 
     }
 
@@ -1713,6 +1715,6 @@ public class CharacterCreator : MonoBehaviour {
         UpdateSkinColor();
         //UpdatePaperDoll(); <- this is no longer called in update, but instead called as needed by SetSpriteToPaperDoll and other UI buttons
 
-
+        
     }
 }
