@@ -7,54 +7,54 @@ public class SpriteLibrary : MonoBehaviour {
 
     public string rootPath;
 
-	public string[] folderPaths;
+    public string[] folderPaths;
 
     [Space(20)]
     [Tooltip("When true, allows errors when sprite cannot be found.  When false, SpriteLibrary will find next best ID value.")]
     public bool debuggingOn;
-    
+
     List<string> keys = new List<string>();
 
-	//used to take place of null reference exceptions
-	Sprite errorSprite;
+    //used to take place of null reference exceptions
+    Sprite errorSprite;
 
-	//Stores sprites in arrays by faction.  Uses piece Designation to ID piece sprite type.
-	Dictionary<string, Sprite[]> spriteLibrary = new Dictionary<string, Sprite[]>();
+    //Stores sprites in arrays by faction.  Uses piece Designation to ID piece sprite type.
+    Dictionary<string, Sprite[]> spriteLibrary = new Dictionary<string, Sprite[]>();
 
-	//used by manager scripts to retrieve sprites given the faction and unit type
-	public Sprite GetSprite(string key, int id){
+    //used by manager scripts to retrieve sprites given the faction and unit type
+    public Sprite GetSprite(string key, int id) {
 
         string path = rootPath + "/" + key;
-		
-		Sprite[] sprites = Resources.LoadAll<Sprite>(path);
-		
-		//checks if the array would throw an out of index error.  if so, throw error and errorsprite
-		if (sprites.Length < id && debuggingOn) {
-			
-			Debug.LogError("Failed to Assign Sprite: Out of Index");
-			return errorSprite;
-			
-		}
-		
-		else{
-			
-			//checks if the array would throw an out of index error.  if so, throw error and errorsprite
-			if(id < 0 && debuggingOn){
-				
-				Debug.LogError("Failed to Assign Sprite: Out of Index");
-				return errorSprite;
-				
-			}
-			
-			else{
-				
-				return sprites[id];
-				
-			}
-			
-		}
-		
-	}
+
+        Sprite[] sprites = Resources.LoadAll<Sprite>(path);
+
+        //checks if the array would throw an out of index error.  if so, throw error and errorsprite
+        if (sprites.Length < id && debuggingOn) {
+
+            Debug.LogError("Failed to Assign Sprite: Out of Index");
+            return errorSprite;
+
+        }
+
+        else {
+
+            //checks if the array would throw an out of index error.  if so, throw error and errorsprite
+            if (id < 0 && debuggingOn) {
+
+                Debug.LogError("Failed to Assign Sprite: Out of Index");
+                return errorSprite;
+
+            }
+
+            else {
+
+                return sprites[id];
+
+            }
+
+        }
+
+    }
 
     //overloaded method for string usage
     public Sprite GetSprite(string key, string id)
@@ -68,7 +68,7 @@ public class SpriteLibrary : MonoBehaviour {
 
         foreach (Sprite s in sprites)
         {
-           
+
             if (s.name == id)
             {
 
@@ -81,13 +81,10 @@ public class SpriteLibrary : MonoBehaviour {
 
         }
 
-   
+
         Debug.LogError("Failed to Assign Sprite: No Match");
 
         return errorSprite;
-
-      
-     
 
     }
 
@@ -148,8 +145,9 @@ public class SpriteLibrary : MonoBehaviour {
 
     }
 
-	//creates dictionary by reading the folder paths and their contents
-	void CreateSpriteDictionary(string[] folderPaths){
+    
+    //creates dictionary by reading the folder paths and their contents
+    void CreateSpriteDictionary(string[] folderPaths){
         
 		for(int i = 0; i < folderPaths.Length; i++) {
 

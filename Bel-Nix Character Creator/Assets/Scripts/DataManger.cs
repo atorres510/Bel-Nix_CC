@@ -100,42 +100,41 @@ public class DataManger : MonoBehaviour
         token.handSprites = data.handSprites;
         token.equipmentSprites = data.equipmentSprites;
 
-        token.paperdollLayerRotations = data.paperdollLayerRotations;
-        token.paperdollClothingLayerRotations = data.paperdollClothingLayerRotations;
-        token.paperdollHandLayerRotations = data.paperdollHandLayerRotations;
-        token.paperdollEquipmentLayerRotations = data.paperdollEquipmentLayerRotations;
+        token.layerRotations = data.layerRotations;
+        token.clothingLayerRotations = data.clothingLayerRotations;
+        token.handLayerRotations = data.handLayerRotations;
+        token.equipmentLayerRotations = data.equipmentLayerRotations;
 
-        for (int i = 0; i < token.paperdollLayerColors.Length; i++)
+        for (int i = 0; i < token.layerColors.Length; i++)
         {
            
-            ColorUtility.TryParseHtmlString(("#" + data.paperdollLayerHexColors[i]), out token.paperdollLayerColors[i]);
+            ColorUtility.TryParseHtmlString(("#" + data.layerHexColors[i]), out token.layerColors[i]);
             
         }
 
-        for (int i = 0; i < token.paperdollClothingLayerColors.Length; i++)
+        for (int i = 0; i < token.clothingLayerColors.Length; i++)
         {
 
-            ColorUtility.TryParseHtmlString("#" + data.paperdollClothingLayerHexColors[i], out token.paperdollClothingLayerColors[i]);
+            ColorUtility.TryParseHtmlString("#" + data.clothingLayerHexColors[i], out token.clothingLayerColors[i]);
 
         }
 
-        for (int i = 0; i < token.paperdollHandLayerColors.Length; i++)
+        for (int i = 0; i < token.handLayerColors.Length; i++)
         {
 
-            ColorUtility.TryParseHtmlString("#" + data.paperdollHandLayerHexColors[i], out token.paperdollHandLayerColors[i]);
+            ColorUtility.TryParseHtmlString("#" + data.paperdollHandLayerHexColors[i], out token.handLayerColors[i]);
 
         }
 
         for (int i = 0; i < data.paperdollEquipmentLayerHexColors.Length; i++)
         {
-            ColorUtility.TryParseHtmlString("#" + data.paperdollEquipmentLayerHexColors[i], out token.paperdollEquipmentLayerColors[i]);
+            ColorUtility.TryParseHtmlString("#" + data.paperdollEquipmentLayerHexColors[i], out token.equipmentLayerColors[i]);
 
         }
 
         Debug.Log(token.tokenName + " was loaded!");
         OnLoadToken?.Invoke(token.tokenName + " was loaded!");
-        Debug.Log("Racetype = " + token.raceType);
-        Debug.Log("RaceID =" + token.raceID);
+       
     }
 
 }

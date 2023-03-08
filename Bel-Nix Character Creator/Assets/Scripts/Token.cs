@@ -4,7 +4,7 @@ public class Token : MonoBehaviour
 {
     public string tokenName = "";
 
-    public int versionNumber;
+    public float versionNumber;
 
     public int size;
     public int chestType;
@@ -13,7 +13,7 @@ public class Token : MonoBehaviour
     public int bodyType;
     public string head;
 
-    public int hairSprite;
+    public string hairSprite;
     public int capeSprite;
     public int backSprite;
     public int shoulderSprite;
@@ -25,17 +25,16 @@ public class Token : MonoBehaviour
     public bool[] handSprites;
     public bool[] equipmentSprites;
 
-    public float[] paperdollLayerRotations;
-    public float[] paperdollClothingLayerRotations;
-    public float[] paperdollHandLayerRotations;
-    public float[] paperdollEquipmentLayerRotations;
+    public float[] layerRotations;
+    public float[] clothingLayerRotations;
+    public float[] handLayerRotations;
+    public float[] equipmentLayerRotations;
 
-    public Color[] paperdollLayerColors;
-    public Color[] paperdollClothingLayerColors;
-    public Color[] paperdollHandLayerColors;
-    public Color[] paperdollEquipmentLayerColors;
+    public Color[] layerColors;
+    public Color[] clothingLayerColors;
+    public Color[] handLayerColors;
+    public Color[] equipmentLayerColors;
     
-
     public void ChangeTokenName(string name) {
 
         tokenName = name;
@@ -58,9 +57,7 @@ public class Token : MonoBehaviour
     public delegate void ChangeTokenRaceDelegate(int race);
     
     public Token(TokenData data) {
-
         
-
         size = data.size;
         chestType = data.chestType;
         raceID = data.raceID;
@@ -80,39 +77,39 @@ public class Token : MonoBehaviour
         equipmentSprites = data.equipmentSprites;
         
 
-        paperdollLayerRotations = data.paperdollLayerRotations;
-        paperdollClothingLayerRotations = data.paperdollClothingLayerRotations;
-        paperdollHandLayerRotations = data.paperdollHandLayerRotations;
-        paperdollEquipmentLayerRotations = data.paperdollEquipmentLayerRotations;
+        layerRotations = data.layerRotations;
+        clothingLayerRotations = data.clothingLayerRotations;
+        handLayerRotations = data.handLayerRotations;
+        equipmentLayerRotations = data.equipmentLayerRotations;
 
-        paperdollLayerColors = new Color[data.paperdollLayerHexColors.Length];
-        paperdollClothingLayerColors = new Color[data.paperdollClothingLayerHexColors.Length];
-        paperdollHandLayerColors = new Color[data.paperdollHandLayerHexColors.Length];
-        paperdollEquipmentLayerColors = new Color[data.paperdollEquipmentLayerHexColors.Length];
+        layerColors = new Color[data.layerHexColors.Length];
+        clothingLayerColors = new Color[data.clothingLayerHexColors.Length];
+        handLayerColors = new Color[data.paperdollHandLayerHexColors.Length];
+        equipmentLayerColors = new Color[data.paperdollEquipmentLayerHexColors.Length];
 
-        for (int i = 0; i < paperdollLayerColors.Length; i++) {
+        for (int i = 0; i < layerColors.Length; i++) {
 
-            ColorUtility.TryParseHtmlString(data.paperdollLayerHexColors[i], out paperdollLayerColors[i]);
+            ColorUtility.TryParseHtmlString(data.layerHexColors[i], out layerColors[i]);
             
         }
 
-        for (int i = 0; i < paperdollClothingLayerColors.Length; i++){
+        for (int i = 0; i < clothingLayerColors.Length; i++){
 
-            ColorUtility.TryParseHtmlString(data.paperdollClothingLayerHexColors[i], out paperdollClothingLayerColors[i]);
-
-        }
-
-        for (int i = 0; i < paperdollHandLayerColors.Length; i++)
-        {
-
-            ColorUtility.TryParseHtmlString(data.paperdollHandLayerHexColors[i], out paperdollHandLayerColors[i]);
+            ColorUtility.TryParseHtmlString(data.clothingLayerHexColors[i], out clothingLayerColors[i]);
 
         }
 
-        for (int i = 0; i < paperdollEquipmentLayerColors.Length; i++)
+        for (int i = 0; i < handLayerColors.Length; i++)
         {
 
-            ColorUtility.TryParseHtmlString(data.paperdollEquipmentLayerHexColors[i], out paperdollEquipmentLayerColors[i]);
+            ColorUtility.TryParseHtmlString(data.paperdollHandLayerHexColors[i], out handLayerColors[i]);
+
+        }
+
+        for (int i = 0; i < equipmentLayerColors.Length; i++)
+        {
+
+            ColorUtility.TryParseHtmlString(data.paperdollEquipmentLayerHexColors[i], out equipmentLayerColors[i]);
 
         }
 
@@ -139,15 +136,15 @@ public class Token : MonoBehaviour
         clothingSprites = token.clothingSprites;
         handSprites = token.handSprites;
 
-        paperdollLayerRotations = token.paperdollLayerRotations;
-        paperdollClothingLayerRotations = token.paperdollClothingLayerRotations;
-        paperdollHandLayerRotations = token.paperdollHandLayerRotations;
-        paperdollEquipmentLayerRotations = token.paperdollEquipmentLayerRotations;
+        layerRotations = token.layerRotations;
+        clothingLayerRotations = token.clothingLayerRotations;
+        handLayerRotations = token.handLayerRotations;
+        equipmentLayerRotations = token.equipmentLayerRotations;
 
-        paperdollLayerColors = token.paperdollLayerColors;
-        paperdollClothingLayerColors = token.paperdollClothingLayerColors;
-        paperdollHandLayerColors = token.paperdollHandLayerColors;
-        paperdollEquipmentLayerColors = token.paperdollEquipmentLayerColors;
+        layerColors = token.layerColors;
+        clothingLayerColors = token.clothingLayerColors;
+        handLayerColors = token.handLayerColors;
+        equipmentLayerColors = token.equipmentLayerColors;
 
     }
 
