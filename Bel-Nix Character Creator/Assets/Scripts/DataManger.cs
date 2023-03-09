@@ -96,7 +96,7 @@ public class DataManger : MonoBehaviour
         token.helmetSprite = data.helmetSprite;
         token.hornSprite = data.hornSprite;
 
-        token.clothingSprites = data.clothingSprites;
+        token.clothingSprites.AddRange(data.clothingSprites);
         token.handSprites = data.handSprites;
         token.equipmentSprites = data.equipmentSprites;
 

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class UI_RaceButtonFix : ButtonGroupBehaviour
 {
@@ -13,26 +14,17 @@ public class UI_RaceButtonFix : ButtonGroupBehaviour
 
     int currentRace;
     
-    /*private void Awake()
+    private void Start()
     {
-        bgb = GetComponent<ButtonGroupBehaviour>();
-        
-        childButtons = GetComponentsInChildren<Button>();
-
-        currentToken = characterCreator.currentToken;
-        Debug.Log("dd");
-    }*/
-
-    
-    private void OnEnable()
-    {
-
+        FindButtonChildren();
+        AddListenersFunctions();
         characterCreator = FindObjectOfType<CharacterCreator>() as CharacterCreator;
         currentToken = characterCreator.currentToken;
         currentRace = currentToken.raceID - 1;
         TogglePressedStateAsGroup(buttonGroup[currentRace]);
         
     }
+
 
 
 }

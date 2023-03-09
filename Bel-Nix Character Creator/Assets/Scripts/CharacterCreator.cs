@@ -234,7 +234,7 @@ public class CharacterCreator : MonoBehaviour {
 
         key = key.ToUpper();
 
-        Debug.Log(key);
+        //Debug.Log(key);
 
         return key;
 
@@ -340,7 +340,7 @@ public class CharacterCreator : MonoBehaviour {
             case "CLOTHING":  //sublayer parent template
 
                 FillButtons(ConstructKey("clothingtypekey"));
-                SetButtonPressedStates(ReturnIndexsForFilledLayers(paperDollClothingLayers)); //uses overloaded method to 
+                SetButtonPressedStates(ReturnIndexsForFilledLayers(currentToken.clothingSprites)); //uses overloaded method to 
                 ResetActiveColor(); //since the player hasn't selected a sprite to edit, the current color on the color picker will remain white until a sprite is selected.
                 SetLayerColorstoButtonGrid(paperDollClothingLayers); //takes the sublayers' colors and applies them in order on the buttonGrid for easier editing.  
                 
@@ -483,6 +483,48 @@ public class CharacterCreator : MonoBehaviour {
 
         return temp;
 
+
+    }
+
+    int[] ReturnIndexsForFilledLayers(Image[] paperDollLayers, List<string> tokenLayers)
+    {
+
+        List<int> activeLayers = new List<int>(); //holds the list of active layers 
+
+        for (int i = 0; i < paperDollLayers.Length; i++)
+        {
+
+            if (tokenLayers.Contains(paperDollLayers[i].gameObject.name))
+                activeLayers.Add(i);
+            
+        }
+
+        int[] indexs = activeLayers.ToArray();
+
+        return indexs;
+        
+    }
+
+    int[] ReturnIndexsForFilledLayers(List<string> tokenLayers)
+    {
+
+        List<int> activeLayers = new List<int>(); //holds the list of active layers 
+
+        string buttonSpriteNameID;
+
+        for (int i = 0; i < buttonGrid.Length; i++)
+        {
+
+            buttonSpriteNameID = ReturnButtonSpriteNameID(buttonGrid[i]);
+            
+            if (tokenLayers.Contains(buttonSpriteNameID))
+                activeLayers.Add(i);
+
+        }
+
+        int[] indexs = activeLayers.ToArray();
+
+        return indexs;
 
     }
 
@@ -849,10 +891,18 @@ public class CharacterCreator : MonoBehaviour {
             case "CLOTHING": //sublayer parent
                 lastSelectedLayer = paperDollClothingLayers[buttonIndex]; //this button's index will be used to set the sublayer as the last selected layer.  for normal layers this is called in "SetActiveLayer"
                 picker.CurrentColor = buttonImage.color; //sets the current color of the picker to the button's color for ease of editting.
-                if (WasButtonLastSelected(button) && IsButtonPressed(button)) //an early break statement.  This allows the player to press an already pressed button so it's color can be editted.  
+                //an early break statement.  This allows the player to press an already pressed button so it's color can be editted.  
+                if (WasButtonLastSelected(button) && IsButtonPressed(button)) {
                     break;
+                } 
                 paperDollClothingLayers[buttonIndex].sprite = ReturnButtonSpriteAsToggle(button); //sets the button sprite to the approprate sub layer, then toggles this button accordingly.
-             
+
+                if(paperDollClothingLayers[buttonIndex].sprite == blankSprite)
+                    currentToken.clothingSprites.Remove(ReturnButtonSpriteNameID(button));
+
+                else
+                    currentToken.clothingSprites.Add(ReturnButtonSpriteNameID(button));
+
                 break;
 
             case "CAPE":
@@ -1039,7 +1089,7 @@ public class CharacterCreator : MonoBehaviour {
 
     //called in SetSpriteToPaperdoll() and other UI buttons.  updates sprites that are dependant on other variables, such as race, body type, chest type, etc.
     void UpdatePaperDoll(Token token) {
-
+        
         int layer = 0;
         //update tail
         if (token.raceType == 2) //if tiefling, update
@@ -1064,17 +1114,19 @@ public class CharacterCreator : MonoBehaviour {
         layer++;
         //update clothes
 
-        for (int i = 0; i < token.clothingSprites.Length; i++)
+        Sprite[] clothingSprites = spriteLibrary.GetSprites(ConstructKey("clothingtypekey"));
+        //Debug.Log("clothingSprite length" + clothingSprites.Length);
+        for (int i = 0; i < clothingSprites.Length; i++)
         {
-
-            if (token.clothingSprites[i])
-                paperDollClothingLayers[i].sprite = spriteLibrary.GetSprite(ConstructKey("clothingtypekey"), i);
+            //Debug.Log("Sprite Name ID" + ReturnSpriteNameID(clothingSprites[i]));
+            if (token.clothingSprites.Contains(ReturnSpriteNameID(clothingSprites[i])))
+                paperDollClothingLayers[i].sprite = clothingSprites[i]; 
 
             else
                 paperDollClothingLayers[i].sprite = blankSprite;
 
         }
-
+        
         layer++;
         //update hands
         for (int i = 0; i < token.handSprites.Length; i++)
@@ -1135,7 +1187,7 @@ public class CharacterCreator : MonoBehaviour {
         paperDollLayers[layer].sprite = spriteLibrary.GetSprite(ConstructKey("helmettypekey"), token.helmetSprite);
 
         //update colors for colored Layers
-        for (int i = 0; i < paperDollLayers.Length; i++)
+        /*for (int i = 0; i < paperDollLayers.Length; i++)
         {
             paperDollLayers[i].color = token.layerColors[i];
             paperDollLayers[i].rectTransform.localRotation = new Quaternion(0, token.layerRotations[i], 0, 0);
@@ -1159,7 +1211,7 @@ public class CharacterCreator : MonoBehaviour {
         {
             paperDollEquipmentLayers[i].color = token.equipmentLayerColors[i];
             paperDollEquipmentLayers[i].rectTransform.localRotation = new Quaternion(0, token.equipmentLayerRotations[i], 0, 0);
-        }
+        }*/
         
         ResetLastSelectedLayer();
 
@@ -1484,7 +1536,7 @@ public class CharacterCreator : MonoBehaviour {
             return false;
             
     }
-
+    
     //this will return the sprite associated with the button passed through this method.  It will also toggle it's pressed state.
     Sprite ReturnButtonSpriteAsToggle(Button button)
     {
@@ -1522,6 +1574,32 @@ public class CharacterCreator : MonoBehaviour {
         string clean = nameSplit[nameSplit.Length - 1]; //gives us the last item in the array, which should be the name of the sprite w/o body, size, or other qualifiers.
         
         return clean;
+    }
+
+    string ReturnSpriteNameID(Sprite sprite) {
+
+        string name = sprite.name;
+
+        string[] nameSplit = name.Split('_');
+
+        string clean = nameSplit[nameSplit.Length - 1]; //gives us the last item in the array, which should be the name of the sprite w/o body, size, or other qualifiers.
+
+        return clean;
+
+    }
+
+    string ReturnPaperDollLayerSpriteNameID(Image layer) {
+        
+        Sprite sprite = layer.sprite;
+
+        string name = sprite.name;
+
+        string[] nameSplit = name.Split('_');
+
+        string clean = nameSplit[nameSplit.Length - 1]; //gives us the last item in the array, which should be the name of the sprite w/o body, size, or other qualifiers.
+
+        return clean;
+
     }
 
     //toggles between pressed and normal states.
@@ -1648,13 +1726,16 @@ public class CharacterCreator : MonoBehaviour {
         currentToken.hornSprite = token.hornSprite;
         currentToken.tailSprite = token.tailSprite;
         //for each sublayer, it goes through the list of sprites and applies tokens
-        for (int i = 0; i < token.clothingSprites.Length; i++) {
+        /*for (int i = 0; i < token.clothingSprites.Length; i++) {
 
             currentToken.clothingSprites[i] = token.clothingSprites[i];
             currentToken.layerColors[i] = token.layerColors[i];
             currentToken.layerRotations[i] = token.layerRotations[i];
 
-        }
+        }*/
+
+        currentToken.clothingSprites.Clear();
+        currentToken.clothingSprites.AddRange(token.clothingSprites);
         
         for (int i = 0; i < token.handSprites.Length; i++)
         {
@@ -1678,6 +1759,14 @@ public class CharacterCreator : MonoBehaviour {
     }
 
     #endregion
+
+
+    public void LoadToken() {
+
+        datamanger.LoadToken(currentToken);
+        UpdatePaperDoll(currentToken);
+
+    }
 
     // Use this for initialization
     void Start () {
@@ -1715,6 +1804,8 @@ public class CharacterCreator : MonoBehaviour {
         //OverrideCurrentToken(currentToken);
         
         DeactivateAllButtons();
+
+        UpdatePaperDoll(currentToken);
 
 
 

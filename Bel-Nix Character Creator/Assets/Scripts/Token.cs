@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Token : MonoBehaviour
 {
@@ -6,22 +7,33 @@ public class Token : MonoBehaviour
 
     public float versionNumber;
 
+    [Space(10)]
+
+    [Header("Racial Traits")]
     public int size;
-    public int chestType;
     public int raceID;
     public int raceType;
-    public int bodyType;
     public string head;
 
+    [Space(10)]
+
+    [Header("Body Traits")]
+    public int chestType;
+    public int bodyType;
     public string hairSprite;
+    public int hornSprite;
+    public int tailSprite;
+    
+    [Space(10)]
+
+    [Header("Clothing/Equipment")]
     public int capeSprite;
     public int backSprite;
     public int shoulderSprite;
     public int helmetSprite;
-    public int hornSprite;
-    public int tailSprite;
+  
 
-    public bool[] clothingSprites;
+    public List<string> clothingSprites = new List<string>();
     public bool[] handSprites;
     public bool[] equipmentSprites;
 
@@ -133,7 +145,7 @@ public class Token : MonoBehaviour
         helmetSprite = token.helmetSprite;
         hornSprite = token.hornSprite;
 
-        clothingSprites = token.clothingSprites;
+        clothingSprites.AddRange(token.clothingSprites);
         handSprites = token.handSprites;
 
         layerRotations = token.layerRotations;

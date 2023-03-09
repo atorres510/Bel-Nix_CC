@@ -96,8 +96,7 @@ public class SpriteLibrary : MonoBehaviour {
         Sprite[] sprites = Resources.LoadAll<Sprite>(path);
 
         return sprites;
-
-
+        
     }
 
     /*

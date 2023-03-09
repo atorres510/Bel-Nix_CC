@@ -10,21 +10,21 @@ public class ButtonGroupBehaviour : MonoBehaviour
     public Button[] buttonGroup;
 
     //finds all the children and adds them to the group.
-    private void FindButtonChildren() {
+    public void FindButtonChildren() {
 
         buttonGroup = GetComponentsInChildren<Button>(true);
         
     }
 
     //uses onClick.AddListener to add the togglepressedstateasgroup() for each of the buttons in the group.
-    private void AddListenersFunctions() {
+    public void AddListenersFunctions() {
 
         for (int i = 0; i < buttonGroup.Length; i++) {
 
             int button = i;
 
             buttonGroup[button].onClick.AddListener(delegate { TogglePressedStateAsGroup(buttonGroup[button]); });
-            //Debug.Log("Adding listener from " + buttonGroup[i].name + ".");
+            Debug.Log("Adding listener from " + buttonGroup[i].name + ".");
         }
        
     }
@@ -33,7 +33,7 @@ public class ButtonGroupBehaviour : MonoBehaviour
     //toggles a set of buttons as a group, ensuring only one button is pressed from the group at a time. similar to a toggle group component
     public void TogglePressedStateAsGroup(Button thisButton)
     {
-
+        Debug.Log("Wow");
         thisButton.interactable = false; //this button is now pressed.
         
         for (int i = 0; i < buttonGroup.Length; i++)

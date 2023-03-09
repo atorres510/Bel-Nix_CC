@@ -23,7 +23,7 @@ public class TokenData {
     public int hornSprite;
     public int tailSprite;
 
-    public bool[] clothingSprites;
+    public List<string> clothingSprites = new List<string>();
     public bool[] handSprites;
     public bool[] equipmentSprites;
 
@@ -60,7 +60,7 @@ public class TokenData {
         hornSprite = token.hornSprite;
         tailSprite = token.tailSprite;
 
-        clothingSprites = token.clothingSprites;
+        clothingSprites.AddRange(token.clothingSprites);
         handSprites = token.handSprites;
         equipmentSprites = token.equipmentSprites;
 
