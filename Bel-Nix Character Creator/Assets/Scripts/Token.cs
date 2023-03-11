@@ -6,6 +6,10 @@ public class Token : MonoBehaviour
     public string tokenName = "";
 
     public float versionNumber;
+    
+    public List<PaperdollLayerObject> baseLayers = new List<PaperdollLayerObject>();
+    public List<PaperdollLayerObject> subLayers = new List<PaperdollLayerObject>();
+
 
     [Space(10)]
 
