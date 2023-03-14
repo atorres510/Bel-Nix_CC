@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.IO;
-using System.Xml;
-using System.Xml.Serialization;
+//using Newtonsoft.Json;
+//using System.Xml;
+//using System.Xml.Serialization;
 //using System.Runtime.Serialization.Formatters.Binary;
 
 public static class SaveSystem
@@ -11,8 +12,8 @@ public static class SaveSystem
     {
 
         string path = Application.streamingAssetsPath + "/Tokens/" + token.tokenName + ".token";
-        
-        XmlSerializer serializer = new XmlSerializer(typeof(TokenData));
+
+        /*XmlSerializer serializer = new XmlSerializer(typeof(TokenData));
 
         TextWriter writer = new StreamWriter(path);
 
@@ -22,8 +23,20 @@ public static class SaveSystem
 
         serializer.Serialize(writer, data);
 
-        writer.Close();
+        writer.Close();*/
 
+        TokenData data = new TokenData(token);
+
+        string json = JsonUtility.ToJson(data);
+
+        //JsonSerializer serializer = new JsonSerializer();
+        
+        using (StreamWriter writer = new StreamWriter(path)) {
+
+            writer.Write(json);
+            
+        }
+           
     }
 
     public static TokenData LoadToken(string fileName) {
@@ -33,13 +46,20 @@ public static class SaveSystem
 
         if (File.Exists(path))
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(TokenData));
+            /*XmlSerializer serializer = new XmlSerializer(typeof(TokenData));
             
             FileStream stream = new FileStream(path, FileMode.Open);
 
             TokenData data = serializer.Deserialize(stream) as TokenData;
-            stream.Close();
+            stream.Close();*/
+            string json;
 
+            using (StreamReader reader = new StreamReader(path)) {
+                json = reader.ReadToEnd();
+                reader.Close();
+            }
+            
+            TokenData data = JsonUtility.FromJson<TokenData>(json);
             return data;
 
         }

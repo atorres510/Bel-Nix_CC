@@ -24,7 +24,7 @@ public class ButtonGroupBehaviour : MonoBehaviour
             int button = i;
 
             buttonGroup[button].onClick.AddListener(delegate { TogglePressedStateAsGroup(buttonGroup[button]); });
-            Debug.Log("Adding listener from " + buttonGroup[i].name + ".");
+            //Debug.Log("Adding listener from " + buttonGroup[i].name + ".");
         }
        
     }

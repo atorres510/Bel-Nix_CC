@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UI_CharacterNameField : MonoBehaviour
 {
-
+    
 
 
     //subscribe to events
@@ -14,22 +14,39 @@ public class UI_CharacterNameField : MonoBehaviour
         Token currentToken = ReturnCurrentToken();
         currentToken.ChangeTokenNameEvent += UpdateInputField;
 
+        DataManger.FindObjectOfType<DataManger>().OnLoadToken += UpdateInputField;
+
     }
 
     Token ReturnCurrentToken()
     {
+        CharacterCreator characterCreator = FindObjectOfType<CharacterCreator>();
 
-        GameObject tokenObject = GameObject.FindGameObjectWithTag("CurrentToken");
-        Token tokenComponent = tokenObject.GetComponent<Token>();
+        return characterCreator.currentToken;
 
-        return tokenComponent;
+        //GameObject tokenObject = GameObject.FindGameObjectWithTag("CurrentToken");
+        //Token tokenComponent = tokenObject.GetComponent<Token>();
 
+       // return tokenComponent;
+
+    }
+
+    public void CallTokenNameEvent(string input) {
+
+        Token currentToken = ReturnCurrentToken();
+
+        currentToken.ChangeTokenName(input);
+        
     }
 
     void UpdateInputField(string text)
     {
 
         InputField inputField = gameObject.GetComponent<InputField>();
+
+        string[] textSplit = text.Split(' ');
+
+        text = textSplit[0];
 
         inputField.text = text;
         //inputField.onEndEdit.Invoke(text);

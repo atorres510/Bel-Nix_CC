@@ -87,7 +87,7 @@ public class SpriteLibrary : MonoBehaviour {
         return errorSprite;
 
     }
-
+    
     //returns a full sprite array when given the appropriate key
     public Sprite[] GetSprites(string key)
     {

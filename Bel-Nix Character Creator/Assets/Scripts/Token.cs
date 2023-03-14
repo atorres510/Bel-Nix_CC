@@ -6,9 +6,28 @@ public class Token : MonoBehaviour
     public string tokenName = "";
 
     public float versionNumber;
-    
+   
     public List<PaperdollLayerObject> baseLayers = new List<PaperdollLayerObject>();
     public List<PaperdollLayerObject> subLayers = new List<PaperdollLayerObject>();
+
+    public List<PaperdollLayerObject> ReturnAllLayers() {
+
+        List<PaperdollLayerObject> allLayers = new List<PaperdollLayerObject>();
+
+        allLayers.AddRange(baseLayers);
+        allLayers.AddRange(subLayers);
+
+        return allLayers;
+
+    }
+
+    public void ClearAllLayers() {
+
+        baseLayers.Clear();
+        subLayers.Clear();
+
+    }
+
 
 
     [Space(10)]
@@ -28,28 +47,6 @@ public class Token : MonoBehaviour
     public int hornSprite;
     public int tailSprite;
     
-    [Space(10)]
-
-    [Header("Clothing/Equipment")]
-    public int capeSprite;
-    public int backSprite;
-    public int shoulderSprite;
-    public int helmetSprite;
-  
-
-    public List<string> clothingSprites = new List<string>();
-    public bool[] handSprites;
-    public bool[] equipmentSprites;
-
-    public float[] layerRotations;
-    public float[] clothingLayerRotations;
-    public float[] handLayerRotations;
-    public float[] equipmentLayerRotations;
-
-    public Color[] layerColors;
-    public Color[] clothingLayerColors;
-    public Color[] handLayerColors;
-    public Color[] equipmentLayerColors;
     
     public void ChangeTokenName(string name) {
 
@@ -81,55 +78,9 @@ public class Token : MonoBehaviour
         bodyType = data.bodyType;
         head = data.head;
 
-        hairSprite = data.hairSprite;
-        capeSprite = data.capeSprite;
-        backSprite = data.backSprite;
-        shoulderSprite = data.shoulderSprite;
-        helmetSprite = data.helmetSprite;
-        hornSprite = data.hornSprite;
-
-        clothingSprites = data.clothingSprites;
-        handSprites = data.handSprites;
-        equipmentSprites = data.equipmentSprites;
+        baseLayers.AddRange(data.baseLayers);
+        subLayers.AddRange(data.subLayers);
         
-
-        layerRotations = data.layerRotations;
-        clothingLayerRotations = data.clothingLayerRotations;
-        handLayerRotations = data.handLayerRotations;
-        equipmentLayerRotations = data.equipmentLayerRotations;
-
-        layerColors = new Color[data.layerHexColors.Length];
-        clothingLayerColors = new Color[data.clothingLayerHexColors.Length];
-        handLayerColors = new Color[data.paperdollHandLayerHexColors.Length];
-        equipmentLayerColors = new Color[data.paperdollEquipmentLayerHexColors.Length];
-
-        for (int i = 0; i < layerColors.Length; i++) {
-
-            ColorUtility.TryParseHtmlString(data.layerHexColors[i], out layerColors[i]);
-            
-        }
-
-        for (int i = 0; i < clothingLayerColors.Length; i++){
-
-            ColorUtility.TryParseHtmlString(data.clothingLayerHexColors[i], out clothingLayerColors[i]);
-
-        }
-
-        for (int i = 0; i < handLayerColors.Length; i++)
-        {
-
-            ColorUtility.TryParseHtmlString(data.paperdollHandLayerHexColors[i], out handLayerColors[i]);
-
-        }
-
-        for (int i = 0; i < equipmentLayerColors.Length; i++)
-        {
-
-            ColorUtility.TryParseHtmlString(data.paperdollEquipmentLayerHexColors[i], out equipmentLayerColors[i]);
-
-        }
-
-
     }
 
     public Token(Token token)
@@ -142,25 +93,8 @@ public class Token : MonoBehaviour
         bodyType = token.bodyType;
         head = token.head;
 
-        hairSprite = token.hairSprite;
-        capeSprite = token.capeSprite;
-        backSprite = token.backSprite;
-        shoulderSprite = token.shoulderSprite;
-        helmetSprite = token.helmetSprite;
-        hornSprite = token.hornSprite;
-
-        clothingSprites.AddRange(token.clothingSprites);
-        handSprites = token.handSprites;
-
-        layerRotations = token.layerRotations;
-        clothingLayerRotations = token.clothingLayerRotations;
-        handLayerRotations = token.handLayerRotations;
-        equipmentLayerRotations = token.equipmentLayerRotations;
-
-        layerColors = token.layerColors;
-        clothingLayerColors = token.clothingLayerColors;
-        handLayerColors = token.handLayerColors;
-        equipmentLayerColors = token.equipmentLayerColors;
+        baseLayers.AddRange(token.baseLayers);
+        subLayers.AddRange(token.subLayers);
 
     }
 

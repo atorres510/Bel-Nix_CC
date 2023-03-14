@@ -25,4 +25,27 @@ public class TokenBank : MonoBehaviour
 
     }
 
+    void InitializeInspectorAssignedTokenLayers(Token token) {
+        
+        foreach (PaperdollLayerObject layerObject in token.ReturnAllLayers()) {
+
+            layerObject.ConvertSpriteToSpriteID();
+
+        }
+           
+
+    }
+    
+    private void Start()
+    {
+
+        for (int i = 0; i < tokenBank.Length; i++) {
+
+            InitializeInspectorAssignedTokenLayers(tokenBank[i]);
+
+        }
+
+
+    }
+
 }
