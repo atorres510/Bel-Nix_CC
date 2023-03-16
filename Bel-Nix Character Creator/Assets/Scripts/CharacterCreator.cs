@@ -34,8 +34,7 @@ public class CharacterCreator : MonoBehaviour {
     public Renderer activeRenderer;
     public GameObject gridObject;
     public GameObject presetsObject;
-
-
+    
     [Space(20)]
 
     [Header("UI Elements")]
@@ -125,6 +124,13 @@ public class CharacterCreator : MonoBehaviour {
     string clothingTypeKey;
     string accessoryTypeKey;
     string hairTypeKey;
+
+
+    #region Event Methods
+    public event ChangeTokenRaceDelegate ChangeTokenRaceEvent;
+    public delegate void ChangeTokenRaceDelegate(int race);
+
+    #endregion  
 
     #region Sprite Key Methods
 
@@ -248,7 +254,7 @@ public class CharacterCreator : MonoBehaviour {
 
         string[] splitName = name.Split('_');
 
-        name = splitName[splitName.Length - 1];
+        name = splitName[splitName.Length - 1]; //get the last value in the array, which holds the nameID
 
         return name;
     }
@@ -259,7 +265,7 @@ public class CharacterCreator : MonoBehaviour {
 
         string[] splitName = name.Split('_');
 
-        name = splitName[splitName.Length - 1];
+        name = splitName[splitName.Length - 1]; //get the last value in the array, which holds the nameID
 
         return name;
 
@@ -273,16 +279,121 @@ public class CharacterCreator : MonoBehaviour {
 
         string[] splitName = name.Split('_');
 
-        name = splitName[splitName.Length - 1];
+        name = splitName[splitName.Length - 1]; //get the last value in the array, which holds the nameID
 
         return name;
+    }
+
+    //provides index number, used in fillbuttons to ensure the right button is pressed
+    int ReturnSpriteIndexNumber(string spriteKey, string stringID)
+    {
+
+        int id = 0;
+
+        Sprite[] sprites = spriteLibrary.GetSprites(spriteKey);
+
+        for (int i = 0; i < sprites.Length; i++)
+        {
+
+            string spriteName = GetSpriteNameID(sprites[i]);
+
+            if (spriteName == stringID)
+                id = i;
+
+        }
+
+        return id;
+
+    }
+
+    //returns a sprite from the sprite library using "contruct key" and the sprite's name ID
+    Sprite ReturnSpriteFromNameID(string spriteKey, string stringID)
+    {
+
+        Sprite[] sprites = spriteLibrary.GetSprites(spriteKey);
+
+        stringID = stringID.ToUpper();
+
+        for (int i = 0; i < sprites.Length; i++)
+        {
+
+            string spriteName = GetSpriteNameID(sprites[i]);
+            spriteName = spriteName.ToUpper();
+
+            //Debug.Log("SpriteName : " + spriteName + " | stringID : " + stringID);
+
+            if (spriteName == stringID)
+                return sprites[i];
+
+        }
+
+        return blankSprite;
+
     }
 
     #endregion
 
     #region Layer and SubLayer Methods
     //the layer and sublayer methods are for UI use to set active layers and to fill the grid buttons with the appropriate sprites for use.  
+    
+    //Finds gameobjects based on tag and returns the image array.  for use in setting up Paperdoll layers and sublayers
+    Image[] ReturnImagesFromTag(string layerTag)
+    {
 
+        List<Image> tempList = new List<Image>(); // new list to place our filtered images
+
+        RectTransform[] layerObjects = paperDoll.transform.GetComponentsInChildren<RectTransform>(); //creates an array with all the objects that fit our tag.
+
+        for (int i = 0; i < layerObjects.Length; i++)
+        {
+            if (layerObjects[i].tag == layerTag)
+            {
+                Image imgComponent = layerObjects[i].GetComponent<Image>();
+
+                tempList.Add(imgComponent);
+            }
+
+            // Debug.Log(imgComponent.gameObject.name);
+
+        }
+
+        Image[] layers = tempList.ToArray();
+
+        return layers;
+
+    }
+
+    //overloaded for use of an image and its gameobject.  pass in paperdollLayers[i] that are parents of sublayers (such as clothing) as the image variable to return their sublayers as an image[]
+    Image[] ReturnImagesFromTag(string layerTag, Image parentImage)
+    {
+
+        List<Image> tempList = new List<Image>();
+        //gets the root object and the children
+        RectTransform[] layerObjects = parentImage.gameObject.GetComponentsInChildren<RectTransform>(true);
+
+        for (int i = 0; i < layerObjects.Length; i++)
+        {
+
+            if (layerObjects[i].tag == layerTag) //sort the children by the given tag and put them into a new list. this should not allow the root object into the new list.
+            {
+
+                Image imgComponent = layerObjects[i].GetComponent<Image>();
+
+                tempList.Add(imgComponent);
+
+                //Debug.Log(imgComponent.gameObject.name);
+
+            }
+
+            else { }
+
+        }
+
+        Image[] layers = tempList.ToArray();
+
+        return layers;
+    }
+    
     //For use of the UI to determine what layer of the paperdoll is currently being edited, and to fill the buttons with the appropriate sprites for player's selection
     public void SetActiveLayer(string layer)
     {
@@ -300,7 +411,7 @@ public class CharacterCreator : MonoBehaviour {
 
         }
 
-        Debug.Log("ActiveLayer = " + activeLayer);
+        //Debug.Log("ActiveLayer = " + activeLayer);
 
         //resets button and layers so that they previous ones are not editted by accident.
         ResetButtonSelection();
@@ -314,7 +425,7 @@ public class CharacterCreator : MonoBehaviour {
         switch (layer)
         {
             case "TAIL":
-                FillButtons(ConstructKey("Tail"));
+                FillButtons(ConstructKey(layer));
                 SetButtonPressedState(GetSpriteNameID(paperDollLayers[activeLayer]));
 
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
@@ -326,12 +437,12 @@ public class CharacterCreator : MonoBehaviour {
 
             case "BODY": //layer template
 
-                FillButtons(ConstructKey("body")); //assigns sprites to the grid, activating the appropriate number of buttons on buttonGrid to list all the sprites in the folder.
+                FillButtons(ConstructKey(layer)); //assigns sprites to the grid, activating the appropriate number of buttons on buttonGrid to list all the sprites in the folder.
                 SetButtonPressedState(GetSpriteNameID(paperDollLayers[activeLayer])); //leaves the button with the sprite of the current body type pressed, with the rest remaining in normal state (unpressed).
                 picker.CurrentColor = paperDollLayers[activeLayer].color; //sets the color of the body to be the one selected on the color pick for easier editing.
                 lastSelectedLayer = paperDollLayers[activeLayer]; //since the body color should coordinate with other layers associated with skin, the skinlayer is used.  This will also update things like head, chest.
                 //selector.SelectThis(buttonGrid[bodyType].GetComponent<RectTransform>());
-                Debug.Log("Button: " + currentToken.bodyType);
+                //Debug.Log("Button: " + currentToken.bodyType);
                 ChangeFixedColumnCount(3);//number of columns is 3 on the grid.
                 ResizeButtonGridSprites(1); //sprites will be at normal transform.scale = (1, 1, 1)
 
@@ -339,7 +450,7 @@ public class CharacterCreator : MonoBehaviour {
                 break;
             case "CLOTHING":  //sublayer parent template
 
-                FillButtons(ConstructKey("clothing"));
+                FillButtons(ConstructKey(layer));
                 SetButtonsPressedStates(ReturnIndexsForFilledLayers(paperDollClothingLayers)); //uses overloaded method to 
                 ResetActiveColor(); //since the player hasn't selected a sprite to edit, the current color on the color picker will remain white until a sprite is selected.
                 SetLayerColorstoButtonGrid(paperDollClothingLayers); //takes the sublayers' colors and applies them in order on the buttonGrid for easier editing.  
@@ -350,7 +461,7 @@ public class CharacterCreator : MonoBehaviour {
 
             case "CHEST": //layer
 
-                FillButtons(ConstructKey("chest"));
+                FillButtons(ConstructKey(layer));
                 SetButtonPressedState(GetSpriteNameID(paperDollLayers[activeLayer]));
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = paperDollLayers[activeLayer];
@@ -365,7 +476,7 @@ public class CharacterCreator : MonoBehaviour {
 
             case "HANDS": //sublayer parent
 
-                FillButtons(ConstructKey("Hands"));
+                FillButtons(ConstructKey(layer));
                 SetButtonsPressedStates(ReturnIndexsForFilledLayers(paperDollHandLayers));
                 ResetActiveColor();
                 SetLayerColorstoButtonGrid(paperDollHandLayers);
@@ -376,7 +487,7 @@ public class CharacterCreator : MonoBehaviour {
 
             case "BACK":
 
-                FillButtons(ConstructKey("Back"));
+                FillButtons(ConstructKey(layer));
                 SetButtonPressedState(GetSpriteNameID(paperDollLayers[activeLayer]));
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = paperDollLayers[activeLayer];
@@ -386,7 +497,7 @@ public class CharacterCreator : MonoBehaviour {
                 break;
 
             case "CAPE":
-                FillButtons(ConstructKey("Cape"));
+                FillButtons(ConstructKey(layer));
                 SetButtonPressedState(GetSpriteNameID(paperDollLayers[activeLayer]));
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = paperDollLayers[activeLayer];
@@ -397,7 +508,7 @@ public class CharacterCreator : MonoBehaviour {
                 break;
 
             case "SHOULDER":
-                FillButtons(ConstructKey("Shoulder"));
+                FillButtons(ConstructKey(layer));
                 SetButtonPressedState(GetSpriteNameID(paperDollLayers[activeLayer]));
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = paperDollLayers[activeLayer];
@@ -408,7 +519,7 @@ public class CharacterCreator : MonoBehaviour {
 
             case "EQUIPMENT": //sublayer parent
 
-                FillButtons(ConstructKey("Equipment"));
+                FillButtons(ConstructKey(layer));
                 SetButtonsPressedStates(ReturnIndexsForFilledLayers(paperDollEquipmentLayers));
                 ResetActiveColor();
                 SetLayerColorstoButtonGrid(paperDollEquipmentLayers);
@@ -421,7 +532,7 @@ public class CharacterCreator : MonoBehaviour {
                 break;
 
             case "HAIR":
-                FillButtons(ConstructKey("Hair"));
+                FillButtons(ConstructKey(layer));
                 SetButtonPressedState(GetSpriteNameID(paperDollLayers[activeLayer]));
 
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
@@ -432,7 +543,7 @@ public class CharacterCreator : MonoBehaviour {
                 break;
 
             case "HORNS":
-                FillButtons(ConstructKey("Horns"));
+                FillButtons(ConstructKey(layer));
                 SetButtonPressedState(GetSpriteNameID(paperDollLayers[activeLayer]));
 
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
@@ -443,7 +554,7 @@ public class CharacterCreator : MonoBehaviour {
                 break;
 
             case "HELMET":
-                FillButtons(ConstructKey("Helmet"));
+                FillButtons(ConstructKey(layer));
                 SetButtonPressedState(GetSpriteNameID(paperDollLayers[activeLayer]));
                 picker.CurrentColor = paperDollLayers[activeLayer].color;
                 lastSelectedLayer = paperDollLayers[activeLayer];
@@ -486,6 +597,7 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
+    //overload 
     int[] ReturnIndexsForFilledLayers(Image[] paperDollLayers, List<string> tokenLayers)
     {
 
@@ -505,6 +617,7 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
+    //overload
     int[] ReturnIndexsForFilledLayers(List<string> tokenLayers)
     {
 
@@ -634,94 +747,46 @@ public class CharacterCreator : MonoBehaviour {
     }
 
     #endregion
-
+    
     #region Paperdoll Methods
 
-    //Finds gameobjects based on tag and returns the image array.  for use in setting up Paperdoll layers and sublayers
-    Image[] ReturnImagesFromTag(string layerTag)
-    {
-
-        List<Image> tempList = new List<Image>(); // new list to place our filtered images
-
-        RectTransform[] layerObjects = paperDoll.transform.GetComponentsInChildren<RectTransform>(); //creates an array with all the objects that fit our tag.
-
-        for (int i = 0; i < layerObjects.Length; i++)
-        {
-            if (layerObjects[i].tag == layerTag) {
-                Image imgComponent = layerObjects[i].GetComponent<Image>();
-
-                tempList.Add(imgComponent);
-            }
-
-            // Debug.Log(imgComponent.gameObject.name);
-
-        }
-
-        Image[] layers = tempList.ToArray();
-
-        return layers;
-
-    }
-
-    //overloaded for use of an image and its gameobject.  pass in paperdollLayers[i] that are parents of sublayers (such as clothing) as the image variable to return their sublayers as an image[]
-    Image[] ReturnImagesFromTag(string layerTag, Image parentImage)
-    {
-
-        List<Image> tempList = new List<Image>();
-        //gets the root object and the children
-        RectTransform[] layerObjects = parentImage.gameObject.GetComponentsInChildren<RectTransform>(true);
-
-        for (int i = 0; i < layerObjects.Length; i++)
-        {
-
-            if (layerObjects[i].tag == layerTag) //sort the children by the given tag and put them into a new list. this should not allow the root object into the new list.
-            {
-
-                Image imgComponent = layerObjects[i].GetComponent<Image>();
-
-                tempList.Add(imgComponent);
-
-                //Debug.Log(imgComponent.gameObject.name);
-
-            }
-
-            else { }
-
-        }
-
-        Image[] layers = tempList.ToArray();
-
-        return layers;
-    }
-    
     //for use of UI race buttons to change race and the dependant variables
-    public void ChangeRace(int race) {
+    public void ChangeRace(int raceID) {
         
         ApplyPaperdollToToken(currentToken);
 
         //Find the newRacialToken and set currentToken to newRace settings
         
-        Token newRacialToken = tokenBank.SearchTokenbyRace(race);
+        Token newRacialToken = tokenBank.SearchTokenbyRace(raceID);
         
-        /*if (currentToken.raceType == newRacialToken.raceType && currentToken.size == newRacialToken.size) {
-            
-            newRacialToken.independentLayers.Clear();
-            newRacialToken.independentLayers.AddRange(currentToken.independentLayers);
-            newRacialToken.subLayers.Clear();
-            newRacialToken.subLayers.AddRange(currentToken.subLayers);
-            
-        }*/
-
         currentToken = newRacialToken;
-        
-        SetDefaultToken(race);
+
+        //apply only physical traits layers to paperdoll, preserving items, clothes, equipment, etc
+        PaperdollLayerObject currentLayerObject;
+        for (int i = 0; i < paperDollLayers.Length; i++)
+        {
+
+            string paperDollLayerName = paperDollLayers[i].name;
+
+            currentLayerObject = currentToken.physicalTraitLayers.Find(x => x.name.Contains(paperDollLayerName));
+            if (currentLayerObject != null)//ensure object is found
+            {
+                SetLayerObjectProperitesToPaperDollLayer(currentLayerObject, paperDollLayers[i]);
+                //Debug.Log("current layer object name " + currentLayerObject.name);
+            }
+
+            //else
+            //Debug.LogError("Layer Object " + paperDollLayerName + " not found.");
+
+        }
+
+        ChangeTokenRaceEvent?.Invoke(raceID);
+
+        SetDefaultToken(raceID);
         //ApplyRacialExceptions(currentToken);
-        ApplyTokenToPaperdoll(currentToken);
+        //ApplyTokenToPaperdoll(currentToken);
         RefreshPaperdoll();
-
-
-
-
+        
         //Debug.Log("CC race type" + currentToken.raceType);
         //Debug.Log("CC raceID" + race);
 
@@ -777,44 +842,7 @@ public class CharacterCreator : MonoBehaviour {
 
 
     }
-
-    public void UpdateRaceButtons()
-    {
-
-        int race = currentToken.raceType;
-
-        switch (race) {
-
-            case 0: //base
-                chestButton.gameObject.SetActive(true);
-                hornButton.gameObject.SetActive(false);
-                tailButton.gameObject.SetActive(false);
-                break;
-            case 1: //dragonborn
-                chestButton.gameObject.SetActive(false);
-                hornButton.gameObject.SetActive(true);
-                tailButton.gameObject.SetActive(false);
-                break;
-            case 2://tiefling
-                chestButton.gameObject.SetActive(true);
-                hornButton.gameObject.SetActive(true);
-                tailButton.gameObject.SetActive(true);
-                break;
-            default:
-                Debug.LogError("RaceType not vaild.");
-                break;
-
-        }
-
-    }
-
-    public void ResetPaperdollAndCurrentToken() {
-
-        //OverrideCurrentToken(defaultToken);
-        ApplyTokenToPaperdoll(defaultToken);
-
-    }
-
+    
     public void SetDefaultToken(int race) {
 
         defaultToken = defaultTokenBank.SearchTokenbyRace(race);
@@ -984,132 +1012,16 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
-    //used by UI button "Random".  assigns random values to sprites then uses UpdatePaperdoll to apply them.  Also uses set active layer to update button pressed states and colors.
-    //does not randomize color yet.
-    public void RandomizePaperdoll() {
-
-        //body
-        //bodyType = UnityEngine.Random.Range(0, bodyStrings.Length); //sets a random body type
-
-        //hair 
-        //currentToken.hairSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites(ConstructKey("hairtypekey")).Length);
-
-
-        //clothing
-        Sprite[] clothingSprites = spriteLibrary.GetSprites(ConstructKey("clothingtypekey"));
-
-
-        for (int i = 0; i < paperDollClothingLayers.Length; i++) {
-
-            if (UnityEngine.Random.value < 0.5f)
-                paperDollClothingLayers[i].sprite = clothingSprites[i];
-
-            else
-                paperDollClothingLayers[i].sprite = blankSprite;
-
-        }
-
-        //hands  this will stay commented out until we have more hand sprites.
-        /*Sprite[] handSprites = spriteLibrary.GetSprites(ConstructKey("handtypekey"));
-
-        int handCounter = 0;
-        int maxHandSprites = 4;
-
-        for (int i = 0; i < paperDollHandLayers.Length; i++)
-        {
-
-            if (Random.value < 0.5f)
-            {
-                paperDollHandLayers[i].sprite = handSprites[i];
-                handCounter++;
-            }
-                
-            else
-                paperDollHandLayers[i].sprite = blankSprite;
-
-            
-            if (handCounter == maxHandSprites)
-                break;
-        }
-        */
-
-        //shoulder
-        //currentToken.shoulderSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("shoulderTypeKey").Length);
-
-        //back
-        //currentToken.backSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("backtypekey").Length);
-
-
-        //cape
-        //currentToken.capeSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("capetypekey").Length);
-
-        /*
-        if (raceType == 1)
-            hornSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("horntypekey").Length);
-
-        if (raceType == 2) { 
-        
-            hornSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("horntypekey").Length);
-            tailSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("tailtypekey").Length);
-        }*/
-
-
-
-        SetActiveLayer(paperDollLayers[activeLayer].name); //updates the buttons 
-
-
-        ApplyTokenToPaperdoll(currentToken); //updates the paperdolls
-
-
-    }
-
-    int FindSpriteNumID(string spriteKey, string stringID) {
-
-        int id = 0;
-
-        Sprite[] sprites = spriteLibrary.GetSprites(spriteKey);
-
-        for (int i = 0; i < sprites.Length; i++) {
-
-            string spriteName = GetSpriteNameID(sprites[i]);
-
-            if (spriteName == stringID)
-                id = i;
-
-        }
-
-        return id;
-
-    }
-
-    Sprite ReturnSpriteFromNameID(string spriteKey, string stringID)
-    {
-        
-        Sprite[] sprites = spriteLibrary.GetSprites(spriteKey);
-
-        stringID = stringID.ToUpper();
-
-        for (int i = 0; i < sprites.Length; i++)
-        {
-
-            string spriteName = GetSpriteNameID(sprites[i]);
-            spriteName = spriteName.ToUpper();
-
-            //Debug.Log("SpriteName : " + spriteName + " | stringID : " + stringID);
-
-            if (spriteName == stringID)
-                return sprites[i];
-
-        }
-
-        return blankSprite;
-
-    }
-    
     public void ApplyPaperdollToToken(Token token){
 
-        token.baseLayers.Clear();
-        token.subLayers.Clear();
+        token.ClearAllLayers();
+        
+        for (int i = 0; i < paperDollLayers.Length; i++)
+        {
+            PaperdollLayerObject layerObject = new PaperdollLayerObject(paperDollLayers[i]);
+            //Debug.Log(layerObject.name + ", " + layerObject.spriteName);
+            token.physicalTraitLayers.Add(layerObject);
+        }
 
         for (int i = 0; i < paperDollLayers.Length; i++) {
             PaperdollLayerObject layerObject = new PaperdollLayerObject(paperDollLayers[i]);
@@ -1157,6 +1069,7 @@ public class CharacterCreator : MonoBehaviour {
         
     }
 
+    //takes the paperdoll sub layer object from the token and applies sprite, color, and rotation to the appropriate paperdoll sub layer
     void SetLayerObjectProperitesToPaperDollSubLayer(PaperdollLayerObject layerObject, string paperDollLayerName, Image paperDollSubLayer)
     {
         
@@ -1165,25 +1078,42 @@ public class CharacterCreator : MonoBehaviour {
         paperDollSubLayer.rectTransform.localRotation = new Quaternion(0, layerObject.rotation, 0, 0);
 
     }
-
+    
     //called in SetSpriteToPaperdoll() and other UI buttons.  updates sprites that are dependant on other variables, such as race, body type, chest type, etc.
     public void ApplyTokenToPaperdoll(Token token) {
 
-        //base layers
-        PaperdollLayerObject currentLayerObject;
         
+        PaperdollLayerObject currentLayerObject;
+
+        for (int i = 0; i < paperDollLayers.Length; i++)
+        {
+
+            string paperDollLayerName = paperDollLayers[i].name;
+
+            currentLayerObject = token.physicalTraitLayers.Find(x => x.name.Contains(paperDollLayerName));
+            if (currentLayerObject != null)//ensure object is found
+            {
+                SetLayerObjectProperitesToPaperDollLayer(currentLayerObject, paperDollLayers[i]);
+                //Debug.Log("current layer object name " + currentLayerObject.name);
+            } 
+
+            //else
+            //Debug.LogError("Layer Object " + paperDollLayerName + " not found.");
+
+        }
+        
+        //base layers
         for (int i = 0; i < paperDollLayers.Length; i++) {
             
             string paperDollLayerName = paperDollLayers[i].name;
             
             currentLayerObject = token.baseLayers.Find(x => x.name.Contains(paperDollLayerName));
-            if (currentLayerObject != null) {
+            if (currentLayerObject != null) //ensure object is found
+            {
                 SetLayerObjectProperitesToPaperDollLayer(currentLayerObject, paperDollLayers[i]);
-                Debug.Log("current layer object name " + currentLayerObject.name);
-            } //ensure object is found
+                //Debug.Log("current layer object name " + currentLayerObject.name);
+            } 
                 
-           
-
             //else
             //Debug.LogError("Layer Object " + paperDollLayerName + " not found.");
 
@@ -1197,7 +1127,7 @@ public class CharacterCreator : MonoBehaviour {
             //Debug.Log("Sprite Name ID" + ReturnSpriteNameID(clothingSprites[i]));
             currentLayerObject = token.subLayers.Find(x => x.SpriteID.Contains(GetSpriteNameID(clothingSprites[i])));
 
-            if (currentLayerObject == null)
+            if (currentLayerObject == null)//ensure object is found
                 continue;
 
             if (currentLayerObject.SpriteID == GetSpriteNameID(clothingSprites[i]))
@@ -1385,8 +1315,8 @@ public class CharacterCreator : MonoBehaviour {
         ResetLastSelectedLayer();*/
 
     }
-
-
+    
+    //replaces sprites on the paperdoll based on changed attributes (body type, chest type, etc)
     void RefreshPaperdoll() {
 
         for (int i = 0; i < paperDollLayers.Length; i++)
@@ -1419,8 +1349,7 @@ public class CharacterCreator : MonoBehaviour {
 
 
     }
-
-
+    
     //updates the color of all the layers dependant on skin color, such as body, chest, and head.  skinLayer is the first object in the skinLayers array.
     void UpdateSkinColor() {
 
@@ -1450,32 +1379,14 @@ public class CharacterCreator : MonoBehaviour {
        
         
     }
-    
-    //changes the scale of the paperdoll for closer inspection by the player.  called by UI elements
-    public void ResizePaperdoll(int resize)
-    {
-        paperDoll.transform.localScale = new Vector3(resize, resize, resize);
-    }
-    
-    //for use of Mirror button in UI.  flips the image across the y axis as a toggle
-    public void MirrorLayer() {
-        
-        float currentRotation = lastSelectedLayer.rectTransform.localRotation.y;
-        
-        if (currentRotation == 0)
-            lastSelectedLayer.rectTransform.localRotation = new Quaternion(0, 180, 0, 0);
-
-        else
-            lastSelectedLayer.rectTransform.localRotation = new Quaternion(0, 0, 0, 0);
-        
-    }
+   
 
     #endregion
     
     #region Button Grid Methods
 
-    //called in Start(). defines the buttonGrid
-    void SetUpButtons()
+    //called in Start(). initializes the buttonGrid with the button objects
+    void SetInitializeButtonGrid()
     {
 
         buttonGrid = gridObject.transform.GetComponentsInChildren<Button>();
@@ -1766,6 +1677,7 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
+    //returns name ID used to find sprites in the sprite library
     string ReturnButtonSpriteNameID(Button button)
     {
 
@@ -1780,6 +1692,7 @@ public class CharacterCreator : MonoBehaviour {
         return clean;
     }
     
+    //returns name ID of the layer's sprite
     string ReturnPaperDollLayerSpriteNameID(Image layer) {
         
         Sprite sprite = layer.sprite;
@@ -1897,65 +1810,204 @@ public class CharacterCreator : MonoBehaviour {
     #region Token Methods
 
     //replaces the current token's data with the given token.
-    /*public void OverrideCurrentToken(Token token) {
+    public void OverrideCurrentToken(Token token) {
 
         if (token == null) {return;}
         
         currentToken.ChangeTokenName(token.tokenName);
-        currentToken.ChangeTokenRace(token.raceID);
-
+        
         currentToken.size = token.size;
-        currentToken.chestType = token.chestType;
+        currentToken.raceID = token.raceID;
         currentToken.raceType = token.raceType;
-        currentToken.bodyType = token.bodyType;
         currentToken.head = token.head;
 
-        currentToken.baseLayers.
+        currentToken.ClearAllLayers();
 
-        //for each sublayer, it goes through the list of sprites and applies tokens
-        /*for (int i = 0; i < token.clothingSprites.Length; i++) {
-
-            currentToken.clothingSprites[i] = token.clothingSprites[i];
-            currentToken.layerColors[i] = token.layerColors[i];
-            currentToken.layerRotations[i] = token.layerRotations[i];
-
-        }
-        
+        currentToken.baseLayers.AddRange(token.baseLayers);
+        currentToken.subLayers.AddRange(token.subLayers);
         
         ResetLastSelectedLayer();
         
-    }*/
+    }
 
     #endregion
 
+    #region UI Methods
+    
+    //used by UI button "Random".  assigns random values to sprites then uses UpdatePaperdoll to apply them.  Also uses set active layer to update button pressed states and colors.
+    //does not randomize color yet.
+    public void RandomizePaperdoll()
+    {
 
-    public void SaveToken() {
+        //body
+        //bodyType = UnityEngine.Random.Range(0, bodyStrings.Length); //sets a random body type
 
-        ApplyPaperdollToToken(currentToken);
-        datamanger.SaveToken(currentToken);
+        //hair 
+        //currentToken.hairSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites(ConstructKey("hairtypekey")).Length);
+
+
+        //clothing
+        Sprite[] clothingSprites = spriteLibrary.GetSprites(ConstructKey("clothingtypekey"));
+
+
+        for (int i = 0; i < paperDollClothingLayers.Length; i++)
+        {
+
+            if (UnityEngine.Random.value < 0.5f)
+                paperDollClothingLayers[i].sprite = clothingSprites[i];
+
+            else
+                paperDollClothingLayers[i].sprite = blankSprite;
+
+        }
+
+        //hands  this will stay commented out until we have more hand sprites.
+        /*Sprite[] handSprites = spriteLibrary.GetSprites(ConstructKey("handtypekey"));
+
+        int handCounter = 0;
+        int maxHandSprites = 4;
+
+        for (int i = 0; i < paperDollHandLayers.Length; i++)
+        {
+
+            if (Random.value < 0.5f)
+            {
+                paperDollHandLayers[i].sprite = handSprites[i];
+                handCounter++;
+            }
+                
+            else
+                paperDollHandLayers[i].sprite = blankSprite;
+
+            
+            if (handCounter == maxHandSprites)
+                break;
+        }
+        */
+
+        //shoulder
+        //currentToken.shoulderSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("shoulderTypeKey").Length);
+
+        //back
+        //currentToken.backSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("backtypekey").Length);
+
+
+        //cape
+        //currentToken.capeSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("capetypekey").Length);
+
+        /*
+        if (raceType == 1)
+            hornSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("horntypekey").Length);
+
+        if (raceType == 2) { 
         
+            hornSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("horntypekey").Length);
+            tailSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites("tailtypekey").Length);
+        }*/
+
+
+
+        SetActiveLayer(paperDollLayers[activeLayer].name); //updates the buttons 
+
+
+        ApplyTokenToPaperdoll(currentToken); //updates the paperdolls
+
+
+    }
+
+    //changes the scale of the paperdoll for closer inspection by the player.  called by UI elements
+    public void ResizePaperdoll(int resize)
+    {
+        paperDoll.transform.localScale = new Vector3(resize, resize, resize);
+    }
+
+    //for use of Mirror button in UI.  flips the image across the y axis as a toggle
+    public void MirrorLayer()
+    {
+
+        float currentRotation = lastSelectedLayer.rectTransform.localRotation.y;
+
+        if (currentRotation == 0)
+            lastSelectedLayer.rectTransform.localRotation = new Quaternion(0, 180, 0, 0);
+
+        else
+            lastSelectedLayer.rectTransform.localRotation = new Quaternion(0, 0, 0, 0);
+
+    }
+
+    //called by the "body" category button to update the body traits.  Leave with empty argument for UI use.
+    public void UpdateRaceDependentButtons()
+    {
+
+        int race = currentToken.raceType;
+
+        switch (race)
+        {
+
+            case 0: //base
+                chestButton.gameObject.SetActive(true);
+                hornButton.gameObject.SetActive(false);
+                tailButton.gameObject.SetActive(false);
+                break;
+            case 1: //dragonborn
+                chestButton.gameObject.SetActive(false);
+                hornButton.gameObject.SetActive(true);
+                tailButton.gameObject.SetActive(false);
+                break;
+            case 2://tiefling
+                chestButton.gameObject.SetActive(true);
+                hornButton.gameObject.SetActive(true);
+                tailButton.gameObject.SetActive(true);
+                break;
+            default:
+                Debug.LogError("RaceType not vaild.");
+                break;
+
+        }
+
+    }
+
+    public void ResetPaperdollAndCurrentToken()
+    {
+
+        //OverrideCurrentToken(defaultToken);
+        ApplyTokenToPaperdoll(defaultToken);
+
     }
 
 
-    public void LoadToken() {
+    //method to be called in UI, save button method.  Easier if it takes no argument
+    public void SaveToken()
+    {
+
+        ApplyPaperdollToToken(currentToken);
+        datamanger.SaveToken(currentToken);
+
+    }
+
+    //method to be called in UI, load button method.  Easier if it takes no argument
+    public void LoadToken()
+    {
 
         TokenData newData = datamanger.ReturnTokenData();
-        
+
         currentToken = tokenBank.SearchTokenbyRace(newData.raceID);
 
         Debug.Log("newtoken: " + currentToken.name);
-        currentToken.ClearAllLayers();
+
         datamanger.LoadToken(currentToken);
-        
+
         ApplyTokenToPaperdoll(currentToken);
         RefreshPaperdoll();
 
     }
 
+    #endregion
+    
     // Use this for initialization
     void Start () {
         
-        SetUpButtons();
+        SetInitializeButtonGrid();
 
         SetUpColorPicker();
 
@@ -1974,29 +2026,16 @@ public class CharacterCreator : MonoBehaviour {
         //skinLayer = skinLayers[0]; //skinLayer only needs to be set to any of the skin layers
 
         skinColor = skinLayers[0].color;
-
-        for (int i = 0; i < paperDollLayers.Length; i++) {
-            //Debug.Log(paperDollLayers[i].name + ": " + i);
-        }
-           
-       
-
+        
         if (datamanger.FileName != "") {
             datamanger.LoadToken(currentToken);
             datamanger.FileName = "";
         }
-
-
-        //OverrideCurrentToken(currentToken);
         
         DeactivateAllButtons();
 
         ApplyTokenToPaperdoll(currentToken);
-
-
-
-       
-      
+         
 }
 	
 	// Update is called once per frame

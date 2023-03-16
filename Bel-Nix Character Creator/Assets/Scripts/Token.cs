@@ -6,11 +6,37 @@ public class Token : MonoBehaviour
     public string tokenName = "";
 
     public float versionNumber;
-   
+    
+    [Space(10)]
+
+    [Header("Racial Traits")]
+    public int size;
+    public int raceID;
+    public int raceType;
+    public string head;
+    
+    [Space(10)]
+
+    [Header("Layer Lists")]
+    public List<PaperdollLayerObject> physicalTraitLayers = new List<PaperdollLayerObject>();
     public List<PaperdollLayerObject> baseLayers = new List<PaperdollLayerObject>();
     public List<PaperdollLayerObject> subLayers = new List<PaperdollLayerObject>();
+    
+    //Events and delegates
+    public event ChangeTokenNameDelegate ChangeTokenNameEvent;
+    public delegate void ChangeTokenNameDelegate(string n);
+    
+    public void ChangeTokenName(string name)
+    {
 
-    public List<PaperdollLayerObject> ReturnAllLayers() {
+        tokenName = name;
+        ChangeTokenNameEvent?.Invoke(tokenName);
+
+    }
+    
+    #region Layer Methods
+    public List<PaperdollLayerObject> ReturnAllLayers()
+    {
 
         List<PaperdollLayerObject> allLayers = new List<PaperdollLayerObject>();
 
@@ -21,63 +47,24 @@ public class Token : MonoBehaviour
 
     }
 
-    public void ClearAllLayers() {
+    public void ClearAllLayers()
+    {
 
         baseLayers.Clear();
         subLayers.Clear();
 
     }
-
-
-
-    [Space(10)]
-
-    [Header("Racial Traits")]
-    public int size;
-    public int raceID;
-    public int raceType;
-    public string head;
-
-    [Space(10)]
-
-    [Header("Body Traits")]
-    public int chestType;
-    public int bodyType;
-    public string hairSprite;
-    public int hornSprite;
-    public int tailSprite;
     
-    
-    public void ChangeTokenName(string name) {
-
-        tokenName = name;
-        ChangeTokenNameEvent?.Invoke(tokenName);
-
-    }
-
-    public void ChangeTokenRace(int race)
-    {
-
-        raceID = race;
-        ChangeTokenRaceEvent?.Invoke(raceID);
-
-    }
-
-    public event ChangeTokenNameDelegate ChangeTokenNameEvent;
-    public delegate void ChangeTokenNameDelegate(string n);
-
-    public event ChangeTokenRaceDelegate ChangeTokenRaceEvent;
-    public delegate void ChangeTokenRaceDelegate(int race);
+    #endregion
     
     public Token(TokenData data) {
         
         size = data.size;
-        chestType = data.chestType;
         raceID = data.raceID;
         raceType = data.raceType;
-        bodyType = data.bodyType;
         head = data.head;
 
+        physicalTraitLayers.AddRange(data.physicalTraitLayers);
         baseLayers.AddRange(data.baseLayers);
         subLayers.AddRange(data.subLayers);
         
@@ -87,12 +74,11 @@ public class Token : MonoBehaviour
     {
 
         size = token.size;
-        chestType = token.chestType;
         raceID = token.raceID;
         raceType = token.raceType;
-        bodyType = token.bodyType;
         head = token.head;
 
+        physicalTraitLayers.AddRange(token.physicalTraitLayers);
         baseLayers.AddRange(token.baseLayers);
         subLayers.AddRange(token.subLayers);
 

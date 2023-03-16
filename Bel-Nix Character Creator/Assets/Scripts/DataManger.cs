@@ -75,30 +75,30 @@ public class DataManger : MonoBehaviour
 
     public TokenData ReturnTokenData() {
 
-        TokenData data = SaveSystem.LoadToken(fileName);
+        TokenData data = SaveSystem.LoadTokenData(fileName);
         return data;
         
     }
 
     public void LoadToken(Token token) {
 
-        TokenData data = SaveSystem.LoadToken(fileName);
-
+        TokenData data = SaveSystem.LoadTokenData(fileName);
+        
         token.tokenName = data.tokenName;
 
         token.versionNumber = data.versionNumber;
         Debug.Log("VersionNumber: " + token.versionNumber);
 
-        token.baseLayers.AddRange(data.baseLayers);
-        token.subLayers.AddRange(data.subLayers);
-
         token.size = data.size;
-        token.chestType = data.chestType;
         token.raceID = data.raceID;
-        token.bodyType = data.bodyType;
         token.raceType = data.raceType;
         token.head = data.head;
 
+        token.ClearAllLayers(); //ensures layers do not write duplicates
+
+        token.baseLayers.AddRange(data.baseLayers);
+        token.subLayers.AddRange(data.subLayers);
+        
         Debug.Log(token.tokenName + " was loaded!");
         OnLoadToken?.Invoke(token.tokenName + " was loaded!");
        

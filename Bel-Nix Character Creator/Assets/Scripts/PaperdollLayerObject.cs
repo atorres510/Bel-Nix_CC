@@ -9,11 +9,12 @@ public class PaperdollLayerObject
 
     public string name;
     public Sprite sprite;
-    public string spriteID;
     public float rotation;
     public Color color;
+    [HideInInspector]
+    public string spriteID; //hide to prevent getting incorrectly overwritten by developer in the inspector.  We need this to be public for JSON formattting.
 
-    public string SpriteID { get => spriteID;}
+    public string SpriteID { get => spriteID;}  
     
     public PaperdollLayerObject(string layerName, Sprite layerSprite, float layerRotation, Color layerColor) {
 
@@ -65,8 +66,7 @@ public class PaperdollLayerObject
         id = splitName[splitName.Length - 1];
 
         spriteID = id;
-
-
+        
     }
     
 }

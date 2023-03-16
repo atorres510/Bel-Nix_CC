@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class UI_CharacterNameField : MonoBehaviour
 {
     
-
-
     //subscribe to events
     private void Start()
     {
@@ -20,6 +18,7 @@ public class UI_CharacterNameField : MonoBehaviour
 
     Token ReturnCurrentToken()
     {
+
         CharacterCreator characterCreator = FindObjectOfType<CharacterCreator>();
 
         return characterCreator.currentToken;

@@ -6,21 +6,10 @@ public class UI_ColorPresets : MonoBehaviour
 {
 
     public GameObject[] colorPresets;
-
-    Token currentToken;
     
-    Token ReturnCurrentToken() {
-
-        GameObject tokenObject = GameObject.FindGameObjectWithTag("CurrentToken");
-        Token tokenComponent = tokenObject.GetComponent<Token>();
-
-        return tokenComponent;
-
-    }
-
     void SetActiveColorPreset(int value) {
 
-       value--; //to correct for array element values at index 0;
+        value--; //to correct for array element values at index 0;
 
         foreach (GameObject color in colorPresets) {
             color.SetActive(false);
@@ -33,9 +22,9 @@ public class UI_ColorPresets : MonoBehaviour
     private void Awake()
     {
 
-        currentToken = ReturnCurrentToken();
-        currentToken.ChangeTokenRaceEvent += SetActiveColorPreset;
-        SetActiveColorPreset(currentToken.raceID);
+        CharacterCreator characterCreator = FindObjectOfType<CharacterCreator>();
+        characterCreator.ChangeTokenRaceEvent += SetActiveColorPreset;
+        SetActiveColorPreset(characterCreator.currentToken.raceID);
        
     }
 
