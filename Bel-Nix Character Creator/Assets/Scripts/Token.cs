@@ -18,7 +18,7 @@ public class Token : MonoBehaviour
     [Space(10)]
 
     [Header("Layer Lists")]
-    public List<PaperdollLayerObject> physicalTraitLayers = new List<PaperdollLayerObject>();
+    //public List<PaperdollLayerObject> physicalTraitLayers = new List<PaperdollLayerObject>();
     public List<PaperdollLayerObject> baseLayers = new List<PaperdollLayerObject>();
     public List<PaperdollLayerObject> subLayers = new List<PaperdollLayerObject>();
     
@@ -64,7 +64,7 @@ public class Token : MonoBehaviour
         raceType = data.raceType;
         head = data.head;
 
-        physicalTraitLayers.AddRange(data.physicalTraitLayers);
+        //physicalTraitLayers.AddRange(data.physicalTraitLayers);
         baseLayers.AddRange(data.baseLayers);
         subLayers.AddRange(data.subLayers);
         
@@ -78,7 +78,7 @@ public class Token : MonoBehaviour
         raceType = token.raceType;
         head = token.head;
 
-        physicalTraitLayers.AddRange(token.physicalTraitLayers);
+        //physicalTraitLayers.AddRange(token.physicalTraitLayers);
         baseLayers.AddRange(token.baseLayers);
         subLayers.AddRange(token.subLayers);
 

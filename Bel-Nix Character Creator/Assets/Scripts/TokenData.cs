@@ -8,7 +8,7 @@ public class TokenData {
     public string tokenName;
     public float versionNumber;
 
-    public PaperdollLayerObject[] physicalTraitLayers;
+    //public PaperdollLayerObject[] physicalTraitLayers;
     public PaperdollLayerObject[] baseLayers;
     public PaperdollLayerObject[] subLayers;
 
@@ -24,7 +24,7 @@ public class TokenData {
         tokenName = token.tokenName;
         versionNumber = token.versionNumber;
 
-        physicalTraitLayers = token.physicalTraitLayers.ToArray();
+        //physicalTraitLayers = token.physicalTraitLayers.ToArray();
         baseLayers = token.baseLayers.ToArray();
         subLayers = token.subLayers.ToArray();
         

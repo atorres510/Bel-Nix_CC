@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class ImageExporter : MonoBehaviour
 {
-
-    public Token currentToken;
+    
     public GameObject paperDoll;
 
     [Space(10)]
@@ -24,15 +23,17 @@ public class ImageExporter : MonoBehaviour
     public void StartExportPNG()
     {
 
+        Token token = FindObjectOfType<CharacterCreator>().currentToken;
+
         string textToDisplay = "Error";
 
-        if (currentToken.tokenName == "")
+        if (token.tokenName == "")
         {
             Debug.LogError("Token needs a name before exporting.");
             textToDisplay = "Token needs a name before exporting.";
         }
 
-        else if (currentToken.tokenName.Contains("/") || currentToken.tokenName.Contains(@"\"))
+        else if (token.tokenName.Contains("/") || token.tokenName.Contains(@"\"))
         {
             Debug.LogError(@"Token cannot contain '/' or '\' characters.");
             textToDisplay = @"Token cannot contain '/' or '\' characters.";
@@ -42,8 +43,8 @@ public class ImageExporter : MonoBehaviour
         else
         {
             StartCoroutine("ExportPNG");
-            Debug.Log(currentToken.tokenName + " was exported!");
-            textToDisplay = currentToken.tokenName + " was exported!";
+            Debug.Log(token.tokenName + " was exported!");
+            textToDisplay = token.tokenName + " was exported!";
         }
 
         OnExportToken?.Invoke(textToDisplay);
@@ -104,10 +105,11 @@ public class ImageExporter : MonoBehaviour
     //enumerated method for saving the PNG file to screenshots
     IEnumerator ExportPNG()
     {
+        
+        Token token = FindObjectOfType<CharacterCreator>().currentToken;
+        string exportName = token.tokenName;
+
         //from unity documentation
-
-        string exportName = currentToken.tokenName;
-
         RectTransform paperDollRectTransform = paperDoll.GetComponent<RectTransform>();
 
         //stores old settings and changes them for the screenshot

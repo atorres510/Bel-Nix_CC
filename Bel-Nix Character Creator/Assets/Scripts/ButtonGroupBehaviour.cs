@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 
 public class ButtonGroupBehaviour : MonoBehaviour
 {
+    [HideInInspector]
     public Button[] buttonGroup;
 
     //finds all the children and adds them to the group.
@@ -28,8 +29,7 @@ public class ButtonGroupBehaviour : MonoBehaviour
         }
        
     }
-
-
+    
     //toggles a set of buttons as a group, ensuring only one button is pressed from the group at a time. similar to a toggle group component
     public void TogglePressedStateAsGroup(Button thisButton)
     {

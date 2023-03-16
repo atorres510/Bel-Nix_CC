@@ -83,9 +83,9 @@ public class DataManger : MonoBehaviour
     public void LoadToken(Token token) {
 
         TokenData data = SaveSystem.LoadTokenData(fileName);
-        
-        token.tokenName = data.tokenName;
 
+        token.tokenName = data.tokenName;
+        
         token.versionNumber = data.versionNumber;
         Debug.Log("VersionNumber: " + token.versionNumber);
 

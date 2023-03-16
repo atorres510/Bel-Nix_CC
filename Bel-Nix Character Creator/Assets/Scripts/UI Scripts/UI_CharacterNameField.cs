@@ -7,7 +7,7 @@ public class UI_CharacterNameField : MonoBehaviour
 {
     
     //subscribe to events
-    private void Start()
+    private void Awake()
     {
         Token currentToken = ReturnCurrentToken();
         currentToken.ChangeTokenNameEvent += UpdateInputField;

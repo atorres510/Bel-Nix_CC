@@ -756,35 +756,46 @@ public class CharacterCreator : MonoBehaviour {
         ApplyPaperdollToToken(currentToken);
 
         //Find the newRacialToken and set currentToken to newRace settings
-        
         Token newRacialToken = tokenBank.SearchTokenbyRace(raceID);
         
         currentToken = newRacialToken;
 
-        //apply only physical traits layers to paperdoll, preserving items, clothes, equipment, etc
+        //reset last selected layer to avoid coloring issues on skin layer.  Trust me, just leave this here.
+        ResetLastSelectedLayer(); 
+        
+        //apply only skin layers to paperdoll, preserving items, clothes, equipment, etc
         PaperdollLayerObject currentLayerObject;
-        for (int i = 0; i < paperDollLayers.Length; i++)
+        for (int i = 0; i <  skinLayers.Length; i++)
         {
 
-            string paperDollLayerName = paperDollLayers[i].name;
+            string skinLayerName = skinLayers[i].name;
 
-            currentLayerObject = currentToken.physicalTraitLayers.Find(x => x.name.Contains(paperDollLayerName));
+            currentLayerObject = currentToken.baseLayers.Find(x => x.name.Contains(skinLayerName));
             if (currentLayerObject != null)//ensure object is found
             {
-                SetLayerObjectProperitesToPaperDollLayer(currentLayerObject, paperDollLayers[i]);
+                SetLayerObjectProperitesToPaperDollLayer(currentLayerObject, skinLayers[i]);
+                //Debug.Log("skin layer name " + skinLayerName);
                 //Debug.Log("current layer object name " + currentLayerObject.name);
+                //Debug.Log("spriteID: " + currentLayerObject.SpriteID);
             }
-
-            //else
-            //Debug.LogError("Layer Object " + paperDollLayerName + " not found.");
-
+            
         }
 
-        ChangeTokenRaceEvent?.Invoke(raceID);
+        currentLayerObject = currentToken.baseLayers.Find(x => x.name.Contains("Hair"));
 
+        if (currentLayerObject != null) {
+
+            foreach (Image layer in paperDollLayers) {
+
+                if(layer.name == "Hair")
+                    SetLayerObjectProperitesToPaperDollLayer(currentLayerObject, layer);
+
+            }
+            
+        }
+            
+        ChangeTokenRaceEvent?.Invoke(raceID);
         SetDefaultToken(raceID);
-        //ApplyRacialExceptions(currentToken);
-        //ApplyTokenToPaperdoll(currentToken);
         RefreshPaperdoll();
         
         //Debug.Log("CC race type" + currentToken.raceType);
@@ -792,7 +803,7 @@ public class CharacterCreator : MonoBehaviour {
 
     }
 
-    //hardcoding exceptions to fix errors when changing races.  
+    //hardcoding exceptions to fix errors when changing races.  no longer used.
     void ApplyRacialExceptions(Token token) {
 
         switch (token.size) {
@@ -1016,13 +1027,6 @@ public class CharacterCreator : MonoBehaviour {
 
         token.ClearAllLayers();
         
-        for (int i = 0; i < paperDollLayers.Length; i++)
-        {
-            PaperdollLayerObject layerObject = new PaperdollLayerObject(paperDollLayers[i]);
-            //Debug.Log(layerObject.name + ", " + layerObject.spriteName);
-            token.physicalTraitLayers.Add(layerObject);
-        }
-
         for (int i = 0; i < paperDollLayers.Length; i++) {
             PaperdollLayerObject layerObject = new PaperdollLayerObject(paperDollLayers[i]);
             //Debug.Log(layerObject.name + ", " + layerObject.spriteName);
@@ -1085,23 +1089,6 @@ public class CharacterCreator : MonoBehaviour {
         
         PaperdollLayerObject currentLayerObject;
 
-        for (int i = 0; i < paperDollLayers.Length; i++)
-        {
-
-            string paperDollLayerName = paperDollLayers[i].name;
-
-            currentLayerObject = token.physicalTraitLayers.Find(x => x.name.Contains(paperDollLayerName));
-            if (currentLayerObject != null)//ensure object is found
-            {
-                SetLayerObjectProperitesToPaperDollLayer(currentLayerObject, paperDollLayers[i]);
-                //Debug.Log("current layer object name " + currentLayerObject.name);
-            } 
-
-            //else
-            //Debug.LogError("Layer Object " + paperDollLayerName + " not found.");
-
-        }
-        
         //base layers
         for (int i = 0; i < paperDollLayers.Length; i++) {
             
@@ -1177,143 +1164,31 @@ public class CharacterCreator : MonoBehaviour {
                 paperDollEquipmentLayers[i].sprite = blankSprite;
 
         }
-
-
-        ResetLastSelectedLayer();
         
-        /* int layer = 0;
-         PaperdollLayerObject currentLayerObject;
-         //update tail
-         if (token.raceType == 2) //if tiefling, update
-         {
+        //ResetLastSelectedLayer();
+        
+    }
 
-             string paperDollLayerName = paperDollLayers[layer].name;
-             currentLayerObject = token.baseLayers.Find(x => x.name.Contains(paperDollLayerName));
-             SetLayerObjectProperitesToPaperDollLayer(currentLayerObject, paperDollLayers[layer]);
+    void ResetPaperdollLayers(Image[] layers) {
 
-         }
+        foreach (Image layer in layers)
+        {
 
-         else //if base or dragonborn, leave blank
-         {
+            layer.sprite = blankSprite;
+            layer.color = Color.white;
+            layer.rectTransform.rotation = new Quaternion(0, 0, 0, 0);
 
-             paperDollLayers[layer].sprite = blankSprite;
-             token.tailSprite = 0;
+        }
 
-         }
+    }
 
-         //PaperdollLayerObject thisLayer = token.baseLayers.Find(x => x.name.Contains("Tail"));
-         //Debug.Log("Test Layer Name = " + thisLayer.name);
+    void ResetAllPaperdollLayers() {
 
-         layer++;
-         //update body based on race
-         paperDollLayers[layer].sprite = spriteLibrary.GetSprite(ConstructKey("bodytypekey"), token.bodyType);
-         layer++;
-         //update chest
-         paperDollLayers[layer].sprite = spriteLibrary.GetSprite(ConstructKey("chesttypekey"), token.chestType);
-         layer++;
-         //update clothes
-
-         Sprite[] clothingSprites = spriteLibrary.GetSprites(ConstructKey("clothingtypekey"));
-         //Debug.Log("clothingSprite length" + clothingSprites.Length);
-         for (int i = 0; i < clothingSprites.Length; i++)
-         {
-             //Debug.Log("Sprite Name ID" + ReturnSpriteNameID(clothingSprites[i]));
-             if (token.clothingSprites.Contains(GetSpriteNameID(clothingSprites[i])))
-                 paperDollClothingLayers[i].sprite = clothingSprites[i]; 
-
-             else
-                 paperDollClothingLayers[i].sprite = blankSprite;
-
-         }
-
-         layer++;
-         //update hands
-         for (int i = 0; i < token.handSprites.Length; i++)
-         {
-
-             if (token.handSprites[i])
-                 paperDollHandLayers[i].sprite = spriteLibrary.GetSprite(ConstructKey("handtypekey"), i);
-
-             else
-                 paperDollHandLayers[i].sprite = blankSprite;
-
-         }
-         layer++;
-         //capes
-         paperDollLayers[layer].sprite = spriteLibrary.GetSprite(ConstructKey("capetypekey"), token.capeSprite);
-         layer++;
-         //update equipment
-         for (int i = 0; i < token.equipmentSprites.Length; i++)
-         {
-
-             if (token.equipmentSprites[i])
-                 paperDollEquipmentLayers[i].sprite = spriteLibrary.GetSprite(ConstructKey("equipmenttypekey"), i);
-
-             else
-                 paperDollEquipmentLayers[i].sprite = blankSprite;
-
-         }
-         layer++;
-         //Back
-         paperDollLayers[layer].sprite = spriteLibrary.GetSprite(ConstructKey("backtypekey"), token.backSprite);
-         layer++;
-         //shoulders
-         paperDollLayers[layer].sprite = spriteLibrary.GetSprite(ConstructKey("shouldertypekey"), token.shoulderSprite);
-         layer++;
-         //update head based on race
-         paperDollLayers[layer].sprite = spriteLibrary.GetSprite("Heads", ConstructKey("headtypekey"));
-         layer++;
-         //update hair based on race
-         int spriteNumID = FindSpriteNumID(ConstructKey("hairtypekey"), token.hairSprite);
-         paperDollLayers[layer].sprite = spriteLibrary.GetSprite(ConstructKey("hairtypekey"), spriteNumID);
-         layer++;
-         //update horns
-         if (token.raceType == 0)//if base creature, leave blank
-         {
-
-             paperDollLayers[layer].sprite = blankSprite;
-             token.hornSprite = 0;
-
-         }
-
-         else { //if dragonborn or tiefling, update
-
-             paperDollLayers[layer].sprite = spriteLibrary.GetSprite(ConstructKey("horntypekey"), token.hornSprite);
-
-         }
-         layer++;
-         //update helmet based on race
-         paperDollLayers[layer].sprite = spriteLibrary.GetSprite(ConstructKey("helmettypekey"), token.helmetSprite);
-
-         //update colors for colored Layers
-         /*for (int i = 0; i < paperDollLayers.Length; i++)
-         {
-             paperDollLayers[i].color = token.layerColors[i];
-             paperDollLayers[i].rectTransform.localRotation = new Quaternion(0, token.layerRotations[i], 0, 0);
-         }
-
-
-         for (int i = 0; i < paperDollClothingLayers.Length; i++)
-         {
-             paperDollClothingLayers[i].color = token.clothingLayerColors[i];
-             paperDollClothingLayers[i].rectTransform.localRotation = new Quaternion(0, token.clothingLayerRotations[i], 0, 0);
-         }
-
-
-         for (int i = 0; i < paperDollHandLayers.Length; i++)
-         {
-             paperDollHandLayers[i].color = token.handLayerColors[i];
-             paperDollHandLayers[i].rectTransform.localRotation = new Quaternion(0, token.handLayerRotations[i], 0, 0);
-         }
-
-         for (int i = 0; i < paperDollEquipmentLayers.Length; i++)
-         {
-             paperDollEquipmentLayers[i].color = token.equipmentLayerColors[i];
-             paperDollEquipmentLayers[i].rectTransform.localRotation = new Quaternion(0, token.equipmentLayerRotations[i], 0, 0);
-         }
-
-        ResetLastSelectedLayer();*/
-
+        ResetPaperdollLayers(paperDollLayers);
+        ResetPaperdollLayers(paperDollClothingLayers);
+        ResetPaperdollLayers(paperDollHandLayers);
+        ResetPaperdollLayers(paperDollEquipmentLayers);
+        
     }
     
     //replaces sprites on the paperdoll based on changed attributes (body type, chest type, etc)
@@ -1379,8 +1254,19 @@ public class CharacterCreator : MonoBehaviour {
        
         
     }
-   
 
+    //overload to be called to set all skin layers to the same color.  called typically in changerace()
+    void UpdateSkinColor(Color color) {
+
+        for (int i = 0; i < skinLayers.Length; i++)
+        {
+
+            skinLayers[i].color = color;
+            Debug.Log("skin layers update color: " + skinLayers[i].name);
+
+        }
+        
+    }
     #endregion
     
     #region Button Grid Methods
@@ -1844,13 +1730,24 @@ public class CharacterCreator : MonoBehaviour {
 
         //hair 
         //currentToken.hairSprite = UnityEngine.Random.Range(0, spriteLibrary.GetSprites(ConstructKey("hairtypekey")).Length);
+        
+        /*foreach (Image layer in paperDollLayers) {
 
+            int spriteFolderLength = spriteLibrary.GetSprites(ConstructKey(layer.name)).Length;
+
+            if (spriteFolderLength == 0)
+                continue;
+
+            int randomInt = Random.Range(0, spriteFolderLength);
+            Debug.Log("Layer name:" + layer.name + " | random int: " + randomInt);
+            layer.sprite = spriteLibrary.GetSprite(ConstructKey(layer.name), randomInt);
+            
+        }*/
 
         //clothing
-        Sprite[] clothingSprites = spriteLibrary.GetSprites(ConstructKey("clothingtypekey"));
+        //Sprite[] clothingSprites = spriteLibrary.GetSprites(ConstructKey("clothingtypekey"));
 
-
-        for (int i = 0; i < paperDollClothingLayers.Length; i++)
+        /*for (int i = 0; i < paperDollClothingLayers.Length; i++)
         {
 
             if (UnityEngine.Random.value < 0.5f)
@@ -1859,7 +1756,7 @@ public class CharacterCreator : MonoBehaviour {
             else
                 paperDollClothingLayers[i].sprite = blankSprite;
 
-        }
+        }*/
 
         //hands  this will stay commented out until we have more hand sprites.
         /*Sprite[] handSprites = spriteLibrary.GetSprites(ConstructKey("handtypekey"));
@@ -1970,8 +1867,11 @@ public class CharacterCreator : MonoBehaviour {
     public void ResetPaperdollAndCurrentToken()
     {
 
-        //OverrideCurrentToken(defaultToken);
+        OverrideCurrentToken(defaultToken);
+        ResetAllPaperdollLayers();
         ApplyTokenToPaperdoll(defaultToken);
+        
+        DeactivateAllButtons();
 
     }
 
@@ -2025,10 +1925,10 @@ public class CharacterCreator : MonoBehaviour {
 
         //skinLayer = skinLayers[0]; //skinLayer only needs to be set to any of the skin layers
 
-        skinColor = skinLayers[0].color;
+        skinColor = skinLayers[0].color; 
         
         if (datamanger.FileName != "") {
-            datamanger.LoadToken(currentToken);
+            LoadToken();
             datamanger.FileName = "";
         }
         
